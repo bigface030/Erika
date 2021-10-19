@@ -1,183 +1,31 @@
-import styled from 'styled-components'
-// import './reset.css'
 import { HashRouter as Router, Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faUser, faHeart, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faChevronDown, faUser, faHeart, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import logo from '../../Logo.png'
+import {
+  HeaderWrapper, 
+  HeaderContainer, 
+  HeaderLeft, 
+  HeaderRight, 
+  Logo, 
+  Menu, 
+  SubMenu, 
+  SubMenuListFlex, 
+  SubMenuListBlock, 
+  MobileMenu, 
+  BtnGroup, 
+  Btn, 
+  MenuBtn, 
+  BurgerBtn,
+  ToggleBtn,
+  Input,
+  BurgerInput,
+  MobileMenuNav,
+  MenuNav,
+  Mask
+} from './style'
 
-const HeaderWrapper = styled.div`
-  height: 70px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  box-shadow: 1px 0px 5px #aaa;
-`
 
-const HeaderContainer = styled.div`
-  width: 90%;
-  height: 70px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  & > div {
-    display: flex;
-    align-items: center;
-  }
-  & > h1 {
-    display: none;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    @media (max-width: 1024px) {
-      display: block;
-    }
-  }
-`
-
-const HeaderLeft = styled.div`
-  position: relative;
-  & > div:first-child {
-    display: none;
-    @media (max-width: 1024px) {
-      display: block;
-    }
-  }
-  @media (max-width: 1024px) {
-    & h1, ul {
-      display: none;
-    }
-  }
-`
-
-const HeaderRight = styled.div`
-`
-
-const Logo = styled.h1`
-  display: block;
-  height: 70px;
-  & img {
-    vertical-align: middle;
-  }
-`
-
-const Menu = styled.ul`
-  margin: 0 20px;
-  display: flex;
-  & a {
-    display: block;
-    text-decoration: none;
-    color: #333;
-    & span::after {
-      content: '';
-      display: block;
-      width: 0%;
-      height: 2px;
-      background-color: #333;
-      transition: width .4s;
-    }
-    &:hover span::after {
-      width: 100%
-    }
-  }
-
-  & > li {
-    margin: 0 5px;
-    padding: 16px 0;
-    position: relative;
-    & > a {
-      font-size: 18px;
-      font-weight: 500;
-      padding: 0 10px;
-      line-height: 2em;
-    }
-    &:hover > div {
-      display: flex;
-    }
-  }
-`
-
-const SubMenu = styled.div`
-  position: absolute;
-  top: 71px;
-  display: none;
-  box-shadow: 1px 1px 5px #aaa;
-  & > div {
-    margin: 20px 30px;
-    & h4 {
-      padding-bottom: 10px;
-      border-bottom: 1px solid #ddd;
-      display: flex;
-      & > a {
-        font-size: 18px;
-        font-weight: 700;
-        padding: 5px 5px;
-      }
-    }
-    & ul {
-      & > li {
-        & > a {
-          font-size: 16px;
-          font-weight: 500;
-          padding: 5px 5px;
-          line-height: 1.5em;
-        }
-      }
-    }
-  }
-`
-
-const ListContainerM = styled.div`
-  width: 240px;
-  & ul {
-    max-height: 150px;
-    padding: 10px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-`
-
-const ListContainerS = styled.div`
-  width: 180px;
-  & ul {
-    text-align: center;
-    & li {
-      display: inline-block;
-    }
-  }
-`
-
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 160px;
-  & div + div {
-    margin-left: 30px;
-  }
-`
-
-const Button = styled.div`
-  & > a {
-    font-size: 28px;
-    & > svg {
-      color: #aaa;
-      transition: .2s;
-      &:hover {
-        color: #555;
-      }
-    }
-  }
-`
-
-const MenuButton = styled(Button)`
-  @media (max-width: 1024px) {
-    display: none;
-  }
-`
 
 export default function Header() {
   return (
@@ -186,21 +34,101 @@ export default function Header() {
         <HeaderWrapper>
           <HeaderContainer>
             <HeaderLeft>
-              <Button>
-                <Link to="#"><FontAwesomeIcon icon={faBars}/></Link>
-              </Button>
+              <BurgerInput id="checkbox11" type="checkbox"/>
+              <label htmlFor="checkbox11">
+                <Mask/>
+              </label>
+              <label htmlFor="checkbox11">
+                <BurgerBtn>
+                  <FontAwesomeIcon icon={faBars}/>
+                </BurgerBtn>
+              </label>
+              <MobileMenuNav>
+                <MobileMenu>
+                  <div>
+                    <li><Link to="#"><span>新品上市</span></Link></li>
+                    <li>
+                      <Input id="checkbox1" type="checkbox"/>
+                      <label htmlFor="checkbox1">
+                        <ToggleBtn>
+                          <FontAwesomeIcon icon={faChevronDown}/>
+                        </ToggleBtn>
+                      </label>
+                      <Link to="#"><span>商品一覽</span></Link>
+                      <ul>
+                        <li>
+                          <Input id="checkbox2" type="checkbox"/>
+                          <label htmlFor="checkbox2">
+                            <ToggleBtn>
+                              <FontAwesomeIcon icon={faChevronDown}/>
+                            </ToggleBtn>
+                          </label>
+                          <Link to="#"><span>男裝</span></Link>
+                          <ul>
+                            <li><Link to="#"><span>上衣類</span></Link></li>
+                            <li><Link to="#"><span>襯衫類</span></Link></li>
+                            <li><Link to="#"><span>針織衫 / 毛衣</span></Link></li>
+                            <li><Link to="#"><span>褲裝類</span></Link></li>
+                            <li><Link to="#"><span>外套類</span></Link></li>
+                            <li><Link to="#"><span>鞋類</span></Link></li>
+                            <li><Link to="#"><span>配件類</span></Link></li>
+                          </ul>
+                        </li>
+                        <li>
+                          <Input id="checkbox3" type="checkbox"/>
+                          <label htmlFor="checkbox3">
+                            <ToggleBtn>
+                              <FontAwesomeIcon icon={faChevronDown}/>
+                            </ToggleBtn>
+                          </label>
+                          <Link to="#"><span>女裝</span></Link>
+                          <ul>
+                            <li><Link to="#"><span>上衣 / 襯衫</span></Link></li>
+                            <li><Link to="#"><span>針織衫 / 毛衣</span></Link></li>
+                            <li><Link to="#"><span>褲裝類</span></Link></li>
+                            <li><Link to="#"><span>裙子類</span></Link></li>
+                            <li><Link to="#"><span>洋裝類</span></Link></li>
+                            <li><Link to="#"><span>外套類</span></Link></li>
+                            <li><Link to="#"><span>鞋類</span></Link></li>
+                            <li><Link to="#"><span>配件類</span></Link></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <Input id="checkbox4" type="checkbox"/>
+                      <label htmlFor="checkbox4">
+                        <ToggleBtn>
+                          <FontAwesomeIcon icon={faChevronDown}/>
+                        </ToggleBtn>
+                      </label>
+                      <Link to="#"><span>特價專區</span></Link>
+                      <ul>
+                        <li><Link to="#"><span>秋冬女裝新品_7折起</span></Link></li>
+                        <li><Link to="#"><span>秋冬男裝新品_7折起</span></Link></li>
+                        <li><Link to="#"><span>春夏商品出清_3折起</span></Link></li>
+                      </ul>
+                    </li>
+                    <li><Link to="#"><span>關於我們</span></Link></li>
+                  </div>
+                  <div>
+                    <li><Link to="#"><span>登入</span></Link></li>
+                    <li><Link to="#"><span>願望清單</span></Link></li>
+                  </div>
+                </MobileMenu>
+              </MobileMenuNav>
               <Logo>
                 <Link to="/">
                   <img src={logo} width="240px" alt="logo"/>
                 </Link>
               </Logo>
-              <nav>
+              <MenuNav>
                 <Menu>
                   <li><Link to="#"><span>新品上市</span></Link></li>
                   <li>
                     <Link to="#"><span>商品一覽</span></Link>
                     <SubMenu>
-                      <ListContainerM>
+                      <SubMenuListFlex>
                         <h4><Link to="#"><span>男裝</span></Link></h4>
                         <ul>
                           <li><Link to="#"><span>上衣類</span></Link></li>
@@ -211,8 +139,8 @@ export default function Header() {
                           <li><Link to="#"><span>鞋類</span></Link></li>
                           <li><Link to="#"><span>配件類</span></Link></li>
                         </ul>
-                      </ListContainerM>
-                      <ListContainerM>
+                      </SubMenuListFlex>
+                      <SubMenuListFlex>
                         <h4><Link to="#"><span>女裝</span></Link></h4>
                         <ul>
                           <li><Link to="#"><span>上衣 / 襯衫</span></Link></li>
@@ -224,24 +152,24 @@ export default function Header() {
                           <li><Link to="#"><span>鞋類</span></Link></li>
                           <li><Link to="#"><span>配件類</span></Link></li>
                         </ul>
-                      </ListContainerM>
+                      </SubMenuListFlex>
                     </SubMenu>
                   </li>
                   <li>
                     <Link to="#"><span>特價專區</span></Link>
                     <SubMenu>
-                      <ListContainerS>
+                      <SubMenuListBlock>
                         <ul>
                           <li><Link to="#"><span>秋冬女裝新品_7折起</span></Link></li>
                           <li><Link to="#"><span>秋冬男裝新品_7折起</span></Link></li>
                           <li><Link to="#"><span>春夏商品出清_3折起</span></Link></li>
                         </ul>
-                      </ListContainerS>
+                      </SubMenuListBlock>
                     </SubMenu>
                   </li>
                   <li><Link to="#"><span>關於我們</span></Link></li>
                 </Menu>
-              </nav>
+              </MenuNav>
             </HeaderLeft>
             <Logo>
               <Link to="/">
@@ -249,17 +177,17 @@ export default function Header() {
               </Link>
             </Logo>
             <HeaderRight>
-              <ButtonGroup>
-                <MenuButton>
+              <BtnGroup>
+                <MenuBtn>
                   <Link to="#"><FontAwesomeIcon icon={faUser}/></Link>
-                </MenuButton>
-                <MenuButton>
+                </MenuBtn>
+                <MenuBtn>
                   <Link to="#"><FontAwesomeIcon icon={faHeart}/></Link>
-                </MenuButton>
-                <Button>
+                </MenuBtn>
+                <Btn>
                   <Link to="#"><FontAwesomeIcon icon={faShoppingCart}/></Link>
-                </Button>
-              </ButtonGroup>
+                </Btn>
+              </BtnGroup>
             </HeaderRight>
           </HeaderContainer>
         </HeaderWrapper>
