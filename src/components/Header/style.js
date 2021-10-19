@@ -305,10 +305,15 @@ export const BurgerInput = styled.input`
         left: 0;
       }
     }
-    :checked + label {
-      & div {
-        display: block;
-      }
+    :checked + label::after {
+      content: '';
+      width: 100%;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.7);
     }
   }
 `
@@ -327,15 +332,4 @@ export const MobileMenuNav = styled.nav`
       transition: .25s;
     }
   }
-`
-
-export const Mask = styled.div`
-  display: none;
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 100;
-  background: rgba(0,0,0,0.7);
 `

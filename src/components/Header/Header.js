@@ -22,7 +22,6 @@ import {
   BurgerInput,
   MobileMenuNav,
   MenuNav,
-  Mask
 } from './style'
 
 
@@ -35,9 +34,6 @@ export default function Header() {
           <HeaderContainer>
             <HeaderLeft>
               <BurgerInput id="checkbox11" type="checkbox"/>
-              <label htmlFor="checkbox11">
-                <Mask/>
-              </label>
               <label htmlFor="checkbox11">
                 <BurgerBtn>
                   <FontAwesomeIcon icon={faBars}/>
