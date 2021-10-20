@@ -1,7 +1,7 @@
 import { HashRouter as Router, Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faChevronDown, faUser, faHeart, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
-import logo from '../../Logo.png'
+import logo from '../../logo.png'
 import {
   HeaderWrapper, 
   HeaderContainer, 
@@ -115,7 +115,7 @@ export default function Header() {
               </MobileMenuNav>
               <Logo>
                 <Link to="/">
-                  <img src={logo} width="240px" alt="logo"/>
+                  <img src={logo} height="70px" alt="logo"/>
                 </Link>
               </Logo>
               <MenuNav>
@@ -169,7 +169,7 @@ export default function Header() {
             </HeaderLeft>
             <Logo>
               <Link to="/">
-                <img src={logo} width="240px" alt="logo"/>
+                <img src={logo} height="70px" alt="logo"/>
               </Link>
             </Logo>
             <HeaderRight>
