@@ -4,6 +4,7 @@ export const theme = {
         h4: "18px",
         bodyLarge: "16px",
         body: "14px",
+        bodySmall: "12px",
     },
     fontWeight: {
         xxl: "900",
@@ -15,7 +16,8 @@ export const theme = {
     },
     color: {
         lightGrey: "#aaa",
-        Grey: "#555",
-        black: "#333"
+        grey: "#555",
+        black: "#333",
+        white: "#fff"
     },
 }

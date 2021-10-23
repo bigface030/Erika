@@ -6,6 +6,7 @@ export const HeaderWrapper = styled.div`
   top: 0;
   left: 0;
   right: 0;
+  background-color: ${props => props.theme.color.white};
   box-shadow: 1px 0px 5px #aaa;
 `
 
@@ -29,12 +30,15 @@ export const HeaderContainer = styled.div`
     ${MEDIA_QUERY.main} {
       display: block;
     }
+    ${MEDIA_QUERY.xs} {
+      display: none;
+    }
   }
 `
 
 export const HeaderLeft = styled.div`
   ${MEDIA_QUERY.main} {
-    & h1 {
+    & > h1 {
       display: none;
     }
   }
@@ -43,11 +47,16 @@ export const HeaderLeft = styled.div`
 export const HeaderRight = styled.div`
 `
 
-export const Logo = styled.h1`
-  display: block;
-  height: 70px;
-  & img {
-    vertical-align: middle;
+export const MenuNav = styled.nav`
+  ${MEDIA_QUERY.main} {
+    display: none;
+  }
+`
+
+export const MobileMenuNav = styled.nav`
+  display: none;
+  ${MEDIA_QUERY.main} {
+    display: block;
   }
 `
 
@@ -62,8 +71,13 @@ export const Menu = styled(LinkedUL)`
     & > a {
       font-size: ${props => props.theme.fontSize.h4};
       font-weight: ${props => props.theme.fontWeight.l};
+      color: ${props => props.theme.color.black};
       padding: 0 10px;
       line-height: 2em;
+    }
+    & > div {
+      display: none;
+      position: absolute;
     }
     &:hover > div {
       display: flex;
@@ -72,8 +86,6 @@ export const Menu = styled(LinkedUL)`
 `
 
 export const SubMenu = styled.div`
-  position: absolute;
-  display: none;
   top: 71px;
   box-shadow: 1px 1px 5px #aaa;
   & > div {
@@ -85,6 +97,7 @@ export const SubMenu = styled.div`
       & > a {
         font-size: ${props => props.theme.fontSize.h4};
         font-weight: ${props => props.theme.fontWeight.xl};
+        color: ${props => props.theme.color.black};
         padding: 5px 5px;
         line-height: 1.5em;
       }
@@ -94,6 +107,7 @@ export const SubMenu = styled.div`
         & > a {
           font-size: ${props => props.theme.fontSize.bodyLarge};
           font-weight: ${props => props.theme.fontWeight.l};
+          color: ${props => props.theme.color.black};
           padding: 5px 5px;
           line-height: 1.5em;
         }
@@ -130,7 +144,8 @@ export const MobileMenu = styled(LinkedUL)`
   left: 0;
   top: 0;
   z-index: 200;
-  width: 360px;
+  width: 75%;
+  max-width: 360px;
   height: 100vh;
   padding: 0 10px;
   background-color: #fff;
@@ -140,10 +155,6 @@ export const MobileMenu = styled(LinkedUL)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  &::before {
-    content:
-  }
 
   & li {
     & a {
@@ -158,16 +169,14 @@ export const MobileMenu = styled(LinkedUL)`
     }
   }
 
-  & div {
-
+  & > div {
     & > li {
       & > a {
         height: 60px;
-        & > span {
-          font-size: ${props => props.theme.fontSize.h4};
-          font-weight: ${props => props.theme.fontWeight.l};
-          line-height: 2em;
-        }
+        font-size: ${props => props.theme.fontSize.h4};
+        font-weight: ${props => props.theme.fontWeight.l};
+        color: ${props => props.theme.color.black};
+        line-height: 2em;
       }
       & > ul {
         margin-left: 30px;
@@ -175,11 +184,10 @@ export const MobileMenu = styled(LinkedUL)`
         & > li {
           & > a {
             height: 50px;
-            & > span {
-              font-size: ${props => props.theme.fontSize.h4};
-              font-weight: ${props => props.theme.fontWeight.l};
-              line-height: 2em;
-            }
+            font-size: ${props => props.theme.fontSize.h4};
+            font-weight: ${props => props.theme.fontWeight.l};
+            color: ${props => props.theme.color.black};
+            line-height: 1.5em;
           }
           & > ul {
             display: none; 
@@ -187,11 +195,10 @@ export const MobileMenu = styled(LinkedUL)`
             & > li {
               & > a {
                 height: 40px;
-                & > span {
-                  font-size: ${props => props.theme.fontSize.bodyLarge};
-                  font-weight: ${props => props.theme.fontWeight.l};
-                  line-height: 1.5em;
-                }
+                font-size: ${props => props.theme.fontSize.bodyLarge};
+                font-weight: ${props => props.theme.fontWeight.l};
+                color: ${props => props.theme.color.black};
+                line-height: 1.5em;
               }
             }
           }
@@ -202,22 +209,9 @@ export const MobileMenu = styled(LinkedUL)`
 
 `
 
-// &::after {
-//   content: "";
-//   width: 100%;
-//   height: 100vh;
-//   position: fixed;
-//   left: 0;
-//   top: 0;
-//   z-index: 100;
-//   background: rgba(0,0,0,0.7);
-// }
-
 export const BtnGroup = styled.div`
   display: flex;
-  justify-content: flex-end;
-  width: 160px;
-  & div + div {
+  & div {
     margin-left: 30px;
   }
 `
@@ -228,7 +222,8 @@ export const Btn = styled.div`
     color: ${props => props.theme.color.lightGrey};
     transition: .2s;
     &:hover {
-      color: ${props => props.theme.color.Grey};
+      cursor: pointer;
+      color: ${props => props.theme.color.grey};
     }
   }
 `
@@ -242,21 +237,26 @@ export const ToggleBtn = styled(Btn)`
   position: absolute;
   right: 0;
   z-index: 700;
+  & svg {
+    font-size: ${props => props.theme.fontSize.h4};
+  }
   &:hover {
     cursor: pointer;
     & svg {
-      color: ${props => props.theme.color.Grey};
+      color: ${props => props.theme.color.grey};
     }
-  }
-  & svg {
-    font-size: ${props => props.theme.fontSize.h4};
   }
 
 `
 
 export const MenuBtn = styled(Btn)`
-${MEDIA_QUERY.main} {
-    display: none;
+  ${MEDIA_QUERY.main} {
+    &:nth-child(1) {
+      display: none;
+    }
+    &:nth-child(2) {
+      display: none;
+    }
   }
 `
 
@@ -264,9 +264,6 @@ export const BurgerBtn = styled(Btn)`
   display: none;
   ${MEDIA_QUERY.main} {
     display: block;
-    &:hover {
-      cursor: pointer;
-    }
   }
 `
 
@@ -282,7 +279,7 @@ export const Input = styled.input`
     &:checked + label {
       & > div {
         & > svg {
-          color: ${props => props.theme.color.Grey};
+          color: ${props => props.theme.color.grey};
           transform: rotate(0.5turn);
         }
       }
@@ -300,12 +297,19 @@ export const BurgerInput = styled.input`
     display: none;
     opacity: 0;
     z-index: -1;
+    & ~ nav {
+      & > ul {
+        left: -380px;
+        transition: .25s;
+      }
+    }
     :checked ~ nav {
-      & ul {
+      & > ul {
         left: 0;
       }
     }
     :checked + label::after {
+      display: none;
       content: '';
       width: 100%;
       height: 100vh;
@@ -314,22 +318,9 @@ export const BurgerInput = styled.input`
       top: 0;
       z-index: 100;
       background: rgba(0,0,0,0.7);
-    }
-  }
-`
-
-export const MenuNav = styled.nav`
-  ${MEDIA_QUERY.main} {
-    display: none;
-  }
-`
-export const MobileMenuNav = styled.nav`
-  display: none;
-  ${MEDIA_QUERY.main} {
-    display: block;
-    & ul {
-      left: -380px;
-      transition: .25s;
+      ${MEDIA_QUERY.main} {
+        display: block;
+      }
     }
   }
 `

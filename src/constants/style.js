@@ -3,6 +3,8 @@ import { theme } from "./theme"
 
 export const MEDIA_QUERY = {
     main: "@media (max-width: 1024px)",
+    footer: "@media (max-width: 512px)",
+    xs: "@media (max-width: 256px)",
 }
 
 export const LinkedUL = styled.ul`
