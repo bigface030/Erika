@@ -18,6 +18,8 @@ import Nav from './Nav'
 export default function Header() {
   const style = {
     height: "70px",
+    position: "relative",
+    zIndex: "1000"
   }
   return (
     <header style={style}>

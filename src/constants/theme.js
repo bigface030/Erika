@@ -1,6 +1,8 @@
 export const theme = {
     fontSize: {
+        h2: "32px",
         svg: "28px",
+        h3: "20px",
         h4: "18px",
         bodyLarge: "16px",
         body: "14px",

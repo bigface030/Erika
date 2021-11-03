@@ -88,6 +88,7 @@ export const Menu = styled(LinkedUL)`
 export const SubMenu = styled.div`
   top: 71px;
   box-shadow: 1px 1px 5px #aaa;
+  background-color: #fff;
   & > div {
     margin: 20px 30px;
     & h4 {
