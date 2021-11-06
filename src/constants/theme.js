@@ -1,5 +1,8 @@
 export const theme = {
     fontSize: {
+        bannerLarge: "64px",
+        bannerMedium: "48px",
+        svgLarge: "40px",
         h2: "32px",
         svg: "28px",
         h3: "20px",
@@ -20,6 +23,8 @@ export const theme = {
         lightGrey: "#aaa",
         grey: "#555",
         black: "#333",
-        white: "#fff"
+        white: "#fff",
+        light_primary: "#eee",
+        alert: "#e83927",
     },
 }

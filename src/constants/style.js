@@ -4,7 +4,7 @@ import { theme } from "./theme"
 export const MEDIA_QUERY = {
     main: "@media (max-width: 1024px)",
     m: "@media (max-width: 768px)",
-    footer: "@media (max-width: 512px)",
+    s: "@media (max-width: 512px)",
     xs: "@media (max-width: 256px)",
 }
 

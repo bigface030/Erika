@@ -16,13 +16,7 @@ import {
 
 
 export default function Footer() {
-  // const style = {
-  //   position: "absolute",
-  //   bottom: "0",
-  //   left: "0",
-  //   right: "0",
-  //   zIndex: "-10"
-  // }
+
   return (
     <footer>
       <FooterWrapper>

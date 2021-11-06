@@ -12,7 +12,7 @@ export const FooterContainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
-  ${MEDIA_QUERY.footer} {
+  ${MEDIA_QUERY.s} {
     display: block;
   }
 `

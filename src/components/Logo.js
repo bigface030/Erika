@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components"
-import logo from '../logo.png'
+import logo from '../assets/logo.png'
 import { MEDIA_QUERY } from "../constants/style"
 
 const LogoContainer = styled.h1`
   display: block;
   height: 70px;
   text-align: center;
-  & img {
-    vertical-align: middle;
-  }
   ${MEDIA_QUERY.xs} {
     display: none;
   }
