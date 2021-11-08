@@ -2,7 +2,24 @@ const baseURL = 'http://localhost:4000/api/v1'
 
 const getTrendingProductsAPI = gender => {
     return fetch(baseURL + `/products/trending?gender=${gender}`)
-    .then(res => res.json())
+    .then(res => {
+        let msg = null;
+        if (res.status === 400) {
+            msg = "目前暫無商品";
+        } else if (res.status === 200){
+            msg = "取得商品成功";
+        } else {
+            throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })
 }
 
 const getFeedImages = () => {

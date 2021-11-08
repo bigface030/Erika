@@ -16,6 +16,7 @@ const TrendingContainer = styled.div`
   width: 90%;
   margin: 0 auto;
   padding: 40px 0;
+  text-align: center;
   ${MEDIA_QUERY.s} {
     width: 100%;
   }
@@ -255,13 +256,20 @@ export const Trend = () => {
   const [trends, setTrends] = useState(() => (
     {male: null, female: null}
   ))
+  const [error, setError] = useState()
 
   useEffect(() => {
-    getTrendingProductsAPI('F').then(data => {
-      setTrends(trends => ({...trends, female: data}))
-    }).then(() => {
+    getTrendingProductsAPI('F')
+    .then(data => {
+      // console.log(data)
+      if(!data.ok) return setError(data.message)
+      setTrends(trends => ({...trends, female: data.data}))
+    })
+    .then(() => {
       getTrendingProductsAPI('M').then(data => {
-        setTrends(trends => ({...trends, male: data}))
+        // console.log(data)
+        if(!data.ok) return setError(data.message)
+        setTrends(trends => ({...trends, male: data.data}))
       })
     })
   }, [])
@@ -275,6 +283,9 @@ export const Trend = () => {
           /
           <label htmlFor="male"><span>男裝</span></label>
         </Subtitle>
+        {
+          error && <P>{error}</P>
+        }
         <input id="female" type="radio" name="subtitle" defaultChecked/>
         <ProductContainer>
           {
