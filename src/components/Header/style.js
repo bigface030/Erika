@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { LinkedUL, MEDIA_QUERY } from "../../constants/style"
+import { LinkedUL, MEDIA_QUERY, Btn } from "../../constants/style"
 
 export const HeaderWrapper = styled.div`
   position: fixed;
@@ -18,10 +18,6 @@ export const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
-  & > div {
-    display: flex;
-    align-items: center;
-  }
   & > h1 {
     display: none;
     position: absolute;
@@ -37,6 +33,8 @@ export const HeaderContainer = styled.div`
 `
 
 export const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
   ${MEDIA_QUERY.main} {
     & > h1 {
       display: none;
@@ -45,6 +43,8 @@ export const HeaderLeft = styled.div`
 `
 
 export const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 export const MenuNav = styled.nav`
@@ -210,22 +210,10 @@ export const MobileMenu = styled(LinkedUL)`
 
 `
 
-export const BtnGroup = styled.div`
+export const MenuBtnGroup = styled.div`
   display: flex;
-  & div {
+  & button + button {
     margin-left: 30px;
-  }
-`
-
-export const Btn = styled.div`
-  & svg {
-    font-size: ${props => props.theme.fontSize.svg};
-    color: ${props => props.theme.color.lightGrey};
-    transition: .2s;
-    &:hover {
-      cursor: pointer;
-      color: ${props => props.theme.color.grey};
-    }
   }
 `
 
@@ -241,23 +229,11 @@ export const ToggleBtn = styled(Btn)`
   & svg {
     font-size: ${props => props.theme.fontSize.h4};
   }
-  &:hover {
-    cursor: pointer;
-    & svg {
-      color: ${props => props.theme.color.grey};
-    }
-  }
-
 `
 
 export const MenuBtn = styled(Btn)`
   ${MEDIA_QUERY.main} {
-    &:nth-child(1) {
-      display: none;
-    }
-    &:nth-child(2) {
-      display: none;
-    }
+    ${props => !props.$fixed && 'display: none;'}
   }
 `
 
@@ -268,48 +244,44 @@ export const BurgerBtn = styled(Btn)`
   }
 `
 
-export const Input = styled.input`
-  &[type="checkbox"] {
-    position: absolute;
-    right: 0;
-    opacity: 0;
-    z-index: -1;
-    &:checked ~ ul {
-      display: block;
-    }
-    &:checked + label {
-      & > div {
-        & > svg {
-          color: ${props => props.theme.color.grey};
-          transform: rotate(0.5turn);
-        }
-      }
+export const ToggleInput = styled.input`
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  z-index: -1;
+  &:checked ~ ul {
+    display: block;
+  }
+  &:checked + button {
+    & svg {
+      color: ${props => props.theme.color.grey};
+      transform: rotate(0.5turn);
     }
   }
 `
 
 export const BurgerInput = styled.input`
-  &[type="checkbox"] {
-    ${MEDIA_QUERY.main} {
-      display: block;
+  ${MEDIA_QUERY.main} {
+    display: block;
+  }
+  position: absolute;
+  left: 0;
+  display: none;
+  opacity: 0;
+  z-index: -1;
+  & ~ nav {
+    & > ul {
+      left: -380px;
+      transition: .25s;
     }
-    position: absolute;
-    left: 0;
-    display: none;
-    opacity: 0;
-    z-index: -1;
-    & ~ nav {
-      & > ul {
-        left: -380px;
-        transition: .25s;
-      }
+  }
+  :checked ~ nav {
+    & > ul {
+      left: 0;
     }
-    :checked ~ nav {
-      & > ul {
-        left: 0;
-      }
-    }
-    :checked + label::after {
+  }
+  :checked + button {
+    & label::after {
       display: none;
       content: '';
       width: 100%;

@@ -4,9 +4,22 @@ import { LinkItem } from "../LinkItem"
 import {
   MobileMenu, 
   ToggleBtn,
-  Input,
+  ToggleInput,
   MobileMenuNav,
 } from './style'
+
+const CheckBox = ({id}) => {
+  return (
+    <>
+      <ToggleInput id={id} type="checkbox"/>
+      <ToggleBtn>
+        <label htmlFor={id}>
+            <FontAwesomeIcon icon={faChevronDown}/>
+        </label>
+      </ToggleBtn>
+    </>
+  )
+}
 
 export default function MobileNav() {
   return (
@@ -15,60 +28,38 @@ export default function MobileNav() {
         <div>
           <li><LinkItem to="#" name="新品上市"/></li>
           <li>
-            <Input id="checkbox1" type="checkbox"/>
-            <label htmlFor="checkbox1">
-              <ToggleBtn>
-                <FontAwesomeIcon icon={faChevronDown}/>
-              </ToggleBtn>
-            </label>
-            <LinkItem to="#" name="商品一覽"/>
+            <CheckBox id="collection"/>
+            <LinkItem to="/collection" name="商品一覽"/>
             <ul>
               <li>
-                <Input id="checkbox2" type="checkbox"/>
-                <label htmlFor="checkbox2">
-                  <ToggleBtn>
-                    <FontAwesomeIcon icon={faChevronDown}/>
-                  </ToggleBtn>
-                </label>
-                <LinkItem to="#" name="男裝"/>
+                <CheckBox id="collection-men" />
+                <LinkItem to="/collection/men" name="男裝"/>
                 <ul>
-                  <li><LinkItem to="#" name="上衣類"/></li>
-                  <li><LinkItem to="#" name="襯衫類"/></li>
-                  <li><LinkItem to="#" name="針織衫 / 毛衣"/></li>
-                  <li><LinkItem to="#" name="褲裝類"/></li>
-                  <li><LinkItem to="#" name="外套類"/></li>
-                  <li><LinkItem to="#" name="鞋類"/></li>
-                  <li><LinkItem to="#" name="配件類"/></li>
+                  <li><LinkItem to="/collection/men/tops" name="上衣類"/></li>
+                  <li><LinkItem to="/collection/men/shirts" name="襯衫類"/></li>
+                  <li><LinkItem to="/collection/men/knit" name="針織衫 / 毛衣"/></li>
+                  <li><LinkItem to="/collection/men/bottoms" name="褲裝類"/></li>
+                  <li><LinkItem to="/collection/men/outer" name="外套類"/></li>
+                  <li><LinkItem to="/collection/men/general" name="配件類"/></li>
                 </ul>
               </li>
               <li>
-                <Input id="checkbox3" type="checkbox"/>
-                <label htmlFor="checkbox3">
-                  <ToggleBtn>
-                    <FontAwesomeIcon icon={faChevronDown}/>
-                  </ToggleBtn>
-                </label>
-                <LinkItem to="#" name="女裝"/>
+                <CheckBox id="collection-women" />
+                <LinkItem to="/collection/women" name="女裝"/>
                 <ul>
-                  <li><LinkItem to="#" name="上衣 / 襯衫"/></li>
-                  <li><LinkItem to="#" name="針織衫 / 毛衣"/></li>
-                  <li><LinkItem to="#" name="褲裝類"/></li>
-                  <li><LinkItem to="#" name="裙子類"/></li>
-                  <li><LinkItem to="#" name="洋裝類"/></li>
-                  <li><LinkItem to="#" name="外套類"/></li>
-                  <li><LinkItem to="#" name="鞋類"/></li>
-                  <li><LinkItem to="#" name="配件類"/></li>
+                  <li><LinkItem to="/collection/women/tops" name="上衣 / 襯衫"/></li>
+                  <li><LinkItem to="/collection/women/knit" name="針織衫 / 毛衣"/></li>
+                  <li><LinkItem to="/collection/women/bottoms" name="褲裝類"/></li>
+                  <li><LinkItem to="/collection/women/skirts" name="裙子類"/></li>
+                  <li><LinkItem to="/collection/women/one_piece" name="洋裝類"/></li>
+                  <li><LinkItem to="/collection/women/outer" name="外套類"/></li>
+                  <li><LinkItem to="/collection/women/general" name="配件類"/></li>
                 </ul>
               </li>
             </ul>
           </li>
           <li>
-            <Input id="checkbox4" type="checkbox"/>
-            <label htmlFor="checkbox4">
-              <ToggleBtn>
-                <FontAwesomeIcon icon={faChevronDown}/>
-              </ToggleBtn>
-            </label>
+            <CheckBox id="on-sale" />
             <LinkItem to="#" name="特價專區"/>
             <ul>
               <li><LinkItem to="#" name="秋冬女裝新品_7折起"/></li>

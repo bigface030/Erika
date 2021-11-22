@@ -17,7 +17,7 @@ export default function useCarousel() {
   }, [W, setCurrentPage])
 
   useEffect(() => {
-    if(banner && !isHovered){
+    if(!isHovered){
       timeoutID.current = setTimeout(() => {
         banner.current.style.transition = '0s'
         banner.current.style.transform = `translateX(${-100 * (W%2+3) + 100}vw)`
@@ -28,8 +28,9 @@ export default function useCarousel() {
         })
       }, 5000)
     }
-    if(banner && isHovered) clearTimeout(timeoutID.current)
-  }, [W, isHovered])
+    if(isHovered) clearTimeout(timeoutID.current)
+    return () => clearTimeout(timeoutID.current)
+  }, [banner, W, isHovered])
 
   const handleMouseDown = e => {
     e.preventDefault();

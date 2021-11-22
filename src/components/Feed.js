@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { getFeedImages } from "../../webAPI/productAPI";
-import { MEDIA_QUERY } from "../../constants/style"
+import { getFeedImages } from "../webAPI/productAPI";
+import { MEDIA_QUERY } from "../constants/style"
 
 const FeedWrapper = styled.div`
 `

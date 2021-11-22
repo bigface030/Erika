@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { MEDIA_QUERY } from "../../constants/style"
+import { MEDIA_QUERY, Btn } from "../../constants/style"
 
 export const FooterWrapper = styled.div`
   background-color: #eee5;
@@ -44,23 +44,13 @@ export const FooterLeft = styled.div`
 
 export const FooterRight = styled.div``
 
-export const Btn = styled.div`
-  & svg {
-    font-size: ${props => props.theme.fontSize.svg};
-    color: ${props => props.theme.color.lightGrey};
-    transition: .2s;
-    &:hover {
-      cursor: pointer;
-      color: ${props => props.theme.color.grey};
-    }
-  }
-`
+export const LinkBtn = styled(Btn)``
 
-export const BtnGroup = styled.div`
+export const LinkBtnGroup = styled.div`
   padding: 10px 0;
   display: flex;
   justify-content: center;
-  & div + div {
+  & button + button {
     margin-left: 20px;
   }
 `

@@ -5,6 +5,7 @@ export const theme = {
         svgLarge: "40px",
         h2: "32px",
         svg: "28px",
+        btn: "24px",
         h3: "20px",
         h4: "18px",
         bodyLarge: "16px",
@@ -26,5 +27,7 @@ export const theme = {
         white: "#fff",
         light_primary: "#eee",
         alert: "#e83927",
+        brown: "#918481",
+        yellow: "#d4ad54"
     },
 }

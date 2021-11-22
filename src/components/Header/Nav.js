@@ -13,31 +13,29 @@ export default function Nav() {
       <Menu>
         <li><LinkItem to="#" name="新品上市"/></li>
         <li>
-          <LinkItem to="#" name="商品一覽"/>
+          <LinkItem to="/collection" name="商品一覽"/>
           <SubMenu>
             <SubMenuListFlex>
-              <h4><LinkItem to="#" name="男裝"/></h4>
+              <h4><LinkItem to="/collection/men" name="男裝"/></h4>
               <ul>
-                <li><LinkItem to="#" name="上衣類"/></li>
-                <li><LinkItem to="#" name="襯衫類"/></li>
-                <li><LinkItem to="#" name="針織衫 / 毛衣"/></li>
-                <li><LinkItem to="#" name="褲裝類"/></li>
-                <li><LinkItem to="#" name="外套類"/></li>
-                <li><LinkItem to="#" name="鞋類"/></li>
-                <li><LinkItem to="#" name="配件類"/></li>
+                <li><LinkItem to="/collection/men/tops" name="上衣類"/></li>
+                <li><LinkItem to="/collection/men/shirts" name="襯衫類"/></li>
+                <li><LinkItem to="/collection/men/knit" name="針織衫 / 毛衣"/></li>
+                <li><LinkItem to="/collection/men/bottoms" name="褲裝類"/></li>
+                <li><LinkItem to="/collection/men/outer" name="外套類"/></li>
+                <li><LinkItem to="/collection/men/general" name="配件類"/></li>
               </ul>
             </SubMenuListFlex>
             <SubMenuListFlex>
-              <h4><LinkItem to="#" name="女裝"/></h4>
+              <h4><LinkItem to="/collection/women" name="女裝"/></h4>
               <ul>
-                <li><LinkItem to="#" name="上衣 / 襯衫"/></li>
-                <li><LinkItem to="#" name="針織衫 / 毛衣"/></li>
-                <li><LinkItem to="#" name="褲裝類"/></li>
-                <li><LinkItem to="#" name="裙子類"/></li>
-                <li><LinkItem to="#" name="洋裝類"/></li>
-                <li><LinkItem to="#" name="外套類"/></li>
-                <li><LinkItem to="#" name="鞋類"/></li>
-                <li><LinkItem to="#" name="配件類"/></li>
+                <li><LinkItem to="/collection/women/tops" name="上衣 / 襯衫"/></li>
+                <li><LinkItem to="/collection/women/knit" name="針織衫 / 毛衣"/></li>
+                <li><LinkItem to="/collection/women/bottoms" name="褲裝類"/></li>
+                <li><LinkItem to="/collection/women/skirts" name="裙子類"/></li>
+                <li><LinkItem to="/collection/women/one_piece" name="洋裝類"/></li>
+                <li><LinkItem to="/collection/women/outer" name="外套類"/></li>
+                <li><LinkItem to="/collection/women/general" name="配件類"/></li>
               </ul>
             </SubMenuListFlex>
           </SubMenu>

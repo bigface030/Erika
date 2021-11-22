@@ -1,15 +1,15 @@
 import { Carousel } from './Carousel'
 import { Arrival } from './Arrival'
-import { Feed } from './Feed'
+import { Feed } from '../../components/Feed'
 import { Trend } from './Trend'
 
 export default function HomePage() {
   return (
-    <div>
+    <main>
       <Carousel />
       <Arrival />
       <Trend />
       <Feed />
-    </div>
+    </main>
   );
 }

@@ -1,7 +1,89 @@
 const baseURL = 'http://localhost:4000/api/v1'
 
-const getTrendingProductsAPI = gender => {
-    return fetch(baseURL + `/products/trending?gender=${gender}`)
+const getProductsAPI = (pathname, search) => {
+
+    const Arr = [];
+    search = new URLSearchParams(search);
+    const gender = pathname.split('/')[2]
+    const category = pathname.split('/')[3]
+    const genderObj = {
+        men: 'M',
+        women: 'F',
+    }
+    const categoryObj = {
+        tops: 101,
+        shirts: 102,
+        knit: 104,
+        one_piece: 105,
+        outer: 106,
+        bottoms: 201,
+        skirts: 301,
+        general: 401
+    }
+    const orderArr = ['sold_desc', 'price_desc', 'price_asc']
+
+    if(gender){
+        Arr.push(['gender', genderObj[gender]])
+        if(category){
+            Arr.push(['category', categoryObj[category]])
+        }
+    }
+
+    if(search.has('size')){
+        const sizes = search.get('size').split(' ').map(size => (
+            ['_size[]', size]
+        ))
+        Arr.push(...sizes)
+    }
+
+    if(search.has('color')){
+        const colors = search.get('color').split(' ').map(size => (
+            ['_color[]', size]
+        ))
+        Arr.push(...colors)
+    }
+
+    if(search.has('price')){
+        const prices = search.get('price').split('-')
+        Arr.push(['_min', prices[0]], ['_max', prices[1]])
+    }
+
+    if(search.has('order')){
+        const order = search.get('order')
+        Arr.push(['_order', orderArr.indexOf(order)+1])
+    }
+
+    if(search.has('page')){
+        const page = search.get('page')
+        Arr.push(['_page', page])
+    }
+
+    const query = new URLSearchParams(Arr);
+
+    return fetch(`${baseURL}/products?${query}`)
+    .then(res => {
+        // console.log(`${query}`)
+        let msg = null;
+        if (res.status === 400) {
+            msg = "目前暫無商品";
+        } else if (res.status === 200){
+            msg = "取得商品成功";
+        } else {
+            throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })
+}
+
+const getTrendingProductsAPI = () => {
+    return fetch(baseURL + `/products/trending`)
     .then(res => {
         let msg = null;
         if (res.status === 400) {
@@ -48,4 +130,4 @@ const getFeedImages = () => {
     })
 };
 
-export { getFeedImages, getTrendingProductsAPI };
+export { getFeedImages, getProductsAPI, getTrendingProductsAPI };

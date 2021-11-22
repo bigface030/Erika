@@ -7,7 +7,7 @@ import {
   HeaderContainer, 
   HeaderLeft, 
   HeaderRight, 
-  BtnGroup, 
+  MenuBtnGroup, 
   MenuBtn, 
   BurgerBtn,
   BurgerInput,
@@ -27,28 +27,28 @@ export default function Header() {
         <HeaderContainer>
           <HeaderLeft>
             <BurgerInput id="nav" type="checkbox"/>
-            <label htmlFor="nav">
-              <BurgerBtn>
-                <FontAwesomeIcon icon={faBars}/>
-              </BurgerBtn>
-            </label>
+            <BurgerBtn>
+              <label htmlFor="nav">
+                  <FontAwesomeIcon icon={faBars}/>
+              </label>
+            </BurgerBtn>
             <MobileNav/>
             <Logo/>
             <Nav/>
           </HeaderLeft>
           <Logo/>
           <HeaderRight>
-            <BtnGroup>
+            <MenuBtnGroup>
               <MenuBtn>
                 <Link to="#"><FontAwesomeIcon icon={faUser}/></Link>
               </MenuBtn>
               <MenuBtn>
                 <Link to="#"><FontAwesomeIcon icon={faHeart}/></Link>
               </MenuBtn>
-              <MenuBtn>
+              <MenuBtn $fixed>
                 <Link to="#"><FontAwesomeIcon icon={faShoppingCart}/></Link>
               </MenuBtn>
-            </BtnGroup>
+            </MenuBtnGroup>
           </HeaderRight>
         </HeaderContainer>
       </HeaderWrapper>

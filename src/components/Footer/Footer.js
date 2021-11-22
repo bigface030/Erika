@@ -7,8 +7,8 @@ import {
   FooterContainer,
   FooterLeft,
   FooterRight,
-  Btn,
-  BtnGroup,
+  LinkBtn,
+  LinkBtnGroup,
   LinkedSection,
   BottomWrapper,
   BottomContainer,
@@ -23,17 +23,17 @@ export default function Footer() {
         <FooterContainer>
           <FooterRight>
             <Logo/>
-            <BtnGroup>
-              <Btn>
+            <LinkBtnGroup>
+              <LinkBtn>
                 <Link to="#"><FontAwesomeIcon icon={['fab', 'facebook']}/></Link>
-              </Btn>
-              <Btn>
+              </LinkBtn>
+              <LinkBtn>
                 <Link to="#"><FontAwesomeIcon icon={['fab', 'instagram']}/></Link>
-              </Btn>
-              <Btn>
+              </LinkBtn>
+              <LinkBtn>
                 <Link to="#"><FontAwesomeIcon icon={['fab', 'twitter']}/></Link>
-              </Btn>
-            </BtnGroup>
+              </LinkBtn>
+            </LinkBtnGroup>
           </FooterRight>
           <FooterLeft>
             <LinkedSection>

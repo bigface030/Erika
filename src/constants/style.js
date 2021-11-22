@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { theme } from "./theme"
 
 export const MEDIA_QUERY = {
+    l: "@media (max-width: 1366px)",
     main: "@media (max-width: 1024px)",
     m: "@media (max-width: 768px)",
     s: "@media (max-width: 512px)",
@@ -11,7 +12,6 @@ export const MEDIA_QUERY = {
 export const LinkedUL = styled.ul`
     & a {
         display: block;
-        text-decoration: none;
         color: ${theme.color.black};
         & span::after {
             content: '';
@@ -50,7 +50,26 @@ export const H4 = styled.h4`
 
 export const P = styled.p`
     font-size: ${theme.fontSize.bodyLarge};
+    font-weight: ${theme.fontWeight.l};
+    color: ${theme.color.black};
+    line-height: 1.5em;
+`
+
+export const Span = styled.span`
+    font-size: ${theme.fontSize.body};
     font-weight: ${theme.fontWeight.m};
     color: ${theme.color.black};
     line-height: 1.5em;
+`
+
+export const Btn = styled.button`
+    & svg {
+        font-size: ${theme.fontSize.svg};
+        color: ${theme.color.lightGrey};
+        transition: .2s;
+    }
+    &:hover svg {
+        cursor: pointer;
+        color: ${theme.color.grey};
+    }
 `
