@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router";
 
 export default function usePriceFilter({path, search}) {
@@ -11,16 +11,34 @@ export default function usePriceFilter({path, search}) {
   const [isDragging, setIsDragging] = useState(false)
 
   const X = useRef(null);
+  const direction = useRef(null);
+
   const WR = useRef(null);
   const WL = useRef(null);
-  const direction = useRef(null);
   const perLeft = useRef(100);
   const perRight = useRef(100);
 
-  const knobLeft = useRef(null);
-  const knobRight = useRef(null);
-  const bar = useRef(null);
-  const barSelected = useRef(null);
+  const bar = useRef();
+  const barSelected = useRef();
+  const knobLeft = useRef();
+  const knobRight = useRef();
+
+  let newSearch = new URLSearchParams(search);
+  const priceParam = newSearch.get('price') || `${minimum}-${maximum}`
+  useEffect(() => {
+    const minTemp = parseInt(priceParam.split('-')[0])
+    const maxTemp = parseInt(priceParam.split('-')[1])
+    setMin(minTemp)
+    setMax(maxTemp)
+    perLeft.current = 100 - (100*(maximum-maxTemp)/(maximum-minimum))
+    perRight.current = 100 - (100*(minTemp-minimum)/(maximum-minimum))
+    WR.current = perLeft.current * bar.current.offsetWidth / 100
+    WL.current = perRight.current * bar.current.offsetWidth / 100
+    barSelected.current.style.right = `${100 - perLeft.current}%`;
+    barSelected.current.style.left = `${100 - perRight.current}%`;
+    knobLeft.current.style.right = `${perRight.current}%`;
+    knobRight.current.style.left = `${perLeft.current}%`;
+  }, [priceParam])
 
   const history = useHistory()
 

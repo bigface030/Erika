@@ -66,7 +66,7 @@ export const CrumbNav = ({pathArr}) => {
             {pathArr.slice(1).map(path => {
               const pathIndex = pathArr.indexOf(path)
               return (
-                <li>
+                <li key={pathIndex}>
                   <Link to={pathArr.slice(0, pathIndex+1).join('/')}>
                     <span>{crumbMap[pathIndex-1][path]}</span>
                   </Link>

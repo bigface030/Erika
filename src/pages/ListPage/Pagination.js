@@ -112,7 +112,12 @@ const Page = ({page_count, path, search}) => {
                 </PageBtn>
             )}
             {arr.map(page => (
-                <PageSelect {...{page, path, search}} />
+                <PageSelect 
+                    key={page}
+                    page={page} 
+                    path={path} 
+                    search={search} 
+                />
             ))}
             {(currentPage !== arr[arr.length-1]) && (
                 <PageBtn>
