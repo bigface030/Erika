@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import styled from "styled-components"
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 
 import { H2, P } from "../../constants/style"
 import { MEDIA_QUERY } from "../../constants/style"
@@ -91,15 +91,21 @@ const IndexContainer = styled.div`
 `
 
 
+export const LocationContext = createContext();
 
 export default function ListPage() {
+  console.log('ListPage render')
 
   const { pathname, search } = useLocation();
+  const pathArr = pathname.split('/')
+  const currentPath = pathArr[pathArr.length-1]
+  const currentTitle = crumbMap[pathArr.length-2][currentPath]
 
   const [products, setProducts] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getProductsAPI(pathname, search)
     .then(data => {
       // console.log(data)
@@ -112,47 +118,39 @@ export default function ListPage() {
     })
   }, [pathname, search])
 
-
-  const pathArr = pathname.split('/')
-  const currentPath = pathArr[pathArr.length-1]
-  const currentTitle = crumbMap[pathArr.length-2][currentPath]
-
-
   return (
-    <Main>
-      <CrumbNav pathArr={pathArr}/>
-      <CollectionWrapper>
-        <CollectionContainer>
-          <Aside {...{pathname, search}} />
-          <MainContainer>
-            <H2>{currentTitle}</H2>
-            <Sort {...{pathname, search}} />
-            <ProductContainer>
-              {error && (
-                <P>{error}</P>
-              )}
-              {products && products.data.map(product => {
-                return (
-                  <ProductItem key={product.id} product={product} />
-                )
-              })}
-              {/* <TestProductCards />
-              <TestProductCards />
-              <TestProductCards /> */}
-            </ProductContainer>
-            <IndexContainer>
-              {products && (
-                <Pagination 
-                  data={products.pagination} 
-                  pathname={pathname}
-                  search={search}
-                />
-              )}
-            </IndexContainer>
-          </MainContainer>
-        </CollectionContainer>
-      </CollectionWrapper>
-      <Feed />
-    </Main>
+    <LocationContext.Provider value={{pathname, search}} >
+      <Main>
+        <CrumbNav pathArr={pathArr}/>
+        <CollectionWrapper>
+          <CollectionContainer>
+            <Aside />
+            <MainContainer>
+              <H2>{currentTitle}</H2>
+              <Sort />
+              <ProductContainer>
+                {error && (
+                  <P>{error}</P>
+                )}
+                {products && products.data.map(product => {
+                  return (
+                    <ProductItem key={product.id} product={product} />
+                  )
+                })}
+                {/* <TestProductCards />
+                <TestProductCards />
+                <TestProductCards /> */}
+              </ProductContainer>
+              <IndexContainer>
+                {products && (
+                  <Pagination data={products.pagination} />
+                )}
+              </IndexContainer>
+            </MainContainer>
+          </CollectionContainer>
+        </CollectionWrapper>
+        <Feed />
+      </Main>
+    </LocationContext.Provider>
   );
 }

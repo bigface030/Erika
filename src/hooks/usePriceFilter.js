@@ -1,7 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router";
 
-export default function usePriceFilter({path, search}) {
+import { LocationContext } from "../pages/ListPage/ListPage";
+
+export default function usePriceFilter() {
+
+  const { pathname, search } = useContext(LocationContext);
   
   const minimum = 300;
   const maximum = 1200;
@@ -119,7 +123,7 @@ export default function usePriceFilter({path, search}) {
         newSearch.delete('page')
       }
     
-      const priceURL = `${path}?${newSearch}`
+      const priceURL = `${pathname}?${newSearch}`
 
       history.push(priceURL)
     }
@@ -162,7 +166,7 @@ export default function usePriceFilter({path, search}) {
         newSearch.delete('page')
       }
     
-      const priceURL = `${path}?${newSearch}`
+      const priceURL = `${pathname}?${newSearch}`
 
       history.push(priceURL)
     }

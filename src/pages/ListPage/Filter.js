@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons'
 
 import { H4, P } from "../../constants/style"
-import { MEDIA_QUERY } from "../../constants/style"
+import { MEDIA_QUERY, Btn } from "../../constants/style"
 
 import useProduct from "../../hooks/useProduct";
 import usePriceFilter from "../../hooks/usePriceFilter";
 
+import { LocationContext } from "./ListPage";
 
 
 const AsideBlock = styled.div`
@@ -141,10 +143,22 @@ const Cover = styled.label`
   opacity: 0;
 `
 
+const ClearBtn = styled(Btn)`
+  background-color: ${props => props.theme.color.black};
+  padding: 3px 10px;
+  margin: 10px 15px 0;
+  border-radius: 1em;
+  & span {
+    color: ${props => props.theme.color.white};
+    font-size: ${props => props.theme.fontSize.bodyLarge};
+    font-weight: ${props => props.theme.fontWeight.l};
+  }
+`
 
 
-const SizeSelect = ({path, search, size}) => {
+const SizeSelect = ({size}) => {
 
+  const { pathname, search } = useContext(LocationContext);
   const newSearch = new URLSearchParams(search);
   const param = newSearch.get('size');
   let icon = faSquare;
@@ -168,7 +182,7 @@ const SizeSelect = ({path, search, size}) => {
     newSearch.delete('page')
   }
 
-  const url = `${path}?${newSearch}`
+  const url = `${pathname}?${newSearch}`
 
   return (
     <Link to={url}>
@@ -178,7 +192,7 @@ const SizeSelect = ({path, search, size}) => {
   )
 }
 
-const ColorSelect = ({path, search, color}) => {
+const ColorSelect = ({color}) => {
 
   const colors = {
     white: 'light_primary',
@@ -187,7 +201,8 @@ const ColorSelect = ({path, search, color}) => {
     yellow: 'yellow',
     brown: 'brown',
   }
-
+  
+  const { pathname, search } = useContext(LocationContext);
   const newSearch = new URLSearchParams(search);
   const param = newSearch.get('color');
   let border = false;
@@ -211,7 +226,7 @@ const ColorSelect = ({path, search, color}) => {
     newSearch.delete('page')
   }
 
-  const url = `${path}?${newSearch}`
+  const url = `${pathname}?${newSearch}`
 
   return (
     <Link to={url}>
@@ -220,21 +235,21 @@ const ColorSelect = ({path, search, color}) => {
   )
 }
 
-const PriceSelect = ({path, search}) => {
-
-  const { addCommaToPrice } = useProduct()
+const PriceSelect = () => {
 
   const rightStyle = {
-      left: "100%"
+    left: "100%"
   }
   const leftStyle = {
-      right: "100%"
+    right: "100%"
   }
   const barStyle = {
-      left: "0%",
-      right: "0%"
+    left: "0%",
+    right: "0%"
   }
 
+  const { addCommaToPrice } = useProduct()
+  
   const {
     bar,
     barSelected,
@@ -247,7 +262,7 @@ const PriceSelect = ({path, search}) => {
     min,
     max,
     isDragging
-  } = usePriceFilter({path, search});
+  } = usePriceFilter();
 
   return (
     <div>
@@ -273,24 +288,21 @@ const PriceSelect = ({path, search}) => {
   )
 }
 
-export const Filter = ({path, search}) => {
-    
+export const Filter = () => {
+    console.log('Filter render')
     const sizes = ['S', 'M', 'L']
     const colors = ['brown', 'yellow', 'white', 'grey', 'black']
   
     return (
       <FilterContainer>
         <H4>商品篩選</H4>
+        <ClearBtn><Link to="/collection"><span>清除篩選</span></Link></ClearBtn>
         <SizeFilter>
           <P>尺寸</P>
           <ul>
             {sizes.map(size => (
               <li key={size}>
-                <SizeSelect 
-                  path={path} 
-                  search={search} 
-                  size={size} 
-                />
+                <SizeSelect {...{size}} />
               </li>
             ))}
           </ul>
@@ -300,21 +312,14 @@ export const Filter = ({path, search}) => {
           <ul>
             {colors.map(color => (
               <li key={color}>
-                <ColorSelect 
-                  path={path}
-                  search={search} 
-                  color={color} 
-                />
+                <ColorSelect {...{color}} />
               </li>
             ))}
           </ul>
         </ColorFilter>
         <PriceFilter>
           <P>價格</P>
-          <PriceSelect 
-            path={path}
-            search={search}
-          />
+          <PriceSelect />
         </PriceFilter>
       </FilterContainer>
     )

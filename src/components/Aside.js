@@ -88,23 +88,24 @@ const ControllerBtn = styled(Btn)`
   }
 `
 
-export const Aside = ({pathname, search}) => {
-    return (
-        <>
-            <input id="filter" type="checkbox" />
-            <Cover htmlFor="filter" />
-            <AsideContainer>
-            <PictureContainer>
-                <Link to="/products"><img src="https://picsum.photos/200/250" alt="aside_img" /></Link>
-            </PictureContainer>
-            <ControllerBtn>
-                <label htmlFor="filter">
-                <FontAwesomeIcon icon={faFilter}/>
-                </label>
-            </ControllerBtn>
-            <Filter path={pathname} search={search} />
-            <Trend />
-            </AsideContainer>
-        </>
-    )
+export const Aside = () => {
+
+  return (
+      <>
+          <input id="filter" type="checkbox" />
+          <Cover htmlFor="filter" />
+          <AsideContainer>
+          <PictureContainer>
+              <Link to="/products"><img src="https://picsum.photos/200/250" alt="aside_img" /></Link>
+          </PictureContainer>
+          <ControllerBtn>
+              <label htmlFor="filter">
+              <FontAwesomeIcon icon={faFilter}/>
+              </label>
+          </ControllerBtn>
+          <Filter />
+          <Trend />
+          </AsideContainer>
+      </>
+  )
 }

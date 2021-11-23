@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
+import { LocationContext } from "./ListPage";
 
 import { MEDIA_QUERY } from "../../constants/style"
 import { Span } from "../../constants/style"
@@ -50,25 +53,16 @@ const Result = styled.div`
     }
 `
 
-const PageSelect = ({page, path, search}) => {
+const PageSelect = ({page}) => {
 
+    const { pathname, search } = useContext(LocationContext);
     const newSearch = new URLSearchParams(search);
-    const currentPage = newSearch.get('page');
-    let selected = false;
+    const currentPage = parseInt(newSearch.get('page')) || 1;
 
-    if(currentPage){
-        if(parseInt(currentPage) === page){
-            selected = true;
-        }
-        newSearch.set('page', page)
-    }else{
-        if(page === 1){
-            selected = true;
-        }
-        newSearch.append('page', page)
-    }
+    newSearch.set('page', page)
+    const selected = (currentPage === page) ? true : false
 
-    const url = `${path}?${newSearch}`
+    const url = `${pathname}?${newSearch}`
 
     return (
         <PageBtn $selected={selected}>
@@ -77,7 +71,11 @@ const PageSelect = ({page, path, search}) => {
     )
 }
 
-const Page = ({page_count, path, search}) => {
+const Page = ({page_count}) => {
+
+    const { pathname, search } = useContext(LocationContext);
+    const newSearch = new URLSearchParams(search);
+    const currentPage = parseInt(newSearch.get('page')) || 1;
 
     let n = 1
     const arr = []
@@ -86,21 +84,14 @@ const Page = ({page_count, path, search}) => {
         n++
     }
   
-    const newSearch = new URLSearchParams(search);
-    const currentPage = parseInt(newSearch.get('page')) || 1;
-  
     if(currentPage !== arr[0]){
         newSearch.set('page', currentPage-1)
     }
     if(currentPage !== arr[arr.length-1]){
-        if(newSearch.has('page')){
-            newSearch.set('page', currentPage+1)
-        }else{
-            newSearch.append('page', 2)
-        }
+        newSearch.set('page', currentPage+1)
     }
 
-    const url = `${path}?${newSearch}`
+    const url = `${pathname}?${newSearch}`
   
     return (
         <PageContainer>
@@ -115,8 +106,6 @@ const Page = ({page_count, path, search}) => {
                 <PageSelect 
                     key={page}
                     page={page} 
-                    path={path} 
-                    search={search} 
                 />
             ))}
             {(currentPage !== arr[arr.length-1]) && (
@@ -130,7 +119,8 @@ const Page = ({page_count, path, search}) => {
     )
 }
 
-export const Pagination = ({data, pathname, search}) => {
+export const Pagination = ({data}) => {
+    console.log('Pagination render')
 
     const { page, per_page, total_count, page_count } = data;
 
@@ -146,11 +136,7 @@ export const Pagination = ({data, pathname, search}) => {
             <Result>
                 <p>{number_start} ~ {number_end}，共 {total_count} 筆資料</p>
             </Result>
-            <Page 
-                path={pathname} 
-                search={search} 
-                page_count={page_count} 
-            />
+            <Page {...{page_count}} />
         </>
     )
 }

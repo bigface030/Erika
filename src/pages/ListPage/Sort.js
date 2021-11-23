@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components"
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTh, faThLarge, faChevronDown, faAlignJustify } from '@fortawesome/free-solid-svg-icons'
+
+import { LocationContext } from "./ListPage";
 
 import { Span } from "../../constants/style"
 import { MEDIA_QUERY, Btn } from "../../constants/style"
@@ -123,38 +125,38 @@ const Cover = styled.label`
   display: none;
 `
 
-const SortMenu = ({path, search}) => {
+const SortSelect = ({sortMap, order}) => {
 
+  const { pathname, search } = useContext(LocationContext);
+  const newSearch = new URLSearchParams(search);
+
+  newSearch.set('order', order)
+  if (newSearch.has('page')) {
+    newSearch.delete('page')
+  }
+  
+  const url = `${pathname}?${newSearch}`
+
+  return (
+    <Link to={url}>
+      <Span>{sortMap[order]}</Span>
+    </Link>
+  )
+}
+
+const SortMenu = () => {
+
+    let { search } = useContext(LocationContext);
     search = new URLSearchParams(search);
-    const param = search.get('order');
+    const currentOrder = search.get('order');
   
     const sortMap = {
       sold_desc: '熱門度優先', 
       price_desc: '價格 (高至低)', 
       price_asc: '價格 (低至高)',
     };
-    let sort = sortMap.sold_desc;
-    
-    if (param) {
-      sort = sortMap[param];
-    }
-    
-    const SortSelect = ({order}) => {
-      
-      const newSearch = new URLSearchParams(search);
-      if (param) {
-        newSearch.set('order', order)
-      } else {
-        newSearch.append('order', order)
-      }
-      const url = `${path}?${newSearch}`
-  
-      return (
-        <Link to={url}>
-          <Span>{sortMap[order]}</Span>
-        </Link>
-      )
-    }
+
+    const title = currentOrder ? sortMap[currentOrder] : sortMap.sold_desc
   
     useEffect(() => {
       document.querySelector('#sort-menu').checked = false
@@ -164,7 +166,7 @@ const SortMenu = ({path, search}) => {
       <MenuContainer>
         <Menu>
           <label htmlFor="sort-menu" />
-          <Span>{sort}</Span>
+          <Span>{title}</Span>
           <Btn><FontAwesomeIcon icon={faChevronDown}/></Btn>
         </Menu>
         <input id="sort-menu" type="checkbox" />
@@ -172,7 +174,7 @@ const SortMenu = ({path, search}) => {
         <SubMenu>
           {Object.keys(sortMap).map(order => (
             <li key={order}>
-              <SortSelect order={order}/>
+              <SortSelect {...{sortMap, order}}/>
             </li>
           ))}
         </SubMenu>
@@ -180,32 +182,33 @@ const SortMenu = ({path, search}) => {
     )
 }
 
-export const Sort = ({pathname, search}) => {
-    return (
-        <>
-            <SortContainer>
-              <GalleryBtnGroup>
-                <GalleryBtn>
-                  <label htmlFor="two-columns">
-                    <FontAwesomeIcon icon={faThLarge}/>
-                  </label>
-                </GalleryBtn>
-                <GalleryBtn>
-                  <label htmlFor="three-columns">
-                    <FontAwesomeIcon icon={faTh}/>
-                  </label>
-                </GalleryBtn>
-                <GalleryBtn $four>
-                  <label htmlFor="four-columns">
-                    <FontAwesomeIcon icon={faAlignJustify} transform={{ rotate: 90 }}/>
-                  </label>
-                </GalleryBtn>
-              </GalleryBtnGroup>
-              <SortMenu path={pathname} search={search} />
-            </SortContainer>
-            <GalleryRadio $two id="two-columns" name="gallery" type="radio" />
-            <GalleryRadio $three id="three-columns" name="gallery" type="radio" />
-            <GalleryRadio $four id="four-columns" name="gallery" type="radio" />
-        </>
-    )
+export const Sort = () => {
+  console.log('Sort render')
+  return (
+      <>
+          <SortContainer>
+            <GalleryBtnGroup>
+              <GalleryBtn>
+                <label htmlFor="two-columns">
+                  <FontAwesomeIcon icon={faThLarge}/>
+                </label>
+              </GalleryBtn>
+              <GalleryBtn>
+                <label htmlFor="three-columns">
+                  <FontAwesomeIcon icon={faTh}/>
+                </label>
+              </GalleryBtn>
+              <GalleryBtn $four>
+                <label htmlFor="four-columns">
+                  <FontAwesomeIcon icon={faAlignJustify} transform={{ rotate: 90 }}/>
+                </label>
+              </GalleryBtn>
+            </GalleryBtnGroup>
+            <SortMenu />
+          </SortContainer>
+          <GalleryRadio $two id="two-columns" name="gallery" type="radio" />
+          <GalleryRadio $three id="three-columns" name="gallery" type="radio" />
+          <GalleryRadio $four id="four-columns" name="gallery" type="radio" />
+      </>
+  )
 }
