@@ -8,6 +8,7 @@ import { MEDIA_QUERY } from "../constants/style"
 
 import { Filter } from "../pages/ListPage/Filter"
 import { Trend } from "./Trend"
+import { useRef } from "react";
 
 const Cover = styled.label`
   z-index: 0;
@@ -22,10 +23,7 @@ const Cover = styled.label`
   // background-color: #aaaa;
 
 const PictureContainer = styled.div`
-  position: relative;
-  height: 300px;
   & img {
-    position: absolute;
     width: 100%;
   }
   ${MEDIA_QUERY.main} {
@@ -88,24 +86,50 @@ const ControllerBtn = styled(Btn)`
   }
 `
 
-export const Aside = () => {
+const Controller = styled.input`
+  display: none;
+  &:checked {
+    & ~ aside {
+      left: -10px;
+    }
+    & + label {
+      display: block;
+    }
+  }
+`
+
+export const Aside = ({filter}) => {
+
+  // const x = useRef(0)
+  // console.log('Aside render')
 
   return (
       <>
-          <input id="filter" type="checkbox" />
-          <Cover htmlFor="filter" />
-          <AsideContainer>
+        {filter && (
+          <>
+            <Controller id="filter" type="checkbox" />
+            <Cover htmlFor="filter" />
+          </>
+        )}
+        <AsideContainer>
           <PictureContainer>
-              <Link to="/products"><img src="https://picsum.photos/200/250" alt="aside_img" /></Link>
+            <Link to="/products">
+              <img src="https://picsum.photos/200/250" alt="aside_img" />
+            </Link>
           </PictureContainer>
-          <ControllerBtn>
-              <label htmlFor="filter">
-              <FontAwesomeIcon icon={faFilter}/>
-              </label>
-          </ControllerBtn>
-          <Filter />
+          {filter && (
+            <>
+              <ControllerBtn>
+                <label htmlFor="filter">
+                  <FontAwesomeIcon icon={faFilter}/>
+                </label>
+              </ControllerBtn>
+              <Filter />
+            </>
+          )}
           <Trend />
-          </AsideContainer>
+        </AsideContainer>
+        {/* {x.current++} */}
       </>
   )
 }

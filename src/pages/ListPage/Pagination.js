@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -92,9 +92,11 @@ const Page = ({page_count}) => {
     }
 
     const url = `${pathname}?${newSearch}`
-  
+
+    // const x = useRef(0)
     return (
         <PageContainer>
+            {/* {x.current++} */}
             {(currentPage !== arr[0]) && (
                 <PageBtn>
                     <Link to={url}>
@@ -120,21 +122,25 @@ const Page = ({page_count}) => {
 }
 
 export const Pagination = ({data}) => {
-    console.log('Pagination render')
 
-    const { page, per_page, total_count, page_count } = data;
+    // console.log('Pagination render')
+
+    const { count, per_page, page, page_count } = data;
 
     const number_start = (page - 1) * per_page + 1
     const number_end = (page === page_count) ? (
-        number_start + total_count - (page - 1) * per_page - 1
+        number_start + count - (page - 1) * per_page - 1
     ) : (
         number_start + per_page - 1
     )
 
+    // const x = useRef(0)
+
     return (
         <>
+            {/* {x.current++} */}
             <Result>
-                <p>{number_start} ~ {number_end}，共 {total_count} 筆資料</p>
+                <p>{number_start} ~ {number_end}，共 {count} 筆資料</p>
             </Result>
             <Page {...{page_count}} />
         </>

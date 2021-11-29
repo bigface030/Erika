@@ -183,7 +183,7 @@ const SortMenu = () => {
 }
 
 export const Sort = () => {
-  console.log('Sort render')
+  // console.log('Sort render')
   return (
       <>
           <SortContainer>

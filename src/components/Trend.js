@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { H4, P, Span } from "../constants/style"
 import { MEDIA_QUERY } from "../constants/style"
@@ -100,6 +100,8 @@ const TrendItem = ({trend}) => {
 
 export const Trend = () => {
 
+  // console.log('trend render')
+
   const [trends, setTrends] = useState()
   const [error, setError] = useState()
 
@@ -114,6 +116,8 @@ export const Trend = () => {
     })
   }, [])
 
+  // const x = useRef(0)
+
   return (
     <TrendContainer>
         <H4>熱賣商品</H4>
@@ -121,8 +125,9 @@ export const Trend = () => {
         {trends && trends.map(trend => {
           return (
             <TrendItem key={trend.id} trend={trend} />
-          )
-        })}
+            )
+          })}
+        {/* {x.current++} */}
     </TrendContainer>
   )
 }

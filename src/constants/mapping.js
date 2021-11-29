@@ -1,6 +1,6 @@
 export const crumbMap = [
     {
-        collection: '商品一覽'
+        collection: '商品一覽',
     },
     {
         men: '男裝',

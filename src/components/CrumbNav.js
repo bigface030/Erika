@@ -6,15 +6,21 @@ import { crumbMap } from "../constants/mapping";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
+import { MEDIA_QUERY } from "../constants/style";
 
 
 
-const CrumbWrapper = styled.nav``
+const CrumbWrapper = styled.nav`
+  ${MEDIA_QUERY.xs} {
+    display: none;
+  }
+`
 const CrumbContainer = styled.div`
   width: 90%;
   margin: 20px auto 10px;
   & ol {
     display: flex;
+    flex-wrap: wrap;
     & li {
       & a {
         font-size: ${props => props.theme.fontSize.bodyLarge};
@@ -41,18 +47,7 @@ const CrumbContainer = styled.div`
 
 
 
-export const CrumbNav = ({pathArr}) => {
-
-    const history = useHistory()
-    
-    useEffect(() => {
-      const currentPath = pathArr[pathArr.length-1]
-      const currentTitle = crumbMap[pathArr.length-2][currentPath]
-      if(!currentTitle){
-        const previousPath = pathArr.slice(0, pathArr.length-1).join('/')
-        history.push(previousPath)
-      }
-    }, [history, pathArr])
+export const CrumbNav = ({pathArr, name}) => {
   
     return (
       <CrumbWrapper>
@@ -63,16 +58,22 @@ export const CrumbNav = ({pathArr}) => {
                 <FontAwesomeIcon icon={faHome}/>
               </Link>
             </li>
-            {pathArr.slice(1).map(path => {
-              const pathIndex = pathArr.indexOf(path)
+            {pathArr.slice(1).map((path, index) => {
               return (
-                <li key={pathIndex}>
-                  <Link to={pathArr.slice(0, pathIndex+1).join('/')}>
-                    <span>{crumbMap[pathIndex-1][path]}</span>
+                <li key={index}>
+                  <Link to={pathArr.slice(0, index+2).join('/')}>
+                    <span>{crumbMap[index][path]}</span>
                   </Link>
                 </li>
               )
             })}
+            {name && (
+              <li>
+                <Link to="#">
+                  <span>{name}</span>
+                </Link>
+              </li>
+            )}
           </ol>
         </CrumbContainer>
       </CrumbWrapper>

@@ -1,29 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getProductsAPI } from '../../webAPI/productAPI';
 
 const initialState = {
-  value: 0,
+  products: '',
+  error: '',
 }
 
 export const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
+    setProducts: (state, action) => {
+      state.products = action.payload;
     },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
+    setError: (state, action) => {
+      state.error = action.payload;
     },
   },
 })
 
 export const { 
-    increment, 
-    decrement, 
-    incrementByAmount 
+  setProducts,
+  setError,
 } = productSlice.actions
+
+export const getProducts = (pathname, search) => dispatch => {
+  getProductsAPI(pathname, search)
+    .then(data => {
+      if(!data.ok) {
+        dispatch(setProducts())
+        return dispatch(setError(data.message))
+      }
+      dispatch(setProducts(data.data))
+      dispatch(setError())
+    })
+}
 
 export default productSlice.reducer

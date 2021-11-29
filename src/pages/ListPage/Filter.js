@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -289,12 +289,15 @@ const PriceSelect = () => {
 }
 
 export const Filter = () => {
-    console.log('Filter render')
+    // console.log('Filter render')
     const sizes = ['S', 'M', 'L']
     const colors = ['brown', 'yellow', 'white', 'grey', 'black']
+
+    // const x = useRef(0)
   
     return (
       <FilterContainer>
+        {/* {x.current++} */}
         <H4>商品篩選</H4>
         <ClearBtn><Link to="/collection"><span>清除篩選</span></Link></ClearBtn>
         <SizeFilter>

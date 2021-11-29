@@ -82,8 +82,30 @@ const getProductsAPI = (pathname, search) => {
     })
 }
 
+const getProductAPI = id => {
+    return fetch(baseURL + `/products/${id}`)
+    .then(res => {
+        let msg = null;
+        if (res.status === 400) {
+            msg = "目前暫無商品";
+        } else if (res.status === 200){
+            msg = "取得商品成功";
+        } else {
+            throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })
+}
+
 const getTrendingProductsAPI = () => {
-    return fetch(baseURL + `/products/trending`)
+    return fetch(baseURL + `/product/trending`)
     .then(res => {
         let msg = null;
         if (res.status === 400) {

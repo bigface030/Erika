@@ -73,3 +73,14 @@ export const Btn = styled.button`
         color: ${theme.color.grey};
     }
 `
+
+export const PageWrapper = styled.div``
+export const PageContainer = styled.div`
+  width: 90%;
+  ${MEDIA_QUERY.s} {
+    width: 100%;
+  }
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+`

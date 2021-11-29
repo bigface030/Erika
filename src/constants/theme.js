@@ -6,7 +6,7 @@ export const theme = {
         h2: "32px",
         svg: "28px",
         btn: "24px",
-        h3: "20px",
+        h3: "22px",
         h4: "18px",
         bodyLarge: "16px",
         body: "14px",

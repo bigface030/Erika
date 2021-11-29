@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import ListPage from './pages/ListPage'
+import ProductPage from './pages/ProductPage'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -19,10 +20,13 @@ function App() {
       <Header/>
       <Switch>
         <Route exact path="/">
-          <HomePage/>
+          <HomePage />
         </Route>
         <Route path="/collection">
-          <ListPage/>
+          <ListPage />
+        </Route>
+        <Route path="/product/:id">
+          <ProductPage />
         </Route>
       </Switch>
       <Footer/>
