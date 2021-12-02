@@ -289,41 +289,48 @@ const PriceSelect = () => {
 }
 
 export const Filter = () => {
-    // console.log('Filter render')
-    const sizes = ['S', 'M', 'L']
-    const colors = ['brown', 'yellow', 'white', 'grey', 'black']
+  // console.log('Filter render')
+  const sizes = ['S', 'M', 'L']
+  const colors = ['brown', 'yellow', 'white', 'grey', 'black']
 
-    // const x = useRef(0)
+  // const x = useRef(0)
+  const { pathname, search } = useContext(LocationContext);
   
-    return (
-      <FilterContainer>
-        {/* {x.current++} */}
-        <H4>商品篩選</H4>
-        <ClearBtn><Link to="/collection"><span>清除篩選</span></Link></ClearBtn>
-        <SizeFilter>
-          <P>尺寸</P>
-          <ul>
-            {sizes.map(size => (
-              <li key={size}>
-                <SizeSelect {...{size}} />
-              </li>
-            ))}
-          </ul>
-        </SizeFilter>
-        <ColorFilter>
-          <P>顏色</P>
-          <ul>
-            {colors.map(color => (
-              <li key={color}>
-                <ColorSelect {...{color}} />
-              </li>
-            ))}
-          </ul>
-        </ColorFilter>
-        <PriceFilter>
-          <P>價格</P>
-          <PriceSelect />
-        </PriceFilter>
-      </FilterContainer>
-    )
+  return (
+    <FilterContainer>
+      {/* {x.current++} */}
+      <H4>商品篩選</H4>
+      {search && (
+        <ClearBtn>
+          <Link to={pathname}>
+            <span>清除篩選</span>
+          </Link>
+        </ClearBtn>
+      )}
+      <SizeFilter>
+        <P>尺寸</P>
+        <ul>
+          {sizes.map(size => (
+            <li key={size}>
+              <SizeSelect {...{size}} />
+            </li>
+          ))}
+        </ul>
+      </SizeFilter>
+      <ColorFilter>
+        <P>顏色</P>
+        <ul>
+          {colors.map(color => (
+            <li key={color}>
+              <ColorSelect {...{color}} />
+            </li>
+          ))}
+        </ul>
+      </ColorFilter>
+      <PriceFilter>
+        <P>價格</P>
+        <PriceSelect />
+      </PriceFilter>
+    </FilterContainer>
+  )
 }

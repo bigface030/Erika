@@ -152,4 +152,4 @@ const getFeedImages = () => {
     })
 };
 
-export { getFeedImages, getProductsAPI, getTrendingProductsAPI };
+export { getFeedImages, getProductsAPI, getProductAPI, getTrendingProductsAPI };

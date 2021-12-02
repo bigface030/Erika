@@ -1,17 +1,38 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getUnfilteredProducts } from "../features/product/productSlice";
+
 import { LocationContext } from "../pages/ListPage/ListPage";
 
 export default function usePriceFilter() {
 
   const { pathname, search } = useContext(LocationContext);
   
-  const minimum = 300;
-  const maximum = 1200;
+  const unfilteredProducts = useSelector(state => state.product.unfilteredProducts)
+  const dispatch = useDispatch()
 
-  const [min, setMin] = useState(minimum);
-  const [max, setMax] = useState(maximum);
+  useEffect(() => {
+    dispatch(getUnfilteredProducts(pathname))
+  }, [pathname, dispatch])
+
+  function minInitailizer () {
+    if(!unfilteredProducts) return 300
+    const arr = unfilteredProducts.rows.map(product => product.is_sale ? product.price_sale : product.price_standard)
+    return Math.min(...arr)
+  }
+  function maxInitailizer () {
+    if(!unfilteredProducts) return 1200
+    const arr = unfilteredProducts.rows.map(product => product.is_sale ? product.price_sale : product.price_standard)
+    return Math.max(...arr)
+  }
+
+  const minimum = minInitailizer() || 300
+  const maximum = maxInitailizer() || 1200
+
+  const [min, setMin] = useState(() => minInitailizer());
+  const [max, setMax] = useState(() => maxInitailizer());
   const [isDragging, setIsDragging] = useState(false)
 
   const X = useRef(null);
@@ -42,11 +63,18 @@ export default function usePriceFilter() {
     barSelected.current.style.left = `${100 - perRight.current}%`;
     knobLeft.current.style.right = `${perRight.current}%`;
     knobRight.current.style.left = `${perLeft.current}%`;
-  }, [priceParam])
+  }, [priceParam, maximum, minimum])
 
   const history = useHistory()
 
   const handleMouseDown = e => {
+    console.log(WR)
+    console.log(WL)
+    console.log(perLeft)
+    console.log(perRight)
+    if(isNaN(WR.current) || isNaN(WL.current) || isNaN(perLeft.current) || isNaN(perRight.current)){
+      return setIsDragging(false)
+    }
     X.current = e.pageX;
     if(e.target === knobRight.current){
       direction.current = 'R';

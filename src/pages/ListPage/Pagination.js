@@ -121,11 +121,11 @@ const Page = ({page_count}) => {
     )
 }
 
-export const Pagination = ({data}) => {
+export const Pagination = ({products}) => {
 
     // console.log('Pagination render')
 
-    const { count, per_page, page, page_count } = data;
+    const { count, per_page, page, page_count } = products;
 
     const number_start = (page - 1) * per_page + 1
     const number_end = (page === page_count) ? (

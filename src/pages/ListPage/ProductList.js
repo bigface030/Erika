@@ -1,16 +1,14 @@
 import styled from "styled-components"
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 
 import { useSelector, useDispatch } from 'react-redux'
 import { getProducts } from "../../features/product/productSlice";
 
-import { P } from "../../constants/style"
+import { P, H4 } from "../../constants/style"
 import { MEDIA_QUERY } from "../../constants/style"
 
-import { TestProductCards } from "../../components/TestProductCards";
 import { ProductItem } from "../../components/ProductItem";
 
-import { getProductsAPI } from "../../webAPI/productAPI";
 import { Pagination } from "./Pagination";
 import { LocationContext } from "./ListPage";
 
@@ -35,6 +33,10 @@ const ProductContainer = styled.div`
     margin: 0 auto;
     padding: 20px;
   }
+  & > h4 {
+    margin: 0 auto;
+    padding: 40px 0;
+  }
 `
 
 const IndexContainer = styled.div`
@@ -52,50 +54,34 @@ const IndexContainer = styled.div`
 
 export const ProductList = () => {
 
-    const { pathname, search } = useContext(LocationContext);
+  const { pathname, search } = useContext(LocationContext);
 
-    const products = useSelector(state => state.product.products)
-    const error = useSelector(state => state.product.error)
-    const dispatch = useDispatch()
+  const products = useSelector(state => state.product.products)
+  const error = useSelector(state => state.product.error)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    dispatch(getProducts(pathname, search))
+  }, [pathname, search, dispatch])
   
-    // const [products, setProducts] = useState();
-    // const [error, setError] = useState();
-  
-    useEffect(() => {
-      window.scrollTo(0, 0);
-      // getProductsAPI(pathname, search)
-      // .then(data => {
-      //   // console.log(data)
-      //   if(!data.ok) {
-      //     setProducts()
-      //     return setError(data.message)
-      //   }
-      //   setProducts(data.data)
-      //   setError()
-      // })
-      dispatch(getProducts(pathname, search))
-    }, [pathname, search, dispatch])
-    
-    return (
-        <>
-            <ProductContainer>
-                {error && (
-                    <P>{error}</P>
-                )}
-                {products && products.rows.map(product => {
-                    return (
-                    <ProductItem key={product.id} product={product} />
-                    )
-                })}
-                {/* <TestProductCards />
-                <TestProductCards />
-                <TestProductCards /> */}
-            </ProductContainer>
-            <IndexContainer>
-                {products && (
-                    <Pagination data={products} />
-                )}
-            </IndexContainer>
-        </>
-    )
+  return (
+    <>
+      <ProductContainer>
+        {error && (
+          <P>{error}</P>
+        )}
+        {!error && ( products ? products.rows.map(product => (
+          <ProductItem key={product.id} product={product} />
+        )) : (
+          <H4>商品載入中......</H4>
+        ))}
+      </ProductContainer>
+      <IndexContainer>
+        {products && (
+          <Pagination {...{products}} />
+        )}
+      </IndexContainer>
+    </>
+  )
 }

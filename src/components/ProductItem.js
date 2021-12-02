@@ -144,11 +144,13 @@ export const ProductItem = ({product}) => {
 
   const { addCommaToPrice } = useProduct();
 
+  const url = `/product/${product.id}`
+
   return (
     <ProductCard>
       <div>
         <ImageContainer>
-          <Link to="#"/>
+          <Link to={url}/>
           <img src={product.Images[0].src} alt={product.Images[0].alt}/>
           <ProductReminder>
             {product.is_sale && (
@@ -165,7 +167,7 @@ export const ProductItem = ({product}) => {
             </Btn>
           </ImageMask>
         </ImageContainer>
-        <Link to="#">
+        <Link to={url}>
           <H4>{product.name}</H4>
         </Link>
       </div>
