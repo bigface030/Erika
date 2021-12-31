@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components"
 
@@ -8,25 +7,30 @@ import { faChevronDown, faShoppingCart, faHeart } from '@fortawesome/free-solid-
 import { H3, H4, P, Span } from "../../constants/style"
 import useProduct from "../../hooks/useProduct";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setErrorCode, setIsOpened } from "../../features/general/generalSlice";
+import { QtySelector } from "../../components/QtySelector";
+
 
 const ContentContainer = styled.div`
-  & h3 {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #aaa;
-    margin-bottom: 10px;
+  & > div {
+    padding-bottom: 20px;
   }
+`
+
+const TitleContainer = styled.div`
   & p {
     font-weight: ${props => props.theme.fontWeight.m};
     line-height: 1.75em;
   }
-  & h4 {
+`
+
+const SpecContainer = styled.div`
+  & > div {
     padding: 5px 0;
   }
-  & > div {
-    padding-bottom: 20px;
-    & > div {
-      padding: 5px 0;
-    }
+  & h4 {
+    padding: 5px 0;
   }
 `
 
@@ -40,10 +44,12 @@ const ColorSelector = styled.div`
       }
     }
   }
-  & > span {
-    color: ${props => props.theme.color.alert};
-  }
 `
+
+const Msg = styled(Span)`
+  color: ${props => props.theme.color.alert};
+`
+
 const SizeSelector = styled.div`
   & > div {
     position: relative;
@@ -126,17 +132,10 @@ const ColorSpan = styled.span`
   height: 30px;
 `
 
-const Price = styled.div`
+const PriceIsSale = styled.div`
   & h4 {
     display: inline-block;
-    font-weight: ${props => props.theme.fontWeight.m};
-    font-size: ${props => props.theme.fontSize.h4};
-    color: ${props => props.theme.color.black};
-  }
-`
-
-const PriceIsSale = styled(Price)`
-  & h4 {
+    // font-weight: ${props => props.theme.fontWeight.m};
     &:nth-child(1) {
       color: ${props => props.theme.color.grey};
       text-decoration: line-through;
@@ -151,47 +150,8 @@ const PriceIsSale = styled(Price)`
   }
 `
 
-const QtySelector = styled.div`
+const QtyAndAdd = styled.div`
   display: flex;
-  & > div {
-    height: 40px;
-    position: relative;
-    & > input {
-      box-sizing: border-box;
-      width: 60px;
-      padding-left: 5px;
-      height: 100%;
-      outline: 0;
-      border: 1px solid #aaa;
-    }
-    & > div {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 20px;
-      & > button {
-        box-sizing: content-box;
-        height: 18.5px;
-        border: 1px solid #aaa;
-        transition: .25s;
-        background-color: ${props => props.theme.color.white};
-        & + button {
-          margin-top: -1px;
-        }
-        & svg {
-          display: block;
-          margin: auto;
-          color: ${props => props.theme.color.grey};
-          font-size: ${props => props.theme.fontSize.bodySmall};
-        }
-        &:hover {
-          background-color: #eee;
-        }
-      }
-    }
-  }
 `
 
 const AddBtn = styled.button`
@@ -222,11 +182,15 @@ const WishList = styled(P)`
     font-size: ${props => props.theme.fontSize.body};
     margin-right: 3px;
   }
-  & span {
+  & a > span {
     color: ${props => props.theme.color.grey};
     font-weight: ${props => props.theme.fontWeight.l};
   }
+  & > span {
+    margin-left: 10px;
+  }
 `
+
 
 const ColorSelect = ({name, code, total, color, handleColorChange}) => {
 
@@ -234,61 +198,65 @@ const ColorSelect = ({name, code, total, color, handleColorChange}) => {
 
     return (
       <ColorLabel $color={code} $isNull={isNull}>
-        {!isNull && (
-          <input 
-            type="radio" 
-            name="color" 
-            value={name} 
-            onChange={handleColorChange} 
-            checked={color === name}
-          />
-        )}
+        <input 
+          type="radio" 
+          name="color" 
+          value={name} 
+          onChange={handleColorChange(isNull)} 
+          checked={(color === name) && !isNull}
+        />
         <ColorSpan />
       </ColorLabel>
     )
   }
 
+
 export const Content = ({product, group}) => {
+
+  const dispatch = useDispatch()
+
+  const spec = useSelector(state => state.product.spec)
+  
+  const isOpened = useSelector(state => state.general.isOpened)
+  const errorMessage = useSelector(state => state.general.errorMessage)
 
   const {
     addCommaToPrice,
-    size,
-    color,
-    qty, 
-    setSize,
     handleBtnClick,
     handleSizeChange,
     handleQtyChange,
-    handleColorChange
-  } = useProduct()
+    handleColorChange,
+    handleAddToCart,
+  } = useProduct(spec, product, group, isOpened)
 
-  useEffect(() => {
-    if (!group || !product) return;
-    setSize(product.product[`${group}s`][0].size)
-  }, [product, group, setSize])
+
+  const handleAddToWishList = () => {
+    dispatch(setErrorCode('100'))
+    dispatch(setIsOpened(true))
+  }
 
   return (
     <ContentContainer>
       {product ? (
-        <div>
+        <TitleContainer>
           <H3>{product.product.name}</H3>
           <P>{product.product.desc}</P>
-        </div>
+        </TitleContainer>
       ) : (
         <H3>商品載入中......</H3>
       )}
-      <div>
+      <SpecContainer>
         <SizeSelector>
           <H4>尺寸</H4>
           <div>
             <div>
-              <span>{size}</span>
+              <span>{spec.size}</span>
               <span>
                 <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 0 }}/>
               </span>
             </div>
-            {product && size && (
-              <select value={size} onChange={handleSizeChange}>
+            {product && spec.size && (
+              <select value={spec.size} onChange={handleSizeChange}>
                 {product.product[`${group}s`].map(size => (
                   <option key={size.id} value={size.size}>{size.size}</option>
                 ))}
@@ -299,24 +267,24 @@ export const Content = ({product, group}) => {
         <ColorSelector>
           <H4>顏色</H4>
           <ul>
-            {group && product.patterns
-            .filter(pattern => pattern[group].size === size)
+            {product.patterns && product.patterns
+            .filter(pattern => pattern[group].size === spec.size)
             .map((pattern, index) => (
               <li key={index}>
                 <ColorSelect
                   name={pattern.Color.name}
                   code={pattern.Color.code}
                   total={pattern.total}
-                  color={color}
+                  color={spec.color}
                   handleColorChange={handleColorChange}
                 />
               </li>
             ))}
           </ul>
-          {size && color && product.patterns
-          .find(pattern => (pattern[group].size === size) && (pattern.Color.name === color))
+          {product && spec.size && spec.color && product.patterns
+          .find(pattern => (pattern[group].size === spec.size) && (pattern.Color.name === spec.color))
           .total <= 10 && (
-            <Span>庫存數量少</Span>
+            <Msg>庫存數量少</Msg>
           )}
         </ColorSelector>
         {product && (product.product.is_sale ? (
@@ -325,39 +293,29 @@ export const Content = ({product, group}) => {
             <H4>NT ${addCommaToPrice(product.product.price_sale)}</H4>
           </PriceIsSale>
         ) : (
-          <Price>
-            <H4>NT ${addCommaToPrice(product.product.price_standard)}</H4>
-          </Price>
-        ))}
-        <QtySelector>
           <div>
-            <input
-              type="number"
-              value={qty}
-              min={1}
-              onChange={handleQtyChange}
-            />
-            <div>
-              <button onClick={handleBtnClick('inc')}>
-                  <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 180 }}/>
-              </button>
-              <button onClick={handleBtnClick('dec')}>
-                  <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 0 }}/>
-              </button>
-            </div>
+            <H4>NT ${addCommaToPrice(product.product.price_standard)}</H4>
           </div>
-          <AddBtn>
+        ))}
+        {errorMessage && (<Msg>{errorMessage}</Msg>)}
+        <QtyAndAdd>
+          <QtySelector
+            qty={spec.qty}
+            handleQtyChange={handleQtyChange}
+            handleBtnClick={handleBtnClick}
+          />
+          <AddBtn onClick={handleAddToCart}>
             <FontAwesomeIcon icon={faShoppingCart} />
             <Span>加入購物車</Span>
           </AddBtn>
-        </QtySelector>
+        </QtyAndAdd>
         <WishList>
-          <Link to="#">
+          <Link to="#" onClick={handleAddToWishList}>
             <FontAwesomeIcon icon={faHeart} />
             <Span>加入願望清單</Span>
           </Link>
         </WishList>
-      </div>
+      </SpecContainer>
     </ContentContainer>
   )
 }

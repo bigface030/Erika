@@ -8,6 +8,7 @@ import { MEDIA_QUERY } from "../constants/style"
 import useProduct from "../hooks/useProduct";
 
 import { getTrendingProductsAPI } from "../webAPI/productAPI";
+import { Img } from "./Img";
 
 
 
@@ -34,27 +35,32 @@ const TrendContainer = styled(AsideBlock)`
 `
 
 const TrendCard = styled.section`
-padding: 10px 0;
-display: flex;
-& > div {
-    padding: 0 10px;
-    &:nth-child(1) {
-      z-index: 1;
-      width: 60%;
-      & img {
-        width: 100%;
-      }
-    }
-    &:nth-child(2) {
-      width: 40%;
-      & p {
-        padding: 5px 0;
-      }
-      & span {
-        display: block;
-        font-weight: ${props => props.theme.fontWeight.l};
-      }
-    }
+  padding: 10px 0;
+  display: flex;
+  & > div {
+      padding: 0 10px;
+  }
+`
+
+const TrendImage = styled.div`
+  z-index: 1;
+  width: 60%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  & img {
+    width: 100%;
+  }
+`
+
+const TrendInfo = styled.div`
+  width: 40%;
+  & p {
+    padding: 5px 0;
+  }
+  & span {
+    display: block;
+    font-weight: ${props => props.theme.fontWeight.l};
   }
 `
 
@@ -76,10 +82,13 @@ const TrendItem = ({trend}) => {
 
   return (
     <TrendCard>
-      <div>
-        <Link to="/products"><img src={trend.Images[0].src} alt={trend.Images[0].alt} /></Link>
-      </div>
-      <div>
+      <TrendImage>
+        <Link to="/products">
+          <Img image={trend.Images[0]} />
+          {/* <img src={trend.Images[0].src} alt={trend.Images[0].alt} /> */}
+        </Link>
+      </TrendImage>
+      <TrendInfo>
         <Link to="/products">
           <P>{trend.name}</P>
         </Link>
@@ -93,7 +102,7 @@ const TrendItem = ({trend}) => {
             <Span>NT ${addCommaToPrice(trend.price_standard)}</Span>
           )
         }
-      </div>
+      </TrendInfo>
     </TrendCard>
   )
 }

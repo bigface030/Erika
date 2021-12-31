@@ -179,26 +179,28 @@ export const Detail = ({product, group}) => {
                   <thead>
                     <tr>
                       <th></th>
-                      {Object.keys(sizeMap[group]).map(m => {
-                        const measure = m
+                      {Object.keys(sizeMap[group]).map((element, index) => {
+                        const measure = element
                           .split('_')
                           .map(word => word[0].toUpperCase() + word.slice(1))
                           .join(' ')
                         return (
-                          <th>
+                          <th key={index}>
                             <span>{measure}</span>
-                            <span>{sizeMap[group][m]}</span>
+                            <span>{sizeMap[group][element]}</span>
                           </th>
                         )
                       })}
                     </tr>
                   </thead>
                   <tbody>
-                    {product.product[`${group}s`].map(s => (
-                      <tr>
-                        <td>{s.size}</td>
-                        {Object.keys(sizeMap[group]).map(m => (
-                          <td>{s[m]}cm</td>
+                    {product.product[`${group}s`].map(i => (
+                      <tr key={i.id}>
+                        <td>{i.size}</td>
+                        {Object.keys(sizeMap[group]).map((j, index) => (
+                          <td key={index}>
+                            {i[j]}cm
+                          </td>
                         ))}
                       </tr>
                     ))}

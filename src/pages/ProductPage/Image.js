@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import styled from "styled-components"
+import { Img } from "../../components/Img"
 import { MEDIA_QUERY } from "../../constants/style"
 import useProduct from "../../hooks/useProduct"
 
@@ -11,6 +12,7 @@ const ImageContainer = styled.div`
 `
 
 const ImageMain = styled.div`
+  aspect-ratio: 1;
   border: 1px solid #aaa;
   margin-bottom: 5px;
   overflow: hidden;
@@ -31,12 +33,15 @@ const ImageMain = styled.div`
     top: -50%;
     left: -50%;
   }
+  background-color: ${props => props.$isLoading && '#f00'};
 `
 
 const ImageCarousel = styled.div`
   padding: 5px;
   display: flex;
   & > div {
+    position: relative;
+    aspect-ratio: 1;
     width: calc(100%/3);
     border: 1px solid #aaa;
     margin: 5px;
@@ -61,6 +66,7 @@ const ImageCarousel = styled.div`
   }
 `
 
+
 export const Image = ({images}) => {
 
   const {
@@ -82,22 +88,22 @@ export const Image = ({images}) => {
     <ImageContainer>
       <ImageMain onMouseMove={handleMouseMove}>
         <img src={mainImg.src} alt={mainImg.alt} ref={scaledImg} />
-        <img src={mainImg.src} alt={mainImg.alt} />
+        <Img image={mainImg}/>
       </ImageMain>
       <ImageCarousel onClick={handleImgClick}>
         {images.slice(0, 4).map(image => (
           <div key={image.id}>
-              <img src={image.src} alt={image.alt} />
+            <Img image={image} />
           </div>
         ))}
         <div>
-        <img src="https://images.unsplash.com/photo-1631410744690-3cc75aaea4df?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzJ8fG9uZSUyMHBpZWNlJTIwZHJlc3N8ZW58MHwyfDJ8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="02" />
+          <Img image={{src: "https://images.unsplash.com/photo-1631410744690-3cc75aaea4df?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzJ8fG9uZSUyMHBpZWNlJTIwZHJlc3N8ZW58MHwyfDJ8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60", alt: "02"}} />
         </div>
         <div>
-        <img src="https://images.unsplash.com/photo-1601460588655-109bd38204db?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nzd8fGRyZXNzJTIwb25lJTIwcGllY2V8ZW58MHwyfDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="03" />
+          <Img image={{src: "https://images.unsplash.com/photo-1601460588655-109bd38204db?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nzd8fGRyZXNzJTIwb25lJTIwcGllY2V8ZW58MHwyfDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60", alt: "03"}} />
         </div>
         <div>
-        <img src="https://images.unsplash.com/photo-1623052760790-9605a8579730?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHNoaXJ0c3xlbnwwfDJ8Mnx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="04" />
+          <Img image={{src: "https://images.unsplash.com/photo-1623052760790-9605a8579730?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHNoaXJ0c3xlbnwwfDJ8Mnx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60", alt: "04"}} />
         </div>
       </ImageCarousel>
     </ImageContainer>

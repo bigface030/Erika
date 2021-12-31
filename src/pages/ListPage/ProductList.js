@@ -60,7 +60,7 @@ export const ProductList = () => {
   const error = useSelector(state => state.product.error)
   const dispatch = useDispatch()
 
-  useEffect(() => {
+  useEffect(() => {    
     window.scrollTo(0, 0);
     dispatch(getProducts(pathname, search))
   }, [pathname, search, dispatch])

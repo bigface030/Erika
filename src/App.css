@@ -27,3 +27,8 @@ button {
     background-color: transparent;
     cursor: pointer;
 }
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}

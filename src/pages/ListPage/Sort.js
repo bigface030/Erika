@@ -99,7 +99,7 @@ const SubMenu = styled.ul`
   position: absolute;
   top: 33px;
   background-color: #fff;
-  z-index: 2;
+  z-index: 5;
   box-shadow: 1px 0px 5px ${props => props.theme.color.lightGrey};
   display: none;
   & li:hover {
@@ -123,6 +123,7 @@ const Cover = styled.label`
   right: 0;
   opacity: 0;
   display: none;
+  // background-color: #aaaa;
 `
 
 const SortSelect = ({sortMap, order}) => {

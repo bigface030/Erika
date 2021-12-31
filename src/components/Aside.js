@@ -8,7 +8,8 @@ import { MEDIA_QUERY } from "../constants/style"
 
 import { Filter } from "../pages/ListPage/Filter"
 import { Trend } from "./Trend"
-import { useRef } from "react";
+
+
 
 const Cover = styled.label`
   z-index: 0;
@@ -19,8 +20,8 @@ const Cover = styled.label`
   right: 0;
   opacity: 0;
   display: none;
-`
   // background-color: #aaaa;
+`
 
 const PictureContainer = styled.div`
   & img {
@@ -100,9 +101,6 @@ const Controller = styled.input`
 
 export const Aside = ({filter}) => {
 
-  // const x = useRef(0)
-  // console.log('Aside render')
-
   return (
       <>
         {filter && (
@@ -129,7 +127,6 @@ export const Aside = ({filter}) => {
           )}
           <Trend />
         </AsideContainer>
-        {/* {x.current++} */}
       </>
   )
 }

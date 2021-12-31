@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { theme } from "./theme"
 
 export const MEDIA_QUERY = {
@@ -13,54 +13,89 @@ export const LinkedUL = styled.ul`
     & a {
         display: block;
         color: ${theme.color.black};
-        & span::after {
-            content: '';
-            display: block;
-            width: 0%;
-            height: 2px;
-            background-color: ${theme.color.black};
-            transition: width .4s;
+        & h4, p {
+            &::after {
+                content: '';
+                display: block;
+                width: 0%;
+                height: 2px;
+                background-color: ${theme.color.black};
+                transition: width .4s;
+            }
         }
-        &:hover span::after {
-            width: 100%
+        &:hover {
+            & h4, p {
+                &::after {
+                    width: 100%
+                }
+            }
         }
     }
 `
 
+export const fontTheme = {
+    h2: css`
+        font-size: ${theme.fontSize.h2};
+        font-weight: ${theme.fontWeight.xl};
+        line-height: 2em;
+    `,
+    h3: css`
+        font-size: ${theme.fontSize.h3};
+        font-weight: ${theme.fontWeight.xl};
+        line-height: 1.5em;
+    `,
+    h4: css`
+        font-size: ${theme.fontSize.h4};
+        font-weight: ${theme.fontWeight.l};
+        line-height: 1.5em;
+    `, 
+    h5: css`
+        font-size: ${theme.fontSize.bodySmall};
+        font-weight: ${theme.fontWeight.s};
+        line-height: 1.5em;
+    `,
+    p: css`
+        font-size: ${theme.fontSize.bodyLarge};
+        font-weight: ${theme.fontWeight.l};
+        line-height: 1.5em;
+    `,
+    span: css`
+        font-size: ${theme.fontSize.body};
+        font-weight: ${theme.fontWeight.m};
+        line-height: 1.5em;
+    `
+}
+
 export const H2 = styled.h2`
-    font-size: ${theme.fontSize.h2};
-    font-weight: ${theme.fontWeight.xl};
+    ${fontTheme.h2}
     color: ${theme.color.black};
-    line-height: 2em;
 `
 
 export const H3 = styled.h3`
-    font-size: ${theme.fontSize.h3};
-    font-weight: ${theme.fontWeight.xl};
+    ${fontTheme.h3}
     color: ${theme.color.black};
-    line-height: 1.5em;
 `
 
 export const H4 = styled.h4`
-    font-size: ${theme.fontSize.h4};
-    font-weight: ${theme.fontWeight.l};
+    ${fontTheme.h4}
     color: ${theme.color.black};
-    line-height: 1.5em;
 `
 
 export const P = styled.p`
-    font-size: ${theme.fontSize.bodyLarge};
-    font-weight: ${theme.fontWeight.l};
+    ${fontTheme.p}
     color: ${theme.color.black};
-    line-height: 1.5em;
 `
 
 export const Span = styled.span`
-    font-size: ${theme.fontSize.body};
-    font-weight: ${theme.fontWeight.m};
+    ${fontTheme.span}
     color: ${theme.color.black};
-    line-height: 1.5em;
 `
+
+export const H5 = styled.h5`
+    ${fontTheme.h5}
+    color: ${theme.color.black};
+`
+
 
 export const Btn = styled.button`
     & svg {

@@ -6,6 +6,7 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MEDIA_QUERY } from "../constants/style"
 import useProduct from "../hooks/useProduct";
+import { Img } from "./Img";
 
 
 const ProductCard = styled.section`
@@ -26,7 +27,7 @@ const ProductCard = styled.section`
 const ImageContainer = styled.div`
   position: relative;
   aspect-ratio: 1;
-  & a {
+  & > a {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -35,14 +36,9 @@ const ImageContainer = styled.div`
     z-index: 1;
   }
   &:hover > div:last-child {
-    background-color: ${props => props.theme.color.black}5;
-    & > button {
-      &:nth-child(1) {
-        left: -80px;
-      }
-      &:nth-child(2) {
-        right: -80px;
-      }
+    background-color: ${props => props.theme.color.grey}5;
+    & button {
+      right: 0px;
     }
   }
 `
@@ -56,44 +52,39 @@ const ImageMask = styled.div`
   left: 0;
   right: 0;
   overflow: hidden;
+`
+
+const BtnContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
   & > button {
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    &:nth-child(1) {
-      left: -500px;
-      transition: left .3s;
-    }
-    &:nth-child(2) {
-      right: -500px;
-      transition: right .3s .05s;
-    }
+    margin-top: 5px;
   }
 `
 
 const Btn = styled.button`
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
+  display: block;
   background-color: ${props => props.theme.color.lightGrey}a;
   border-radius: 50%;
-  display: block;
-
+  z-index: 2;
+  position: relative;
+  right: -60px;
+  &:nth-child(1) {
+    transition: .3s;
+  }
+  &:nth-child(2) {
+    transition: .3s .1s;
+  }
   &:hover {
-    bottom: 4px;
-  }
-  &:active {
-    top: 2px;
+    background-color: ${props => props.theme.color.white}a;
   }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
   & svg {
-    font-size: ${props => props.theme.fontSize.svgLarge};
+    font-size: ${props => props.theme.fontSize.btn};
     color: ${props => props.theme.color.grey};
   }
 `
@@ -151,7 +142,7 @@ export const ProductItem = ({product}) => {
       <div>
         <ImageContainer>
           <Link to={url}/>
-          <img src={product.Images[0].src} alt={product.Images[0].alt}/>
+          <Img image={product.Images[0]} />
           <ProductReminder>
             {product.is_sale && (
               <ProductReminderSale>SALE</ProductReminderSale>
@@ -159,12 +150,16 @@ export const ProductItem = ({product}) => {
             <ProductReminderNew>NEW</ProductReminderNew>
           </ProductReminder>
           <ImageMask>
-            <Btn>
-              <FontAwesomeIcon icon={faShoppingCart}/>
-            </Btn>
-            <Btn>
-              <FontAwesomeIcon icon={faHeart}/>
-            </Btn>
+            <BtnContainer>
+              <Link to={url}>
+                <Btn>
+                  <FontAwesomeIcon icon={faShoppingCart}/>
+                </Btn>
+              </Link>
+              <Btn>
+                <FontAwesomeIcon icon={faHeart}/>
+              </Btn>
+            </BtnContainer>
           </ImageMask>
         </ImageContainer>
         <Link to={url}>

@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components"
 import { useSelector, useDispatch } from 'react-redux'
+import styled from "styled-components"
 
 import { MEDIA_QUERY, PageWrapper, PageContainer, P } from "../../constants/style"
 
 import { CrumbNav } from "../../components/CrumbNav";
 import { Aside } from "../../components/Aside";
+import { ErrorPopup } from "../../components/Popup";
+import { Feed } from "../../components/Feed";
 
 import { getProduct, setProduct } from "../../features/product/productSlice";
 
 import { Image } from "./Image";
 import { Content } from "./Content";
 import { Detail } from "./Detail";
+import { CartPopup } from "./CartPopup";
 
 const Msg = styled(P)`
   margin: 0 auto;
@@ -64,6 +67,8 @@ export default function ProductPage () {
     const error = useSelector(state => state.product.error)
     const dispatch = useDispatch()
 
+    const group = product?.product?.Category?.group.slice(0, -1)
+
     useEffect(() => {
       dispatch(getProduct(id))
       return () => {
@@ -79,22 +84,28 @@ export default function ProductPage () {
           <PageWrapper>
             <PageContainer>
               <Aside />
-              {error ? (
+              {(error || !product) ? (
                 <Msg>{error}</Msg>
               ) : (
                 <MainContainer>
-                  <ItemContainer>
-                    {product && (
-                      <Image images={product.product.Images} />
-                    )}
-                    <Content product={product} group={product?.product?.Category?.group.slice(0, -1)} />
-                  </ItemContainer>
-                  <Detail product={product} group={product?.product?.Category?.group.slice(0, -1)} />
+                  {product && (
+                    <>
+                      <ItemContainer>
+                        <Image images={product.product.Images} />
+                        <Content product={product} group={group} />
+                      </ItemContainer>
+                      <Detail product={product} group={group} />
+                    </>
+                  )}
                 </MainContainer>
               )}
             </PageContainer>
           </PageWrapper>
-          {/* <Feed /> */}
+          <Feed />
+          <ErrorPopup />
+          {product && (
+            <CartPopup {...{product}} />
+          )}
         </>
     )
 }

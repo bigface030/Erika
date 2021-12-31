@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux';
 import { getProductsAPI, getProductAPI } from '../../webAPI/productAPI';
 
 const initialState = {
   unfilteredProducts: '',
   products: '',
   product: '',
-  error: '',
+  error: null,
+  spec: {size: '', color: '', qty: ''},
 }
 
 export const productSlice = createSlice({
@@ -22,7 +24,17 @@ export const productSlice = createSlice({
       state.product = action.payload;
     },
     setError: (state, action) => {
+      if(!state.error && action.payload === null) return;
       state.error = action.payload;
+    },
+    setSize: (state, action) => {
+      state.spec.size = action.payload;
+    },
+    setColor: (state, action) => {
+      state.spec.color = action.payload;
+    },
+    setQty: (state, action) => {
+      state.spec.qty = action.payload;
     },
   },
 })
@@ -32,6 +44,9 @@ export const {
   setProducts,
   setProduct,
   setError,
+  setSize,
+  setColor,
+  setQty,
 } = productSlice.actions
 
 export const getUnfilteredProducts = pathname => dispatch => {
@@ -52,7 +67,7 @@ export const getProducts = (pathname, search) => dispatch => {
         return dispatch(setError(result.message))
       }
       dispatch(setProducts(result.data))
-      dispatch(setError())
+      dispatch(setError(null))
     })
 }
 
@@ -64,7 +79,7 @@ export const getProduct = id => dispatch => {
         return dispatch(setError(result.message))
       }
       dispatch(setProduct(result.data))
-      dispatch(setError())
+      dispatch(setError(null))
     })
 }
 
