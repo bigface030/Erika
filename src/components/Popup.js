@@ -1,21 +1,24 @@
 import styled from "styled-components"
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { P, Btn, Span } from "../constants/style"
+import { Btn, H3 } from "../constants/style"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import useProduct from "../hooks/useProduct";
 
+import { CartPopup } from "../pages/ProductPage/CartPopup";
+import { LoginPopup } from "./LoginPopup"
+import { SizePopup, ColorPopup, EditPopup, DeletePopup } from "../pages/AdminPages/AdminProductPage/InfoPopup";
+
 
 const PopupCover = styled.div`
-    opacity: ${props => (props.$isOpened && props.$error) ? '1' : '0'};
-    visibility: ${props => (props.$isOpened && props.$error) ? 'visible' : 'hidden'};
+    opacity: ${props => props.$isOpened ? '1' : '0'};
+    visibility: ${props => props.$isOpened ? 'visible' : 'hidden'};
     transition: .2s;
 
-    background: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.5);
     position: fixed;
     top: 0;
     bottom: 0;
@@ -44,20 +47,21 @@ const PopupContainer = styled.div`
     opacity: ${props => props.$isOpened ? '1' : '0'};
     transition: .2s;
     width: 100%;
-    max-width: 512px;
+    max-width: ${props => props.$type === 'edit' ? '768px' : '512px'};
+    max-height: calc(100vh - 80px);
     position: absolute;
     left: 0;
     right: 0;
     margin: 40px auto;
-    background-color: #fff;
-    border: 1px solid #aaa;
+    background-color: ${props => props.theme.color.white};
+    border: 1px solid ${props => props.theme.color.lightGrey};
     & > div {
         padding: 10px;
     }
 `
 
 const PopupHeader = styled.div`
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid ${props => props.theme.color.lightGrey};
     position: relative;
     & > button {
         & svg {
@@ -68,43 +72,65 @@ const PopupHeader = styled.div`
             right: 10px;
         }
     }
+    ${props => props.$cart && 'display: flex;'}
+`
+
+const PopupTitle = styled(H3)`
+    & > svg {
+        color: ${props => props.theme.color.success};
+        margin-right: 5px;
+    }
 `
 
 const PopupContent = styled.div`
-    display: flex;
-    justify-content: space-between;
-    & a {
-        text-decoration: underline ${props => props.theme.color.black};
-    }
-    & span {
-        font-weight: ${props => props.theme.fontWeight.xl}
-    }
+    max-height: calc(100vh - 145px);
+    overflow: auto;
 `
 
-export const ErrorPopup = () => {
+
+export const Popup = ({type}) => {
 
     const isOpened = useSelector(state => state.general.isOpened)
-    const errorCode = useSelector(state => state.general.errorCode)
     
     const {
         handleClosePopup
     } = useProduct()
   
     return (
-        <PopupCover $isOpened={isOpened} $error={errorCode}>
+        <PopupCover $isOpened={isOpened}>
             <PopupWrapper>
-                <label onClick={handleClosePopup} />
-                <PopupContainer $isOpened={isOpened}>
-                    <PopupHeader>
-                        <Btn onClick={handleClosePopup}>
+                <label onClick={handleClosePopup(type)} />
+                <PopupContainer $isOpened={isOpened} $type={type}>
+                    <PopupHeader $cart={type === 'cart'}>
+                        {type === 'cart' && (
+                            <PopupTitle>
+                                <FontAwesomeIcon icon={faCheck} />
+                                已成功加入至購物車
+                            </PopupTitle>
+                        )}
+                        <Btn onClick={handleClosePopup(type)}>
                             <FontAwesomeIcon icon={faTimes} />
                         </Btn>
                     </PopupHeader>
                     <PopupContent>
-                        <P>請先登入！</P>
-                        <Link to="/">
-                            <Span>點我登入</Span>
-                        </Link>
+                        {type === 'login' && (
+                            <LoginPopup />
+                        )}
+                        {type === 'cart' && (
+                            <CartPopup />
+                        )}
+                        {type === 'size' && (
+                            <SizePopup />
+                        )}
+                        {type === 'color' && (
+                            <ColorPopup />
+                        )}
+                        {type === 'edit' && (
+                            <EditPopup />
+                        )}
+                        {type === 'delete' && (
+                            <DeletePopup />
+                        )}
                     </PopupContent>
                 </PopupContainer>
             </PopupWrapper>

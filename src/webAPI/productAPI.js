@@ -4,8 +4,8 @@ const getProductsAPI = (pathname, search) => {
 
     const Arr = [];
     search = new URLSearchParams(search);
-    const gender = pathname.split('/')[2]
-    const category = pathname.split('/')[3]
+    const gender = pathname[0]
+    const category = pathname[1]
     const genderObj = {
         men: 'M',
         women: 'F',
@@ -20,13 +20,13 @@ const getProductsAPI = (pathname, search) => {
         skirts: 301,
         general: 401
     }
-    const orderArr = ['sold_desc', 'price_desc', 'price_asc']
+    const orderArr = ['price_desc', 'price_asc', 'sold_desc', 'sold_asc']
 
     if(gender){
         Arr.push(['gender', genderObj[gender]])
-        if(category){
-            Arr.push(['category', categoryObj[category]])
-        }
+    }
+    if(category){
+        Arr.push(['category', categoryObj[category]])
     }
 
     if(search.has('size')){
@@ -56,6 +56,16 @@ const getProductsAPI = (pathname, search) => {
     if(search.has('page')){
         const page = search.get('page')
         Arr.push(['_page', page])
+    }
+
+    if(search.has('is_on')){
+        const is_on = search.get('is_on')
+        Arr.push(['_is_on', is_on])
+    }
+
+    if(search.has('is_sale')){
+        const is_sale = search.get('is_sale')
+        Arr.push(['_is_sale', is_sale])
     }
 
     const query = new URLSearchParams(Arr);
@@ -126,6 +136,137 @@ const getTrendingProductsAPI = () => {
     })
 }
 
+const addProductAPI = product => {
+    return fetch(`${baseURL}/products`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(product)
+    })
+    .then(res => {
+        let msg = null;
+        if (res.status === 400) {
+            msg = "商品名稱重複";
+        } else if (res.status === 200){
+            msg = "新增商品成功";
+        } else {
+            throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })
+}
+
+const updateProductAPI = (id, product) => {
+    return fetch(`${baseURL}/products/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(product)
+    })
+    .then(res => {
+        let msg = null;
+        switch (res.status) {
+            case 200: {
+                msg = "更新商品成功";
+                break
+            }
+            case 403: {
+                msg = "商品名稱重複";
+                break
+            }
+            case 404: {
+                msg = "無此id對應的商品";
+                break
+            }
+            default: throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })
+}
+
+const updatePatternAPI = (id, pattern) => {
+    return fetch(`${baseURL}/product/patterns/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(pattern)
+    })
+    .then(res => {
+        let msg = null;
+        switch (res.status) {
+            case 200: {
+                msg = "更新存貨數量成功";
+                break
+            }
+            case 403: {
+                msg = "存貨數量不可為負";
+                break
+            }
+            case 404: {
+                msg = "無此id對應的存貨";
+                break
+            }
+            default: throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })    
+}
+
+const deleteProductAPI = id => {
+    return fetch(`${baseURL}/products/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    .then(res => {
+        let msg = null;
+        switch (res.status) {
+            case 200: {
+                msg = "刪除商品成功";
+                break
+            }
+            case 404: {
+                msg = "無此id對應的商品";
+                break
+            }
+            default: throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })    
+}
+
 const getFeedImages = () => {
     return fetch('https://api.unsplash.com/topics/fashion', {
         method: 'GET',
@@ -150,6 +291,31 @@ const getFeedImages = () => {
         })
         .then(res => res.json())
     })
-};
+}
 
-export { getFeedImages, getProductsAPI, getProductAPI, getTrendingProductsAPI };
+const searchProductAPI = arr => {
+
+    const query = new URLSearchParams(arr);
+
+    return fetch(baseURL + `/product/search?${query}`)
+    .then(res => {
+        let msg = null;
+        if (res.status === 400) {
+            msg = "目前暫無商品";
+        } else if (res.status === 200){
+            msg = "搜尋商品成功";
+        } else {
+            throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })
+}
+
+export { getFeedImages, getProductsAPI, getProductAPI, addProductAPI, updateProductAPI, updatePatternAPI, deleteProductAPI, getTrendingProductsAPI, searchProductAPI };

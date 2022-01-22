@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { Span, H4, Btn, fontTheme } from "../../constants/style"
+import { Span, H4, Btn, fontTheme, TextBtn } from "../../constants/style"
 
-import { LinkItem } from "../../components/LinkItem"
 import { Img } from "../Img";
 import { Link } from "react-router-dom";
 import { setCartStorage } from "../../features/cart/cartSlice";
@@ -65,6 +64,9 @@ const CartContainer = styled.div`
   & > h4 {
     padding: 20px;
   }
+  & > a {
+    margin: 10px;
+  }
 `
 
 const CartCard = styled.li`
@@ -108,32 +110,20 @@ const CartInfo = styled.div`
   }
 `
 
-const ToCartBtn = styled.button`
-  margin: 10px;
-  padding: 5px 15px;
-  border-radius: .25em;
-  transition: .2s;
-  background-color: ${props => props.theme.color.black};
-  &:hover {
-    background-color: ${props => props.theme.color.lightGrey};
-  }
-  & span {
-    font-weight: ${props => props.theme.fontWeight.l};
-    color: ${props => props.theme.color.white};
-  }
+const ToCartBtn = styled(TextBtn)`
 `
 
-// const Cover = styled.label`
-//   z-index: 0;
-//   position: fixed;
-//   top: 0;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-//   // opacity: 0;
-//   display: none;
-//   background-color: #aaaa;
-// `
+const Cover = styled.label`
+  z-index: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  display: none;
+  // background-color: #aaaa;
+`
 
 export const Cart = () => {
 
@@ -148,11 +138,13 @@ export const Cart = () => {
     const {
       handleDeleteCart
     } = useCart()
+
+    const handleCloseHeaderCart = () => {
+      document.querySelector('#cart').checked = false;
+    }
   
     return (
       <MenuBtn>
-        <input type="checkbox" id="cart"/>
-        {/* <Cover htmlFor="cart" /> */}
         <Btn>
           <label htmlFor="cart">
             <FontAwesomeIcon icon={faShoppingCart} />
@@ -161,6 +153,8 @@ export const Cart = () => {
             )}
           </label>
         </Btn>
+        <input type="checkbox" id="cart"/>
+        <Cover htmlFor="cart" />
         <CartContainer>
           {!cart.length ? (
             <H4>購物車內目前沒有商品</H4>
@@ -195,9 +189,11 @@ export const Cart = () => {
               })}
             </ul>
           )}
-          <ToCartBtn>
-            <LinkItem to="/cart" name="前往結帳" size="Span" />
-          </ToCartBtn>
+          <Link to="/cart" onClick={handleCloseHeaderCart}>
+              <ToCartBtn $active={cart.length}>
+                  前往結帳
+              </ToCartBtn>
+          </Link>
         </CartContainer>
       </MenuBtn>
     )

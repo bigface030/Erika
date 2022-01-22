@@ -186,7 +186,7 @@ export const CartItem = ({item, index}) => {
                     handleQtyChange={handleQtyChange}
                     handleBtnClick={handleBtnClick}
                 />
-                {item.qty > item.total && (
+                {errorMessage && (
                     <ErrorMsg>{errorMessage[index]}</ErrorMsg>
                 )}
             </td>
@@ -275,7 +275,7 @@ export const MobileCartItem = ({item, index}) => {
                                         handleQtyChange={handleQtyChange}
                                         handleBtnClick={handleBtnClick}
                                     />
-                                    {item.qty > item.total && (
+                                    {errorMessage && (
                                         <ErrorMsg>{errorMessage[index]}</ErrorMsg>
                                     )}
                                 </td>

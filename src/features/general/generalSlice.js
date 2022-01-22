@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   isOpened: false,
   errorMessage: '',
-  errorCode: '',
+  popupCode: '',
 }
 
 export const generalSlice = createSlice({
@@ -16,8 +16,8 @@ export const generalSlice = createSlice({
     setErrorMessage: (state, action) => {
       state.errorMessage = action.payload;
     },
-    setErrorCode: (state, action) => {
-      state.errorCode = action.payload;
+    setPopupCode: (state, action) => {
+      state.popupCode = action.payload;
     },
   },
 })
@@ -25,9 +25,7 @@ export const generalSlice = createSlice({
 export const { 
   setIsOpened,
   setErrorMessage,
-  setErrorCode,
-  setErrorMessageArr
+  setPopupCode,
 } = generalSlice.actions
-
 
 export default generalSlice.reducer

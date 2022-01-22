@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { MEDIA_QUERY } from "../constants/style"
 import useProduct from "../hooks/useProduct";
 import { Img } from "./Img";
+import { useDispatch } from "react-redux";
 
 
 const ProductCard = styled.section`
@@ -133,7 +134,12 @@ const ProductReminderNew = styled.span`
 
 export const ProductItem = ({product}) => {
 
-  const { addCommaToPrice } = useProduct();
+  const dispatch = useDispatch()
+
+  const { 
+    addCommaToPrice, 
+    handleAddToWishList
+  } = useProduct();
 
   const url = `/product/${product.id}`
 
@@ -156,7 +162,7 @@ export const ProductItem = ({product}) => {
                   <FontAwesomeIcon icon={faShoppingCart}/>
                 </Btn>
               </Link>
-              <Btn>
+              <Btn onClick={handleAddToWishList}>
                 <FontAwesomeIcon icon={faHeart}/>
               </Btn>
             </BtnContainer>

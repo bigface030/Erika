@@ -129,14 +129,14 @@ export const Trend = () => {
 
   return (
     <TrendContainer>
-        <H4>熱賣商品</H4>
-        {error && <P>{error}</P>}
-        {trends && trends.map(trend => {
-          return (
-            <TrendItem key={trend.id} trend={trend} />
-            )
-          })}
-        {/* {x.current++} */}
+      <H4>熱賣商品</H4>
+      {error && <P>{error}</P>}
+      {trends && trends.map(trend => {
+        return (
+          <TrendItem key={trend.id} trend={trend} />
+          )
+        })}
+      {/* {x.current++} */}
     </TrendContainer>
   )
 }

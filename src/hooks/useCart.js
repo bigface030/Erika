@@ -13,6 +13,7 @@ export default function useCart (item) {
     }
 
     const handleQtyChange = e => {
+        if(!e.target.value) return
         dispatch(setCartQty({pattern_id: item.pattern_id, qty: parseInt(e.target.value)}))
         let cartLocal = JSON.parse(localStorage.getItem('cart')) || [];
         cartLocal = cartLocal.map(i => {

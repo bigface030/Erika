@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { useEffect, useContext } from "react";
 
 import { useSelector, useDispatch } from 'react-redux'
-import { getProducts } from "../../features/product/productSlice";
+import { getProducts, setProducts } from "../../features/product/productSlice";
 
 import { P, H4 } from "../../constants/style"
 import { MEDIA_QUERY } from "../../constants/style"
@@ -62,7 +62,15 @@ export const ProductList = () => {
 
   useEffect(() => {    
     window.scrollTo(0, 0);
-    dispatch(getProducts(pathname, search))
+    const newSearch = new URLSearchParams(search);
+    if(!newSearch.has('page')){
+      newSearch.set('page', 1)
+    }
+    const pathArr = pathname.split('/').slice(2, 4)
+    dispatch(getProducts(pathArr, `?${newSearch}`))
+    // return () => {
+    //   dispatch(setProducts(''))
+    // }
   }, [pathname, search, dispatch])
   
   return (
@@ -71,7 +79,7 @@ export const ProductList = () => {
         {error && (
           <P>{error}</P>
         )}
-        {!error && ( products ? products.rows.map(product => (
+        {!error && ( products.rows ? products.rows.map(product => (
           <ProductItem key={product.id} product={product} />
         )) : (
           <H4>商品載入中......</H4>

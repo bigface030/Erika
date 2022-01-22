@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons'
 
-import { H3, H4, P, Span } from "../../constants/style"
+import { H3, H4, P, Span, TextBtn } from "../../constants/style"
 import useProduct from "../../hooks/useProduct";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -89,11 +89,11 @@ const ColorLabel = styled.label`
   & input {
     display: none;
     &:checked + span {
-      border: ${props => (parseInt(props.$color, 16) <= parseInt('777777', 16)) ? 'medium double #eee' : 'thin solid #333'};
+      border: ${props => (parseInt(props.$color.slice(1), 16) <= parseInt('777777', 16)) ? 'medium double #eee' : 'thin solid #333'};
     }
   }
   & span {
-    background-color: #${props => props.$color};
+    background-color: ${props => props.$color};
     position: relative;
     overflow: hidden;
     ${props => props.$isNull && 'cursor: not-allowed;'}
@@ -154,20 +154,10 @@ const QtyAndAdd = styled.div`
   display: flex;
 `
 
-const AddBtn = styled.button`
+const AddBtn = styled(TextBtn)`
   margin-left: 10px;
   padding: 10px 15px;
-  border-radius: .25em;
-  transition: .2s;
-  background-color: ${props => props.theme.color.black};
-  &:hover {
-    background-color: ${props => props.theme.color.lightGrey};
-  }
-  & span {
-    font-size: ${props => props.theme.fontSize.body};
-    font-weight: ${props => props.theme.fontWeight.l};
-    color: ${props => props.theme.color.white};
-  }
+
   & svg {
     font-size: ${props => props.theme.fontSize.bodyLarge};
     color: ${props => props.theme.color.white};
@@ -227,13 +217,9 @@ export const Content = ({product, group}) => {
     handleQtyChange,
     handleColorChange,
     handleAddToCart,
+    handleAddToWishList
   } = useProduct(spec, product, group, isOpened)
 
-
-  const handleAddToWishList = () => {
-    dispatch(setErrorCode('100'))
-    dispatch(setIsOpened(true))
-  }
 
   return (
     <ContentContainer>
@@ -304,9 +290,9 @@ export const Content = ({product, group}) => {
             handleQtyChange={handleQtyChange}
             handleBtnClick={handleBtnClick}
           />
-          <AddBtn onClick={handleAddToCart}>
+          <AddBtn onClick={handleAddToCart} $active>
             <FontAwesomeIcon icon={faShoppingCart} />
-            <Span>加入購物車</Span>
+            加入購物車
           </AddBtn>
         </QtyAndAdd>
         <WishList>

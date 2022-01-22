@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { useSelector } from 'react-redux';
 import { getProductsAPI, getProductAPI } from '../../webAPI/productAPI';
 
 const initialState = {
@@ -24,7 +23,7 @@ export const productSlice = createSlice({
       state.product = action.payload;
     },
     setError: (state, action) => {
-      if(!state.error && action.payload === null) return;
+      // if(!state.error && action.payload === null) return;
       state.error = action.payload;
     },
     setSize: (state, action) => {

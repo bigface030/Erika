@@ -28,6 +28,7 @@ export const theme = {
         light_primary: "#eee",
         alert: "#e83927",
         brown: "#918481",
-        yellow: "#d4ad54"
+        yellow: "#d4ad54",
+        success: "#40a85f"
     },
 }

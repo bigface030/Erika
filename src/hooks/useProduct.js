@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from 'react-redux'
 import { addCartStorage, setCartQty } from "../features/cart/cartSlice";
-import { setErrorCode, setErrorMessage, setIsOpened } from "../features/general/generalSlice";
-import { setColor, setQty, setSize } from "../features/product/productSlice";
+import { setPopupCode, setErrorMessage, setIsOpened } from "../features/general/generalSlice";
+import { setColor, setProduct, setQty, setSize } from "../features/product/productSlice";
 
 export default function useProduct (spec, product, group, isOpened) {
 
@@ -22,9 +22,12 @@ export default function useProduct (spec, product, group, isOpened) {
     dispatch(setQty(1))
   }, [product, group, dispatch, isOpened])
 
-  const handleClosePopup = () => {
+  const handleClosePopup = type => () => {
     dispatch(setIsOpened(false))
-    dispatch(setErrorCode(''))
+    if(type === 'size' || type === 'color' || type === 'edit' || type === 'delete'){
+      dispatch(setProduct(''))
+    }
+    dispatch(setPopupCode(''))
     dispatch(setErrorMessage(''))
   }
 
@@ -75,6 +78,10 @@ export default function useProduct (spec, product, group, isOpened) {
     dispatch(setIsOpened(true))
   }
 
+  const handleAddToWishList = () => {
+    dispatch(setPopupCode('login'))
+    dispatch(setIsOpened(true))
+  }
 
   function WriteToLocalStorage (cartItem) {
     const pattern_id = product.patterns.find(pattern => (pattern.Color.name === spec.color) && (pattern[group].size === spec.size)).id
@@ -98,8 +105,18 @@ export default function useProduct (spec, product, group, isOpened) {
   }
 
   function addCommaToPrice (price) {
-    if(parseInt(price/1000)) return parseInt(price/1000).toString() + ',' + parseInt(price%1000/100).toString() + parseInt(price%100/10).toString() + parseInt(price%10).toString()
-    return price.toString()
+    let p = price
+    const arr = []
+    while (parseInt(p/1000) > 0) {
+      const a = []
+      for(let i=0; i<3; i++){
+        a.push(parseInt(p%(10**(i+1))/(10**i)))
+      }
+      arr.push(a.reverse().join(''))
+      p = parseInt(p/1000)
+    }
+    arr.push(p)
+    return arr.reverse().join(',')
   }
 
   return {
@@ -116,6 +133,7 @@ export default function useProduct (spec, product, group, isOpened) {
     handleColorChange,
     handleQtyChange,
     handleAddToCart,
+    handleAddToWishList,
     handleClosePopup,
   };
 }

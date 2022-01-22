@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons'
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
 
 import { H4, P } from "../../constants/style"
 import { MEDIA_QUERY, Btn } from "../../constants/style"
@@ -13,6 +14,27 @@ import usePriceFilter from "../../hooks/usePriceFilter";
 
 import { LocationContext } from "./ListPage";
 
+
+const ControllerBtn = styled(Btn)`
+  display: none;
+  height: 40px;
+  padding-left: 20px;
+  border-radius: 5px;
+  background-color: #eee;
+  box-shadow: 1px 0px 5px ${props => props.theme.color.lightGrey};
+  & svg {
+    padding: 10px;
+    font-size: ${props => props.theme.fontSize.h3};
+  }
+  ${MEDIA_QUERY.main} {
+    display: block;
+    position: absolute;
+    right: -30px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+  }
+`
 
 const AsideBlock = styled.div`
   border: 1px solid ${props => props.theme.color.lightGrey}8;
@@ -44,7 +66,6 @@ const FilterContainer = styled(AsideBlock)`
 `
 
 const SizeFilter = styled.section`
-
   & li {
     display: flex;
   }
@@ -86,7 +107,6 @@ const ColorSpan = styled.span`
 `
 
 const PriceFilter = styled.section`
-
 `
 
 const PriceTag = styled(P)`
@@ -289,48 +309,54 @@ const PriceSelect = () => {
 }
 
 export const Filter = () => {
-  // console.log('Filter render')
   const sizes = ['S', 'M', 'L']
   const colors = ['brown', 'yellow', 'white', 'grey', 'black']
 
-  // const x = useRef(0)
   const { pathname, search } = useContext(LocationContext);
+
+  console.log(search)
   
   return (
-    <FilterContainer>
-      {/* {x.current++} */}
-      <H4>商品篩選</H4>
-      {search && (
-        <ClearBtn>
-          <Link to={pathname}>
-            <span>清除篩選</span>
-          </Link>
-        </ClearBtn>
-      )}
-      <SizeFilter>
-        <P>尺寸</P>
-        <ul>
-          {sizes.map(size => (
-            <li key={size}>
-              <SizeSelect {...{size}} />
-            </li>
-          ))}
-        </ul>
-      </SizeFilter>
-      <ColorFilter>
-        <P>顏色</P>
-        <ul>
-          {colors.map(color => (
-            <li key={color}>
-              <ColorSelect {...{color}} />
-            </li>
-          ))}
-        </ul>
-      </ColorFilter>
-      <PriceFilter>
-        <P>價格</P>
-        <PriceSelect />
-      </PriceFilter>
-    </FilterContainer>
+    <>
+      <ControllerBtn>
+        <label htmlFor="filter">
+          <FontAwesomeIcon icon={faFilter}/>
+        </label>
+      </ControllerBtn>
+      <FilterContainer>
+        <H4>商品篩選</H4>
+        {search && !search.includes('page') && (
+          <ClearBtn>
+            <Link to={pathname}>
+              <span>清除篩選</span>
+            </Link>
+          </ClearBtn>
+        )}
+        <SizeFilter>
+          <P>尺寸</P>
+          <ul>
+            {sizes.map(size => (
+              <li key={size}>
+                <SizeSelect {...{size}} />
+              </li>
+            ))}
+          </ul>
+        </SizeFilter>
+        <ColorFilter>
+          <P>顏色</P>
+          <ul>
+            {colors.map(color => (
+              <li key={color}>
+                <ColorSelect {...{color}} />
+              </li>
+            ))}
+          </ul>
+        </ColorFilter>
+        <PriceFilter>
+          <P>價格</P>
+          <PriceSelect />
+        </PriceFilter>
+      </FilterContainer>
+    </>
   )
 }

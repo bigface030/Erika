@@ -1,5 +1,6 @@
 import styled from "styled-components"
-import { MEDIA_QUERY, H4, P, Span } from "../../constants/style"
+import { sizeMap } from "../../constants/mapping";
+import { MEDIA_QUERY, H4, P, TextBtn } from "../../constants/style"
 import useProduct from "../../hooks/useProduct";
 
 
@@ -14,24 +15,12 @@ const DetailTag = styled.div`
   text-align: center;
   padding: 10px 0 20px;
 `
-const TagBtn = styled.button`
+const TagBtn = styled(TextBtn)`
   margin: 5px;
-  padding: 5px 15px;
-  border-radius: .25em;
-  border: 1px solid ${props => props.$checked ? props.theme.color.black : props.theme.color.lightGrey};
-  transition: .4s;
-  background-color: ${props => props.$checked ? props.theme.color.black : props.theme.color.white};
-  & span {
-    font-size: ${props => props.theme.fontSize.bodyLarge};
-    font-weight: ${props => props.theme.fontWeight.l};
-    color: ${props => props.$checked ? props.theme.color.white : props.theme.color.black};
-  }
+  font-size: ${props => props.theme.fontSize.bodyLarge};
   &:hover {
     background-color: ${props => props.theme.color.black};
     border-color: ${props => props.theme.color.black};
-    & span {
-      color: ${props => props.theme.color.white};
-    }
     &::before {
       opacity: 1;
     }
@@ -128,36 +117,17 @@ export const Detail = ({product, group}) => {
       isChecked,
       handleCheckedChange
     } = useProduct()
-    
-    const sizeMap = {
-      Size_top: {
-        sleeve_length: '袖長',
-        body_length: '衣長',
-        body_width: '胸寬'
-      },
-      Size_bottom: {
-        waist: '腰圍',
-        hip: '臀圍',
-        rise: '褲檔',
-        inseam: '褲內檔長'
-      },
-      Size_skirt: {
-        waist: '腰圍',
-        hip: '臀圍',
-        length: '裙長'
-      }
-    }
-    
+  
     return (
         <DetailContainer>
           <DetailTag>
-            <TagBtn $checked={isChecked}>
+            <TagBtn $white={!isChecked} $active>
               <label htmlFor="detail_info" />
-              <Span>商品詳情</Span>
+              商品詳情
             </TagBtn>
-            <TagBtn $checked={!isChecked}>
+            <TagBtn $white={isChecked} $active>
               <label htmlFor="detail_size" />
-              <Span>尺寸資訊</Span>
+              尺寸資訊
             </TagBtn>
           </DetailTag>
           <DetailContent>
@@ -199,7 +169,7 @@ export const Detail = ({product, group}) => {
                         <td>{i.size}</td>
                         {Object.keys(sizeMap[group]).map((j, index) => (
                           <td key={index}>
-                            {i[j]}cm
+                            {i[j] ? `${i[j]}cm` : '-'}
                           </td>
                         ))}
                       </tr>

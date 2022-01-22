@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
-import { fontTheme, H2, MEDIA_QUERY, P } from "../../constants/style"
+import { fontTheme, H2, MEDIA_QUERY, P, TextBtn } from "../../constants/style"
 
 import useProduct from "../../hooks/useProduct"
 import useCart from "../../hooks/useCart"
@@ -123,21 +123,11 @@ const TotalContainer = styled.div`
 
 
 
-const ToCartBtn = styled.button`
-
+const ToCartBtn = styled(TextBtn)`
     vertical-align: bottom;
     padding: 5px 20px;
-    border-radius: .25em;
-    transition: .2s;
     ${fontTheme.h4}
-    background-color: ${props => props.$error ? props.theme.color.lightGrey : props.theme.color.black};
-    color: ${props => props.theme.color.white};
-    &:hover {
-        background-color: ${props => props.theme.color.lightGrey};
-    }
-    ${props => props.$error && 'cursor: not-allowed;'}
-    ${props => props.$error && ADDSTYLE}
-
+    ${props => !props.$active && ADDSTYLE}
 `
 
 const MobileCartContainer = styled.div`
@@ -161,10 +151,15 @@ export default function CartPage () {
 
     useEffect(() => {
         if(!cart.length) return
-        const arr = Array(cart.length).fill('')
-        cart.map((item, index) => (
-            (item.qty > item.total) && (arr[index] = '選擇的數量超過庫存數量!')
-        ))
+        const arr = Array(cart.length).fill('').map((element, index) => {
+            if(cart[index].qty > cart[index].total){
+                element = '選擇的數量超過庫存數量!'
+            }
+            if(cart[index].qty === 0){
+                element = '選擇的數量不可為0!'
+            }
+            return element
+        })
         dispatch(setErrorMessage(arr))
     }, [dispatch, cart])
 
@@ -227,18 +222,18 @@ export default function CartPage () {
                             </span>
                         )}
                         {hasError(errorMessage) ? (
-                            <ToCartBtn $error={hasError(errorMessage)}>
+                            <ToCartBtn $active={!hasError(errorMessage)}>
                                 前往結帳
                             </ToCartBtn>
                         ) : (
                             <Link to="#">
-                                <ToCartBtn $error={hasError(errorMessage)}>
+                                <ToCartBtn $active={!hasError(errorMessage)}>
                                     前往結帳
                                 </ToCartBtn>
                             </Link>
                         )}
                     </div>
-                    <Link to="#">
+                    <Link to="/collection">
                         <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 90 }}/>
                         繼續選購
                     </Link>

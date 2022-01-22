@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
-
 import styled from "styled-components"
 import { MEDIA_QUERY } from "../constants/style"
 
 import { Filter } from "../pages/ListPage/Filter"
 import { Trend } from "./Trend"
-
 
 
 const Cover = styled.label`
@@ -48,45 +44,6 @@ const AsideContainer = styled.aside`
   }
 `
 
-const Btn = styled.button`
-  & svg {
-    font-size: ${props => props.theme.fontSize.h3};
-    color: ${props => props.theme.color.lightGrey};
-    transition: .2s;
-  }
-  &:hover svg {
-    cursor: pointer;
-    color: ${props => props.theme.color.grey};
-  }
-  & label:checked {
-    & svg {
-      color: ${props => props.theme.color.grey};
-    }
-  }
-`
-
-const ControllerBtn = styled(Btn)`
-  display: none;
-  ${MEDIA_QUERY.main} {
-    position: absolute;
-    right: -30px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    display: block;
-    height: 40px;
-    padding-left: 20px;
-    border-radius: 5px;
-    background-color: #eee;
-    box-shadow: 1px 0px 5px ${props => props.theme.color.lightGrey};
-    & label {
-      & svg {
-        padding: 10px;
-      }
-    }
-  }
-`
-
 const Controller = styled.input`
   display: none;
   &:checked {
@@ -116,14 +73,7 @@ export const Aside = ({filter}) => {
             </Link>
           </PictureContainer>
           {filter && (
-            <>
-              <ControllerBtn>
-                <label htmlFor="filter">
-                  <FontAwesomeIcon icon={faFilter}/>
-                </label>
-              </ControllerBtn>
-              <Filter />
-            </>
+            <Filter />
           )}
           <Trend />
         </AsideContainer>

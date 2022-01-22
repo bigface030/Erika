@@ -7,7 +7,7 @@ import { MEDIA_QUERY, PageWrapper, PageContainer, P } from "../../constants/styl
 
 import { CrumbNav } from "../../components/CrumbNav";
 import { Aside } from "../../components/Aside";
-import { ErrorPopup } from "../../components/Popup";
+import { Popup } from "../../components/Popup";
 import { Feed } from "../../components/Feed";
 
 import { getProduct, setProduct } from "../../features/product/productSlice";
@@ -15,7 +15,6 @@ import { getProduct, setProduct } from "../../features/product/productSlice";
 import { Image } from "./Image";
 import { Content } from "./Content";
 import { Detail } from "./Detail";
-import { CartPopup } from "./CartPopup";
 
 const Msg = styled(P)`
   margin: 0 auto;
@@ -65,6 +64,7 @@ export default function ProductPage () {
 
     const product = useSelector(state => state.product.product)
     const error = useSelector(state => state.product.error)
+    const popupCode = useSelector(state => state.general.popupCode)
     const dispatch = useDispatch()
 
     const group = product?.product?.Category?.group.slice(0, -1)
@@ -72,11 +72,9 @@ export default function ProductPage () {
     useEffect(() => {
       dispatch(getProduct(id))
       return () => {
-        dispatch(setProduct(null))
+        dispatch(setProduct(''))
       }
     }, [id, dispatch])
-
-    console.log('page render')
 
     return (
         <>
@@ -102,9 +100,11 @@ export default function ProductPage () {
             </PageContainer>
           </PageWrapper>
           <Feed />
-          <ErrorPopup />
-          {product && (
-            <CartPopup {...{product}} />
+          {popupCode !== 'cart' && (
+            <Popup type="login" />
+          )}
+          {product && popupCode !== 'login' && (
+            <Popup type="cart" />
           )}
         </>
     )

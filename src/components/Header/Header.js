@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faHeart } from '@fortawesome/free-solid-svg-icons';
 
-import { Btn } from "../../constants/style";
+import { Btn, fontTheme, TextBtn } from "../../constants/style";
 import { MEDIA_QUERY } from "../../constants/style";
 
 import MobileNav from './MobileNav';
@@ -56,6 +56,12 @@ const HeaderLeft = styled.div`
 const HeaderRight = styled.div`
   display: flex;
   align-items: center;
+  & > a {
+    margin-right: 30px;
+    ${MEDIA_QUERY.main} {
+      display: none;
+    }
+  }
 `
 
 const BurgerBtn = styled(Btn)`
@@ -107,15 +113,17 @@ const MenuBtnGroup = styled.div`
   display: flex;
   & > div {
     ${MEDIA_QUERY.main} {
-      display: none;
-      &:nth-child(3){
-        display: block;
+      &:nth-child(-n+2){
+        display: none;
       }
     }
     & + div {
       margin-left: 30px;
     }
   }
+`
+
+const ToAdminBtn = styled(TextBtn)`
 `
 
 
@@ -142,6 +150,11 @@ export default function Header() {
           </HeaderLeft>
           <Logo/>
           <HeaderRight>
+            <Link to="/admin/product">
+              <ToAdminBtn $white $active>
+                管理後台
+              </ToAdminBtn>
+            </Link>
             <MenuBtnGroup>
               <div>
                 <Btn>

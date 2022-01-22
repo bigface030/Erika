@@ -11,6 +11,7 @@ import { Aside } from "../../components/Aside"
 
 import { Sort } from "./Sort"
 import { ProductList } from "./ProductList";
+import { Popup } from "../../components/Popup";
 
 
 
@@ -26,7 +27,6 @@ const MainContainer = styled.main`
 export const LocationContext = createContext();
 
 export default function ListPage() {
-  // console.log('ListPage render')
 
   const { pathname, search } = useLocation();
   const pathArr = pathname.split('/')
@@ -59,6 +59,7 @@ export default function ListPage() {
           </PageContainer>
         </PageWrapper>
         <Feed />
+        <Popup type="login" />
       </>
     </LocationContext.Provider>
   );

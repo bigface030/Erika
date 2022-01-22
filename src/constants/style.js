@@ -9,6 +9,26 @@ export const MEDIA_QUERY = {
     xs: "@media (max-width: 256px)",
 }
 
+export const LinkedTag = css`
+    & a {
+        display: inline-block;
+        color: ${theme.color.black};
+        &::after {
+            content: '';
+            display: block;
+            width: 0%;
+            height: 2px;
+            background-color: ${theme.color.black};
+            transition: width .4s;
+        }
+        &:hover {
+            &::after {
+                width: 100%
+            }
+        }
+    }
+`
+
 export const LinkedUL = styled.ul`
     & a {
         display: block;
@@ -109,13 +129,32 @@ export const Btn = styled.button`
     }
 `
 
+export const TextBtn = styled.button`
+    padding: 5px 15px;
+    border-radius: .25em;
+    transition: .2s;
+    
+    ${fontTheme.span}
+    font-weight: ${props => props.theme.fontWeight.l};
+    
+    border: 1px solid ${props => props.$active ? props.theme.color.black : props.theme.color.lightGrey};
+    background-color: ${props => (props.$white && props.$active) ? props.theme.color.white : props.$white ? props.theme.color.light_primary : props.$active ? props.theme.color.black : props.theme.color.lightGrey};
+    color: ${props => !props.$white ? props.theme.color.white : props.$active ? props.theme.color.black : props.theme.color.grey};
+    &:hover {
+        border-color: ${props => props.$white && props.$active ? props.theme.color.black : props.theme.color.lightGrey};
+        background-color: ${props => !props.$white ? props.theme.color.lightGrey : props.$active ? props.theme.color.black : props.theme.color.light_primary};
+        color: ${props => (props.$white && !props.$active) ? props.theme.color.grey : props.theme.color.white};
+    }
+    cursor: ${props => props.$active ? 'pointer' : 'not-allowed'};
+`
+
 export const PageWrapper = styled.div``
 export const PageContainer = styled.div`
-  width: 90%;
-  ${MEDIA_QUERY.s} {
-    width: 100%;
-  }
-  margin: 0 auto;
-  display: flex;
-  align-items: flex-start;
+    width: 90%;
+    ${MEDIA_QUERY.s} {
+        width: 100%;
+    }
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
 `

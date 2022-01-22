@@ -14,17 +14,17 @@ export default function usePriceFilter() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getUnfilteredProducts(pathname))
+    dispatch(getUnfilteredProducts(pathname.split('/').slice(2, 4)))
   }, [pathname, dispatch])
 
   function minInitailizer () {
     if(!unfilteredProducts) return 300
-    const arr = unfilteredProducts.rows.map(product => product.is_sale ? product.price_sale : product.price_standard)
+    const arr = unfilteredProducts.map(product => product.is_sale ? product.price_sale : product.price_standard)
     return Math.min(...arr)
   }
   function maxInitailizer () {
     if(!unfilteredProducts) return 1200
-    const arr = unfilteredProducts.rows.map(product => product.is_sale ? product.price_sale : product.price_standard)
+    const arr = unfilteredProducts.map(product => product.is_sale ? product.price_sale : product.price_standard)
     return Math.max(...arr)
   }
 
