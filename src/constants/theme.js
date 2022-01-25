@@ -27,8 +27,8 @@ export const theme = {
         white: "#fff",
         light_primary: "#eee",
         alert: "#e83927",
+        success: "#40a85f",
         brown: "#918481",
         yellow: "#d4ad54",
-        success: "#40a85f"
     },
 }

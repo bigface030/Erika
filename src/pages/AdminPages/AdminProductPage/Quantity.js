@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components"
 
 import { fontTheme, H2, H4, P, TextBtn } from "../../../constants/style"
-import { getProducts } from "../../../features/product/productSlice";
+import { getProducts, setProducts } from "../../../features/product/productSlice";
 import { getProductAPI, updatePatternAPI } from "../../../webAPI/productAPI";
 
 
@@ -234,6 +234,9 @@ export const Quantity = () => {
 
     useEffect(() => {
         dispatch(getProducts('', ''))
+        return () => {
+            dispatch(setProducts(''))
+        }
     }, [dispatch])
 
     return (
@@ -256,16 +259,23 @@ export const Quantity = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {!error &&  products.length > 0 && products.map(product => (
-                                <Item key={product.id} product={product} />
-                            ))}
+                            {products && !error && (
+                                products.length > 0 ? (
+                                    products.map(product => (
+                                        <Item key={product.id} product={product} />
+                                    ))
+                                ) : (
+                                    <H4>查無商品</H4>
+                                )
+                            )}
                         </tbody>
                     </table>
-                    {error && (
-                        <P>{error}</P>
-                    )}
-                    {products.length === 0 && (
-                        <H4>商品載入中......</H4>
+                    {!products && (
+                        error ? (
+                            <P>{error}</P>
+                        ) : (
+                            <H4>商品載入中......</H4>
+                        )
                     )}
                 </TableContainer>
             </MainContainer>

@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getProductAPI } from '../../webAPI/productAPI';
+import { setError } from '../product/productSlice';
 
 const initialState = {
-  cart: [],
+  cart: null, 
   errorMessage: '',
 }
 
@@ -44,9 +45,15 @@ export const getCartStorage = () => dispatch => {
   dispatch(setCartStorage(cartItem))
 }
 
-const getProductInfo = async item => {
-  return await getProductAPI(item.id)
-    .then(result => result.data)
+const getProductInfo = item => dispatch => {
+  return getProductAPI(item.id)
+    .then(result => {
+      if(!result.ok) {
+        dispatch(setError(result.message))
+        throw new Error(result.message)
+      }
+      return result.data
+    })
     .then(product => {
       item.name = product.product.name;
       const itemPattern = product.patterns.find(pattern => (pattern.id === item.pattern_id))
@@ -61,12 +68,13 @@ const getProductInfo = async item => {
       item.src = mainImg.src;
       item.alt = mainImg.alt;
     })
+    .catch(e => console.log(e.message))
 }
 
 export const setCartStorage = items => dispatch => {
   Promise.all(
     items.map(async item => {
-        await getProductInfo(item)
+        await dispatch(getProductInfo(item))
         return item
     })
   ).then(items => {

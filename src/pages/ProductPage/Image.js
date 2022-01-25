@@ -82,8 +82,6 @@ export const Image = ({images}) => {
     setMainImg({src: img.src, alt: img.alt})
   }, [images, setMainImg])
 
-  console.log('img render')
-
   return (
     <ImageContainer>
       <ImageMain onMouseMove={handleMouseMove}>

@@ -1,15 +1,13 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components"
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import { H4, P, Span } from "../constants/style"
 import { MEDIA_QUERY } from "../constants/style"
 
 import useProduct from "../hooks/useProduct";
-
 import { getTrendingProductsAPI } from "../webAPI/productAPI";
 import { Img } from "./Img";
-
 
 
 const AsideBlock = styled.div`
@@ -109,8 +107,6 @@ const TrendItem = ({trend}) => {
 
 export const Trend = () => {
 
-  // console.log('trend render')
-
   const [trends, setTrends] = useState()
   const [error, setError] = useState()
 
@@ -125,18 +121,25 @@ export const Trend = () => {
     })
   }, [])
 
-  // const x = useRef(0)
-
   return (
     <TrendContainer>
       <H4>熱賣商品</H4>
-      {error && <P>{error}</P>}
-      {trends && trends.map(trend => {
-        return (
-          <TrendItem key={trend.id} trend={trend} />
-          )
-        })}
-      {/* {x.current++} */}
+      {!trends && (
+        error ? (
+          <P>{error}</P>
+        ) : (
+          <P>商品載入中...</P>
+        )
+      )}
+      {trends && !error && (
+        trends.length > 0 ? (
+          trends.map(trend => (
+            <TrendItem key={trend.id} trend={trend} />
+          ))
+        ) : (
+          <P>查無商品</P>
+        )
+      )}
     </TrendContainer>
   )
 }

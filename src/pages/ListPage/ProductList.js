@@ -68,22 +68,30 @@ export const ProductList = () => {
     }
     const pathArr = pathname.split('/').slice(2, 4)
     dispatch(getProducts(pathArr, `?${newSearch}`))
-    // return () => {
-    //   dispatch(setProducts(''))
-    // }
+    return () => {
+      dispatch(setProducts(''))
+    }
   }, [pathname, search, dispatch])
   
   return (
     <>
       <ProductContainer>
-        {error && (
-          <P>{error}</P>
+        {!products && (
+          error ? (
+            <P>{error}</P>
+          ) : (
+            <H4>商品載入中...</H4>
+          )
         )}
-        {!error && ( products.rows ? products.rows.map(product => (
-          <ProductItem key={product.id} product={product} />
-        )) : (
-          <H4>商品載入中......</H4>
-        ))}
+        {products && !error && ( 
+          products.rows.length > 0 ? (
+            products.rows.map(product => (
+              <ProductItem key={product.id} product={product} />
+            ))
+          ) : (
+            <H4>查無商品</H4>
+          )
+        )}
       </ProductContainer>
       <IndexContainer>
         {products && (

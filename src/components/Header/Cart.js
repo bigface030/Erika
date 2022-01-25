@@ -129,6 +129,7 @@ export const Cart = () => {
 
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.cart)
+    const error = useSelector(state => state.product.error)
   
     useEffect(() => {
       const cartItem = JSON.parse(localStorage.getItem('cart')) || [];
@@ -148,7 +149,7 @@ export const Cart = () => {
         <Btn>
           <label htmlFor="cart">
             <FontAwesomeIcon icon={faShoppingCart} />
-            {cart.length > 0 && (
+            {cart && cart.length > 0 && (
               <Span>{cart.reduce(((acc, cur) => acc + cur.qty), 0)}</Span>
             )}
           </label>
@@ -156,44 +157,55 @@ export const Cart = () => {
         <input type="checkbox" id="cart"/>
         <Cover htmlFor="cart" />
         <CartContainer>
-          {!cart.length ? (
-            <H4>購物車內目前沒有商品</H4>
-          ) : (
-            <ul>
-              {cart.map((item, i) => {
-                const url = `/product/${item.id}`
-                return (
-                  <CartCard key={item.pattern_id}>
-                    <CartImage>
-                      <Link to={url}>
-                        <Img image={{src: item.src, alt: item.alt}} />
-                      </Link>
-                    </CartImage>
-                    <CartInfo>
-                      {item.qty} x {item.name}
-                      <p>尺寸: {item.size}, 顏色: {item.color}</p>
-                      {item.is_sale ? (
-                        <Span>
-                          <Span>${item.price_standard}</Span>
-                          ${item.price_sale}
-                        </Span>
-                        ) : (
-                        <>${item.price_standard}</>
-                      )}
-                    </CartInfo>
-                    <button onClick={handleDeleteCart(i)}>
-                      <FontAwesomeIcon icon={faTrashAlt}/>
-                    </button>
-                  </CartCard>
-                )
-              })}
-            </ul>
+          {(!cart || !cart.every(item => item.name)) && (
+            error ? (
+              <H4>{error}</H4>
+            ) : (
+              <H4>商品載入中...</H4>
+            )
           )}
-          <Link to="/cart" onClick={handleCloseHeaderCart}>
-              <ToCartBtn $active={cart.length}>
-                  前往結帳
-              </ToCartBtn>
-          </Link>
+          {cart && cart.every(item => item.name) && !error && (
+            <>
+              {cart.length > 0 ? (
+                <ul>
+                  {cart.map((item, i) => {
+                    const url = `/product/${item.id}`
+                    return (
+                      <CartCard key={item.pattern_id}>
+                        <CartImage>
+                          <Link to={url}>
+                            <Img image={{src: item.src, alt: item.alt}} />
+                          </Link>
+                        </CartImage>
+                        <CartInfo>
+                          {item.qty} x {item.name}
+                          <p>尺寸: {item.size}, 顏色: {item.color}</p>
+                          {item.is_sale ? (
+                            <Span>
+                              <Span>${item.price_standard}</Span>
+                              ${item.price_sale}
+                            </Span>
+                            ) : (
+                            <>${item.price_standard}</>
+                          )}
+                        </CartInfo>
+                        <button onClick={handleDeleteCart(i)}>
+                          <FontAwesomeIcon icon={faTrashAlt}/>
+                        </button>
+                      </CartCard>
+                    )
+                  })}
+                </ul>
+              ) : (
+                <H4>購物車內目前沒有商品</H4>
+              )}
+              <Link to="/cart" onClick={handleCloseHeaderCart}>
+                  <ToCartBtn $active={cart.length > 0}>
+                      前往結帳
+                  </ToCartBtn>
+              </Link>
+            </>
+          )}
         </CartContainer>
       </MenuBtn>
     )

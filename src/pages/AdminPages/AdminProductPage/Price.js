@@ -1,12 +1,12 @@
+import styled from "styled-components"
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 import { fontTheme, H2, H4, P, TextBtn } from "../../../constants/style"
-import { getProducts } from "../../../features/product/productSlice";
+import { getProducts, setProducts } from "../../../features/product/productSlice";
 import { updateProductAPI } from "../../../webAPI/productAPI";
 
 
@@ -158,80 +158,78 @@ const Item = ({product}) => {
     }
 
     return (
-        <>
-                <tr>
-                    <td>{product.id}</td>
-                    <td>{product.name}</td>
-                    <td>
-                        {isEditing ? (
-                            <input 
-                                onChange={handleInputChange} 
-                                checked={isOn} 
-                                type="checkbox" 
-                                name="is_on" 
-                            />
-                        ) : (
-                            <BooleanSvg icon={isOn ? faCheck : faTimes} $active={isOn} />
-                        )}
-                    </td>
-                    <td>
-                        {isEditing ? (
-                            <input 
-                                onChange={handleInputChange} 
-                                checked={isSale} 
-                                type="checkbox" 
-                                name="is_sale" 
-                            />
-                        ) : (
-                            <BooleanSvg icon={isSale ? faCheck : faTimes} $active={isSale} />
-                        )}
-                    </td>
-                    <td>
-                        {isEditing ? (
-                            <PriceInput 
-                                onChange={handleInputChange} 
-                                value={priceStandard} 
-                                type="number" 
-                                name="price_standard" 
-                                min="0"
-                            />
-                        ) : (
-                            priceStandard || '-'
-                        )}
-                    </td>
-                    <td>
-                        {isEditing ? (
-                            <PriceInput 
-                                onChange={handleInputChange} 
-                                value={priceSale} 
-                                type="number" 
-                                name="price_sale" 
-                                min="0"
-                            />
-                        ) : (
-                            priceSale || '-'
-                        )}
-                    </td>
-                    <td>{product.sold}</td>
-                    <td>{product.updatedAt}</td>
-                    <td>
-                        {isEditing ? (
-                            <FilterBtn name="save" onClick={handleIsEditing} $white $active>
-                                儲存
-                            </FilterBtn>
-                        ) : (
-                            <FilterBtn name="edit" onClick={handleIsEditing} $white $active>
-                                編輯
-                            </FilterBtn>
-                        )}
-                    </td>
-                    <td>
-                        <FilterBtn $white $active>
-                            查看
-                        </FilterBtn>
-                    </td>
-                </tr>
-        </>
+        <tr>
+            <td>{product.id}</td>
+            <td>{product.name}</td>
+            <td>
+                {isEditing ? (
+                    <input 
+                        onChange={handleInputChange} 
+                        checked={isOn} 
+                        type="checkbox" 
+                        name="is_on" 
+                    />
+                ) : (
+                    <BooleanSvg icon={isOn ? faCheck : faTimes} $active={isOn} />
+                )}
+            </td>
+            <td>
+                {isEditing ? (
+                    <input 
+                        onChange={handleInputChange} 
+                        checked={isSale} 
+                        type="checkbox" 
+                        name="is_sale" 
+                    />
+                ) : (
+                    <BooleanSvg icon={isSale ? faCheck : faTimes} $active={isSale} />
+                )}
+            </td>
+            <td>
+                {isEditing ? (
+                    <PriceInput 
+                        onChange={handleInputChange} 
+                        value={priceStandard} 
+                        type="number" 
+                        name="price_standard" 
+                        min="0"
+                    />
+                ) : (
+                    priceStandard || '-'
+                )}
+            </td>
+            <td>
+                {isEditing ? (
+                    <PriceInput 
+                        onChange={handleInputChange} 
+                        value={priceSale} 
+                        type="number" 
+                        name="price_sale" 
+                        min="0"
+                    />
+                ) : (
+                    priceSale || '-'
+                )}
+            </td>
+            <td>{product.sold}</td>
+            <td>{product.updatedAt}</td>
+            <td>
+                {isEditing ? (
+                    <FilterBtn name="save" onClick={handleIsEditing} $white $active>
+                        儲存
+                    </FilterBtn>
+                ) : (
+                    <FilterBtn name="edit" onClick={handleIsEditing} $white $active>
+                        編輯
+                    </FilterBtn>
+                )}
+            </td>
+            <td>
+                <FilterBtn $white $active>
+                    查看
+                </FilterBtn>
+            </td>
+        </tr>
     )
 }
 
@@ -252,6 +250,9 @@ export const Price = () => {
         if(isSale !== '') search.set('is_sale', isSale)
         if(order !== '') search.set('order', order)
         dispatch(getProducts('', `?${search}`))
+        return () => {
+            dispatch(setProducts(''))
+        }
     }, [dispatch, isOn, isSale, order])
 
     const handleSelectChange = e => {
@@ -276,73 +277,67 @@ export const Price = () => {
     }
 
     return (
-        <>
-            <MainContainer>
-                <H2>管理商品價格與紀錄</H2>
-                <FilterContainer>
-                    <FilterBtn name="clearFilter" onClick={handleSelectChange} $white $active>清除篩選</FilterBtn>
-                    <div>
-                        <select name="is_on" value={isOn} onChange={handleSelectChange}>
-                            <option value="">-----</option>
-                            <option value="1">已上架</option>
-                            <option value="0">未上架</option>
-                        </select>
-                    </div>
-                    <div>
-                        <select name="is_sale" value={isSale} onChange={handleSelectChange}>
-                            <option value="">-----</option>
-                            <option value="1">特價商品</option>
-                            <option value="0">原價商品</option>
-                        </select>
-                    </div>
-                </FilterContainer>
-                <TableContainer>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>產品名稱</th>
-                                <th>上架中</th>
-                                <th>特價中</th>
-                                <th>
-                                    <SortBtn name="price_standard" onClick={handleSort}>原價</SortBtn>
-                                </th>
-                                <th>
-                                    <SortBtn name="price_sale" onClick={handleSort}>特價</SortBtn>
-                                </th>
-                                <th>
-                                    <SortBtn name="sold" onClick={handleSort}>已售出</SortBtn>
-                                </th>
-                                <th>更新時間</th>
-                                <th></th>
-                                <th>存貨紀錄</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {!error &&  products.length > 0 && products.map(product => (
-                                <Item key={product.id} product={product} />
-                            ))}
-                        </tbody>
-                    </table>
-                    {error && (
+        <MainContainer>
+            <H2>管理商品價格與紀錄</H2>
+            <FilterContainer>
+                <FilterBtn name="clearFilter" onClick={handleSelectChange} $white $active>清除篩選</FilterBtn>
+                <div>
+                    <select name="is_on" value={isOn} onChange={handleSelectChange}>
+                        <option value="">-----</option>
+                        <option value="1">已上架</option>
+                        <option value="0">未上架</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="is_sale" value={isSale} onChange={handleSelectChange}>
+                        <option value="">-----</option>
+                        <option value="1">特價商品</option>
+                        <option value="0">原價商品</option>
+                    </select>
+                </div>
+            </FilterContainer>
+            <TableContainer>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>產品名稱</th>
+                            <th>上架中</th>
+                            <th>特價中</th>
+                            <th>
+                                <SortBtn name="price_standard" onClick={handleSort}>原價</SortBtn>
+                            </th>
+                            <th>
+                                <SortBtn name="price_sale" onClick={handleSort}>特價</SortBtn>
+                            </th>
+                            <th>
+                                <SortBtn name="sold" onClick={handleSort}>已售出</SortBtn>
+                            </th>
+                            <th>更新時間</th>
+                            <th></th>
+                            <th>存貨紀錄</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {products && !error && (
+                            products.length > 0 ? (
+                                products.map(product => (
+                                    <Item key={product.id} product={product} />
+                                ))
+                            ) : (
+                                <H4>查無商品</H4>
+                            )
+                        )}
+                    </tbody>
+                </table>
+                {!products && (
+                    error ? (
                         <P>{error}</P>
-                    )}
-                    {products.length === 0 && (
-                        <H4>商品載入中......</H4>
-                    )}
-                </TableContainer>
-            </MainContainer>
-            {/* {!product.patterns && (
-                <>
-                    {errorCode !== 'color' && (
-                        <Popup type="size" />
-                    )}
-                    {errorCode !== 'size' && (
-                        <Popup type="color" />
-                    )}
-                </>
-            )} */}
-        </>
-        
+                    ) : (
+                        <H4>商品載入中...</H4>
+                    )
+                )}
+            </TableContainer>
+        </MainContainer>        
     )
 }

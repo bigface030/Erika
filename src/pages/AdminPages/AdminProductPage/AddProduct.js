@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { P, fontTheme, TextBtn, Btn } from "../../../constants/style";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import { Popup } from "../../../components/Popup";
-
 import { sizeMap } from "../../../constants/mapping"
+import { P, fontTheme, TextBtn, Btn } from "../../../constants/style";
+
 import useAdminProduct from "../../../hooks/useAdminProduct";
-import { useSelector } from "react-redux";
-import { useRef } from "react";
 
 
 const StepContainer = styled.div`
@@ -416,8 +415,8 @@ export const SecondStepInputs = ({step, group, sizes, colors, handleInputChange,
                         <UploadBtn type="button" onClick={handleAddPattern(group)} name="size" $white $active={step === 2 || step === 0}>新增尺寸</UploadBtn>
                     )}
                 </InputTitle>
-                    {sizes && group && (
-                        sizeMap[group] ? (
+                    {sizes.length > 0 ? (
+                        group && sizeMap[group] ? (
                             sizes.map((size, i) => (
                                 <SizeInput key={i}>
                                     <div>
@@ -486,6 +485,23 @@ export const SecondStepInputs = ({step, group, sizes, colors, handleInputChange,
                         ))) : (
                             <P>單一尺寸</P>
                         )
+                    ) : (
+                        <>
+                            {Array(2).fill('').map(() => (
+                                <SizeInput>
+                                    <div>
+                                        <label>尺碼:</label>
+                                        <input
+                                            type="text"
+                                            name="size"
+                                            size="2"
+                                            disabled
+                                            required
+                                        />
+                                    </div>
+                                </SizeInput>
+                            ))}
+                        </>
                     )}
             </InputBlock>
             <InputBlock>
@@ -550,10 +566,9 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
         handleDeletePattern, 
     } = useAdminProduct({step, setStep, productToAdd, setProductToAdd})
 
-    const [init, setInit] = useState(false)
 
     useEffect(() => {
-        if(step !== 2 || init) return;
+        if(step !== 2) return;
         if(productToAdd.group === 'Size_general'){
             setSizes([{size: 'one'}])
         } else {
@@ -564,8 +579,7 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
             setSizes(arr)
         }
         setColors(Array(2).fill({name: '', code: '#000000'}))
-        setInit(true)
-    }, [productToAdd.group, step, init, setSizes, setColors])
+    }, [productToAdd.group, step, setSizes, setColors])
 
 
     return (
@@ -579,11 +593,11 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                     設定尺寸及顏色
                 </FlowText>
             </FlowContent>
-            {sizes.length > 0 && (
+            {/* {productToAdd.group && ( */}
                 <form id="addSecond" onSubmit={handleFormSubmit}>
                     <SecondStepInputs 
                         step={step}
-                        group={productToAdd.group}
+                        group={productToAdd.group || null}
                         sizes={sizes}
                         colors={colors}
                         error={error}
@@ -597,7 +611,7 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                         <TextBtn type="submit" $active={step === 2} disabled={step !== 2}>略過並儲存</TextBtn>
                     </BtnContainer>
                 </form>
-            )}
+            {/* )} */}
         </SecondStepContainer>        
     )
 }
@@ -678,27 +692,33 @@ const ThirdStep = ({step, setStep, productToAdd, setProductToAdd}) => {
         patterns, 
         setPatterns, 
         isOn, 
+        setIsOn, 
         isSale, 
+        setIsSale, 
         priceStandard, 
+        setPriceStandard, 
         priceSale, 
+        setPriceSale, 
         handleInputChange, 
         handleSetStep, 
         handleFormSubmit, 
         saveProduct, 
     } = useAdminProduct({step, setStep, productToAdd, setProductToAdd})
 
-    const [init, setInit] = useState(false)
 
     useEffect(() => {
-        if(step !== 3 || init) return;
+        if(step !== 3) return;
         if(!productToAdd.sizes || !productToAdd.colors) return;
         let arr = [];
         productToAdd.sizes.map(size => productToAdd.colors.map(color => (
             arr.push({size: size.size, color: color.name, total: 0})
         )))
         setPatterns(arr)
-        setInit(true)
-    }, [step, productToAdd, init, setPatterns])
+        setIsOn(false)
+        setIsSale(false)
+        setPriceStandard(0)
+        setPriceSale(0)
+    }, [step, productToAdd, setPatterns, setIsOn, setIsSale, setPriceStandard, setPriceSale])
 
 
     return (
@@ -728,9 +748,20 @@ const ThirdStep = ({step, setStep, productToAdd, setProductToAdd}) => {
 
 export default function AddProduct () {
 
+    const history = useHistory()
+
     const [step, setStep] = useState(1)
     const [productToAdd, setProductToAdd] = useState('')
 
+    useEffect(() => {
+        const unblock = history.block(() => {
+            return window.confirm("目前的資料尚未被儲存, 是否要離開?");
+        });
+    
+        return () => {
+            unblock();
+        };
+    })
 
     return (
         <MainContainer>

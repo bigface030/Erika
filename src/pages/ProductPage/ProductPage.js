@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import styled from "styled-components"
 
-import { MEDIA_QUERY, PageWrapper, PageContainer, P } from "../../constants/style"
+import { MEDIA_QUERY, PageWrapper, PageContainer, H4 } from "../../constants/style"
 
 import { CrumbNav } from "../../components/CrumbNav";
 import { Aside } from "../../components/Aside";
@@ -16,7 +16,7 @@ import { Image } from "./Image";
 import { Content } from "./Content";
 import { Detail } from "./Detail";
 
-const Msg = styled(P)`
+const Msg = styled(H4)`
   margin: 0 auto;
   padding: 20px;
 `
@@ -82,19 +82,20 @@ export default function ProductPage () {
           <PageWrapper>
             <PageContainer>
               <Aside />
-              {(error || !product) ? (
-                <Msg>{error}</Msg>
-              ) : (
+              {!product && (
+                error ? (
+                  <Msg>{error}</Msg>
+                ) : (
+                  <Msg>商品載入中...</Msg>
+                )
+              )}
+              {product && !error && (
                 <MainContainer>
-                  {product && (
-                    <>
-                      <ItemContainer>
-                        <Image images={product.product.Images} />
-                        <Content product={product} group={group} />
-                      </ItemContainer>
-                      <Detail product={product} group={group} />
-                    </>
-                  )}
+                  <ItemContainer>
+                    <Image images={product.product.Images} />
+                    <Content product={product} group={group} />
+                  </ItemContainer>
+                  <Detail product={product} group={group} />
                 </MainContainer>
               )}
             </PageContainer>

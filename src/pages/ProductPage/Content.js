@@ -7,8 +7,7 @@ import { faChevronDown, faShoppingCart, faHeart } from '@fortawesome/free-solid-
 import { H3, H4, P, Span, TextBtn } from "../../constants/style"
 import useProduct from "../../hooks/useProduct";
 
-import { useDispatch, useSelector } from "react-redux";
-import { setErrorCode, setIsOpened } from "../../features/general/generalSlice";
+import { useSelector } from "react-redux";
 import { QtySelector } from "../../components/QtySelector";
 
 
@@ -22,6 +21,11 @@ const TitleContainer = styled.div`
   & p {
     font-weight: ${props => props.theme.fontWeight.m};
     line-height: 1.75em;
+    padding: 10px 0;
+  }
+  & h3 {
+    padding: 10px 0;
+    border-bottom: 1px solid #aaa;
   }
 `
 
@@ -203,8 +207,6 @@ const ColorSelect = ({name, code, total, color, handleColorChange}) => {
 
 export const Content = ({product, group}) => {
 
-  const dispatch = useDispatch()
-
   const spec = useSelector(state => state.product.spec)
   
   const isOpened = useSelector(state => state.general.isOpened)
@@ -223,14 +225,10 @@ export const Content = ({product, group}) => {
 
   return (
     <ContentContainer>
-      {product ? (
-        <TitleContainer>
-          <H3>{product.product.name}</H3>
-          <P>{product.product.desc}</P>
-        </TitleContainer>
-      ) : (
-        <H3>商品載入中......</H3>
-      )}
+      <TitleContainer>
+        <H3>{product.product.name}</H3>
+        <P>{product.product.desc}</P>
+      </TitleContainer>
       <SpecContainer>
         <SizeSelector>
           <H4>尺寸</H4>
@@ -241,7 +239,7 @@ export const Content = ({product, group}) => {
                 <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 0 }}/>
               </span>
             </div>
-            {product && spec.size && (
+            {spec.size && (
               <select value={spec.size} onChange={handleSizeChange}>
                 {product.product[`${group}s`].map(size => (
                   <option key={size.id} value={size.size}>{size.size}</option>
@@ -253,7 +251,7 @@ export const Content = ({product, group}) => {
         <ColorSelector>
           <H4>顏色</H4>
           <ul>
-            {product.patterns && product.patterns
+            {product.patterns
             .filter(pattern => pattern[group].size === spec.size)
             .map((pattern, index) => (
               <li key={index}>
@@ -267,13 +265,15 @@ export const Content = ({product, group}) => {
               </li>
             ))}
           </ul>
-          {product && spec.size && spec.color && product.patterns
-          .find(pattern => (pattern[group].size === spec.size) && (pattern.Color.name === spec.color))
-          .total <= 10 && (
-            <Msg>庫存數量少</Msg>
+          {spec.size && spec.color && (
+            product.patterns.find(pattern => (
+              (pattern[group].size === spec.size) && (pattern.Color.name === spec.color))
+            ).total <= 10 && (
+              <Msg>庫存數量少</Msg>
+            )
           )}
         </ColorSelector>
-        {product && (product.product.is_sale ? (
+        {(product.product.is_sale ? (
           <PriceIsSale>
             <H4>NT ${addCommaToPrice(product.product.price_standard)}</H4>
             <H4>NT ${addCommaToPrice(product.product.price_sale)}</H4>

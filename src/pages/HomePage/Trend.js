@@ -81,21 +81,18 @@ const ProductContainer = styled.div`
 export const Trend = () => {
 
   const [trends, setTrends] = useState(() => (
-    {male: null, female: null}
+    {male: '', female: ''}
   ))
   const [error, setError] = useState()
 
   useEffect(() => {
     getTrendingProductsAPI()
     .then(data => {
-      // console.log(data)
       if(!data.ok) return setError(data.message)
-      setTrends(
-        {
-          male: data.data.filter(trend => trend.gender === 'M'), 
-          female: data.data.filter(trend => trend.gender === 'F')
-        }
-      )
+      setTrends({
+        male: data.data.filter(trend => trend.gender === 'M'), 
+        female: data.data.filter(trend => trend.gender === 'F')
+      })
     })
   }, [])
 
@@ -108,12 +105,17 @@ export const Trend = () => {
           /
           <label htmlFor="male"><span>男裝</span></label>
         </Subtitle>
-        {
+        {!trends.male && !trends.female && (
           error ? (
             <P>{error}</P>
           ) : (
-            <div>
-              <input id="female" type="radio" name="subtitle" defaultChecked/>
+            <P>商品載入中...</P>
+          )
+        )}
+        {trends.male && trends.female && !error && (
+          <div>
+            <input id="female" type="radio" name="subtitle" defaultChecked/>
+            {trends.female.length > 0 ? (
               <ProductContainer>
                 {
                   trends.female && trends.female.map(trend => {
@@ -124,7 +126,13 @@ export const Trend = () => {
                 }
                 <TestProductCards />
               </ProductContainer>
-              <input id="male" type="radio" name="subtitle"/>
+            ) : (
+              <ProductContainer>
+                <P>查無商品</P>
+              </ProductContainer>
+            )}
+            <input id="male" type="radio" name="subtitle"/>
+            {trends.male.length > 0 ? (
               <ProductContainer>
                 {
                   trends.male && trends.male.map(trend => {
@@ -135,9 +143,13 @@ export const Trend = () => {
                 }
                 <TestProductCards />
               </ProductContainer>
-            </div>
-          )
-        }
+            ) : (
+              <ProductContainer>
+                <P>查無商品</P>
+              </ProductContainer>
+            )}
+          </div>
+        )}
       </TrendingContainer>
     </TrendingWrapper>
   );

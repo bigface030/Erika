@@ -1,17 +1,19 @@
 import styled from "styled-components"
-import { Btn, fontTheme, H2, H4, P, TextBtn } from "../../../constants/style"
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPopupCode, setIsOpened } from "../../../features/general/generalSlice";
-import { useEffect } from "react";
-import { getProducts, setProduct } from "../../../features/product/productSlice";
-import { getProductAPI } from "../../../webAPI/productAPI";
-import { useState } from "react";
-import { crumbMap } from "../../../constants/mapping";
-import { Popup } from "../../../components/Popup";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faPen, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { Link } from "react-router-dom";
+import { crumbMap } from "../../../constants/mapping";
+import { Btn, fontTheme, H2, H4, P, TextBtn } from "../../../constants/style"
+
+import { setPopupCode, setIsOpened } from "../../../features/general/generalSlice";
+import { getProducts, setProduct, setProducts } from "../../../features/product/productSlice";
+
+import { getProductAPI } from "../../../webAPI/productAPI";
+
+import { Popup } from "../../../components/Popup";
 
 
 const MainContainer = styled.main`
@@ -145,9 +147,9 @@ export const Information = () => {
 
     useEffect(() => {
         dispatch(getProducts([gender, category], ''))
-        // return () => {
-        //     dispatch(setProducts(''))
-        // }
+        return () => {
+            dispatch(setProducts(''))
+        }
     }, [dispatch, gender, category])
 
     const handleSelectChange = e => {
@@ -216,18 +218,23 @@ export const Information = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {!error && products.length > 0 && (
-                                products.map(product => (
-                                    <Item key={product.id} product={product} />
-                                ))
+                            {products && !error && (
+                                products.length > 0 ? (
+                                    products.map(product => (
+                                        <Item key={product.id} product={product} />
+                                    ))
+                                ) : (
+                                    <H4>查無商品</H4>
+                                )
                             )}
                         </tbody>
                     </table>
-                    {error && (
-                        <P>{error}</P>
-                    )}
-                    {products.length === 0 && (
-                        <H4>商品載入中......</H4>
+                    {!products && (
+                        error ? (
+                            <P>{error}</P>
+                        ) : (
+                            <H4>商品載入中......</H4>
+                        )
                     )}
                 </TableContainer>
             </MainContainer>

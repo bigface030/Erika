@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:4000/api/v1'
+const baseURL = 'https://erika-backend.herokuapp.com/api/v1'
 
 const getProductsAPI = (pathname, search) => {
 
@@ -72,7 +72,7 @@ const getProductsAPI = (pathname, search) => {
 
     return fetch(`${baseURL}/products?${query}`)
     .then(res => {
-        // console.log(`${query}`)
+        console.log(`${query}`)
         let msg = null;
         if (res.status === 400) {
             msg = "目前暫無商品";

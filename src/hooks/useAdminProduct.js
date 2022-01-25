@@ -10,7 +10,6 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
 
     const history = useHistory();
 
-
     const [name, setName] = useState('')
     const [gender, setGender] = useState('')
     const [category, setCategory] = useState('')
@@ -110,6 +109,7 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
                     setProductToAdd('')
                     setStep(step-1)
                     window.scrollTo(0, 0)
+                    setSizes([])
                 }
                 break
             }
@@ -288,9 +288,13 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
         setPatterns, 
 
         isOn, 
+        setIsOn, 
         isSale, 
+        setIsSale, 
         priceStandard, 
+        setPriceStandard, 
         priceSale, 
+        setPriceSale, 
 
         handleInputChange, 
         handleSetStep, 

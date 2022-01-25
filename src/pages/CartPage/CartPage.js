@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
-import { fontTheme, H2, MEDIA_QUERY, P, TextBtn } from "../../constants/style"
+import { fontTheme, H2, MEDIA_QUERY, P, TextBtn, H4 } from "../../constants/style"
 
 import useProduct from "../../hooks/useProduct"
 import useCart from "../../hooks/useCart"
@@ -147,10 +147,11 @@ export default function CartPage () {
 
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.cart)
+    const error = useSelector(state => state.product.error)
     const errorMessage = useSelector(state => state.cart.errorMessage)
 
     useEffect(() => {
-        if(!cart.length) return
+        if(!cart || !cart.length) return
         const arr = Array(cart.length).fill('').map((element, index) => {
             if(cart[index].qty > cart[index].total){
                 element = '選擇的數量超過庫存數量!'
@@ -190,49 +191,76 @@ export default function CartPage () {
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {cart.length > 0 && cart.map((item, index) => (
-                                <CartItem 
-                                    key={index}
-                                    item={item} 
-                                    index={index}
-                                />
-                            ))}
-                        </tbody>
+                        {cart && cart.every(item => item.name) && !error && cart.length > 0 && (
+                            <tbody>
+                                {cart.map((item, index) => (
+                                    <CartItem 
+                                        key={index}
+                                        item={item} 
+                                        index={index}
+                                    />
+                                ))}
+                            </tbody>
+                        )}
                     </table>
+                    {cart && cart.every(item => item.name) && !error && !cart.length > 0 && (<H4>購物車內暫無商品</H4>)}
+                    {(!cart || !cart.every(item => item.name)) && (
+                        error ? (
+                            <H4>{error}</H4>
+                        ) : (
+                            <H4>商品載入中...</H4>
+                        )
+                    )}
                 </CartContainer>
                 <MobileCartContainer>
-                    <P>全部商品 ({cart.length})</P>
+                    <P>全部商品 ({cart ? cart.length : '-'})</P>
                     <ul>
-                        {cart.length > 0 && cart.map((item, index) => (
-                            <MobileCartItem 
-                                key={index}
-                                item={item} 
-                                index={index}
-                            />
-                        ))}
+                        {(!cart || !cart.every(item => item.name)) && (
+                            error ? (
+                                <H4>{error}</H4>
+                            ) : (
+                                <H4>商品載入中...</H4>
+                            )
+                        )}
+                        {cart && cart.every(item => item.name) && !error && (
+                            cart.length > 0 ? (
+                                cart.map((item, index) => (
+                                    <MobileCartItem 
+                                        key={index}
+                                        item={item} 
+                                        index={index}
+                                    />
+                                ))
+                            ) : (
+                                <H4>購物車內暫無商品</H4>
+                            )
+                        )}
                     </ul>
                 </MobileCartContainer>
                 <TotalContainer>
-                    <div>
-                        總金額 (不含運費) : 
-                        {cart.length > 0 && (
+                    {cart && !error && (
+                        <div>
+                            總金額 (不含運費) : 
                             <span>
-                                ${addCommaToPrice(getTotal(cart))}
+                                ${cart.length > 0 ? (
+                                    addCommaToPrice(getTotal(cart))
+                                ) : (
+                                    '-'
+                                )}
                             </span>
-                        )}
-                        {hasError(errorMessage) ? (
-                            <ToCartBtn $active={!hasError(errorMessage)}>
-                                前往結帳
-                            </ToCartBtn>
-                        ) : (
-                            <Link to="#">
+                            {hasError(errorMessage) ? (
                                 <ToCartBtn $active={!hasError(errorMessage)}>
                                     前往結帳
                                 </ToCartBtn>
-                            </Link>
-                        )}
-                    </div>
+                            ) : (
+                                <Link to="#">
+                                    <ToCartBtn $active={!hasError(errorMessage)}>
+                                        前往結帳
+                                    </ToCartBtn>
+                                </Link>
+                            )}
+                        </div>
+                    )}
                     <Link to="/collection">
                         <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 90 }}/>
                         繼續選購
