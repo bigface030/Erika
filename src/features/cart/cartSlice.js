@@ -84,7 +84,8 @@ export const setCartStorage = items => dispatch => {
 }
 
 export const addCartStorage = item => dispatch => {
-  getProductInfo(item).then(() => dispatch(addCart(item)))
+  dispatch(getProductInfo(item))
+    .then(() => dispatch(addCart(item)))
 }
 
 export default cartSlice.reducer
