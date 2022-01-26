@@ -60,6 +60,9 @@ const ProductContainer = styled.div`
   flex-wrap: wrap;
   & > section {
     width: calc(100%/4);
+    &:nth-child(n+9) {
+      display: none;
+    }
     ${MEDIA_QUERY.main} {
       width: calc(100%/3);
       &:nth-child(n+7) {

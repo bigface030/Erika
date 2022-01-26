@@ -272,7 +272,7 @@ const getFeedImages = () => {
         method: 'GET',
         headers: {
             'Accept-Version': 'v1',
-            'Authorization': 'Client-ID CtXu1O6qrBiFAMp1FcW2cy7KFvKKej8TGHZHPnV8DPo',
+            'Authorization': `Client-ID ${process.env.REACT_APP_UNSPLASH_KEY}`,
         },
     })
     .then(res => res.json())
@@ -286,7 +286,7 @@ const getFeedImages = () => {
             method: 'GET',
             headers: {
                 'Accept-Version': 'v1',
-                'Authorization': 'Client-ID CtXu1O6qrBiFAMp1FcW2cy7KFvKKej8TGHZHPnV8DPo',
+                'Authorization': `Client-ID ${process.env.REACT_APP_UNSPLASH_KEY}`,
             },
         })
         .then(res => res.json())

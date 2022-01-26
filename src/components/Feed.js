@@ -30,21 +30,21 @@ const FeedContainer = styled.div`
 
 export const Feed = () => {
 
-  // const [feeds, setFeeds] = useState()
-  // useEffect(() => {
-  //   getFeedImages().then(data => {
-  //     setFeeds(
-  //       data.map(img => (
-  //         {id: img.id, desc: img.description, url: img.urls.small}
-  //       ))
-  //     )
-  //   })
-  // }, [])
+  const [feeds, setFeeds] = useState()
+  useEffect(() => {
+    getFeedImages().then(data => {
+      setFeeds(
+        data.map(img => (
+          {id: img.id, desc: img.description, url: img.urls.small}
+        ))
+      )
+    })
+  }, [])
 
   return (
     <FeedWrapper>
       <FeedContainer>
-        {/* {
+        {
           feeds && feeds.map(feed => (
             <div key={feed.id}>
               <a target="_blank" rel="noreferrer" href={feed.url}>
@@ -52,7 +52,7 @@ export const Feed = () => {
               </a>
             </div>
           ))
-        } */}
+        }
       </FeedContainer>
     </FeedWrapper>
   );
