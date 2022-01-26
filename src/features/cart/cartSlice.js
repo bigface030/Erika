@@ -63,6 +63,7 @@ const getProductInfo = item => dispatch => {
       item.total = itemPattern.total;
       item.price_standard = product.product.price_standard;
       item.price_sale = product.product.price_sale;
+      item.is_on = product.product.is_on;
       item.is_sale = product.product.is_sale;
       const mainImg = product.product.Images.find(img => img.is_main)
       item.src = mainImg.src;

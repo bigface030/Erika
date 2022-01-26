@@ -159,6 +159,9 @@ export default function CartPage () {
             if(cart[index].qty === 0){
                 element = '選擇的數量不可為0!'
             }
+            if(!cart[index].is_on){
+                element = '此商品已下架, 請從購物車移除!'
+            }
             return element
         })
         dispatch(setErrorMessage(arr))

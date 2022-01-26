@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,8 @@ import MobileNav from './MobileNav';
 import Nav from './Nav';
 import { Cart } from "./Cart";
 import { Logo } from '../Logo';
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const HeaderWrapper = styled.div`
   position: fixed;
@@ -128,17 +130,26 @@ const ToAdminBtn = styled(TextBtn)`
 
 
 export default function Header() {
+
+  const navDOM = useRef()
+  const { pathname, search } = useLocation()
+
   const style = {
     height: "70px",
     position: "relative",
     zIndex: "10"
   }
+
+  useEffect(() => {
+    navDOM.current.checked = false
+  }, [pathname, search])
+
   return (
     <header style={style}>
       <HeaderWrapper>
         <HeaderContainer>
           <HeaderLeft>
-            <BurgerInput id="nav" type="checkbox"/>
+            <BurgerInput id="nav" type="checkbox" ref={navDOM} />
             <BurgerBtn>
               <label htmlFor="nav">
                   <FontAwesomeIcon icon={faBars}/>

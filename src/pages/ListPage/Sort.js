@@ -9,6 +9,7 @@ import { LocationContext } from "./ListPage";
 
 import { Span } from "../../constants/style"
 import { MEDIA_QUERY, Btn } from "../../constants/style"
+import { useRef } from "react";
 
 const SortContainer = styled.div`
   margin: 0 10px;
@@ -150,6 +151,8 @@ const SortMenu = () => {
     let { search } = useContext(LocationContext);
     search = new URLSearchParams(search);
     const currentOrder = search.get('order');
+
+    const sortMenuDOM = useRef()
   
     const sortMap = {
       sold_desc: '熱門度優先', 
@@ -160,7 +163,7 @@ const SortMenu = () => {
     const title = currentOrder ? sortMap[currentOrder] : sortMap.sold_desc
   
     useEffect(() => {
-      document.querySelector('#sort-menu').checked = false
+      sortMenuDOM.current.checked = false
     }, [search])
   
     return (
@@ -170,7 +173,7 @@ const SortMenu = () => {
           <Span>{title}</Span>
           <Btn><FontAwesomeIcon icon={faChevronDown}/></Btn>
         </Menu>
-        <input id="sort-menu" type="checkbox" />
+        <input id="sort-menu" type="checkbox" ref={sortMenuDOM} />
         <Cover htmlFor="sort-menu"/>
         <SubMenu>
           {Object.keys(sortMap).map(order => (
@@ -184,7 +187,6 @@ const SortMenu = () => {
 }
 
 export const Sort = () => {
-  // console.log('Sort render')
   return (
       <>
           <SortContainer>

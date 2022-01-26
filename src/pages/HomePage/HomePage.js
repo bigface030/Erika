@@ -9,7 +9,9 @@ export default function HomePage() {
       <Carousel />
       <Arrival />
       <Trend />
-      <Feed />
+      {process.env.NODE_ENV === 'production' && (
+        <Feed />
+      )}
     </main>
   );
 }

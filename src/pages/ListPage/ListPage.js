@@ -58,7 +58,9 @@ export default function ListPage() {
             </MainContainer>
           </PageContainer>
         </PageWrapper>
-        <Feed />
+        {process.env.NODE_ENV === 'production' && (
+          <Feed />
+        )}
         <Popup type="login" />
       </>
     </LocationContext.Provider>

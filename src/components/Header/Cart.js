@@ -9,9 +9,10 @@ import { faShoppingCart, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { Span, H4, Btn, fontTheme, TextBtn } from "../../constants/style"
 
 import { Img } from "../Img";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { setCartStorage } from "../../features/cart/cartSlice";
 import useCart from "../../hooks/useCart";
+import { useRef } from "react";
 
 
 const MenuBtn = styled.div`
@@ -130,18 +131,25 @@ export const Cart = () => {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.cart)
     const error = useSelector(state => state.product.error)
-  
+
+    const cartDOM = useRef()
+    const { pathname, search } = useLocation()
+
     useEffect(() => {
       const cartItem = JSON.parse(localStorage.getItem('cart')) || [];
       dispatch(setCartStorage(cartItem))
     }, [dispatch])
+
+    useEffect(() => {
+      cartDOM.current.checked = false
+    }, [pathname, search])
   
     const {
       handleDeleteCart
     } = useCart()
 
     const handleCloseHeaderCart = () => {
-      document.querySelector('#cart').checked = false;
+      cartDOM.current.checked = false
     }
   
     return (
@@ -154,7 +162,7 @@ export const Cart = () => {
             )}
           </label>
         </Btn>
-        <input type="checkbox" id="cart"/>
+        <input type="checkbox" id="cart" ref={cartDOM} />
         <Cover htmlFor="cart" />
         <CartContainer>
           {(!cart || !cart.every(item => item.name)) && (

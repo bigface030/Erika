@@ -1,4 +1,5 @@
-const baseURL = 'https://erika-backend.herokuapp.com/api/v1'
+const baseURL = process.env.NODE_ENV === 'production' ? 'https://erika-backend.herokuapp.com' : 'http://localhost:5000'
+const url = baseURL + '/api/v1'
 
 const getProductsAPI = (pathname, search) => {
 
@@ -70,7 +71,7 @@ const getProductsAPI = (pathname, search) => {
 
     const query = new URLSearchParams(Arr);
 
-    return fetch(`${baseURL}/products?${query}`)
+    return fetch(`${url}/products?${query}`)
     .then(res => {
         console.log(`${query}`)
         let msg = null;
@@ -93,7 +94,7 @@ const getProductsAPI = (pathname, search) => {
 }
 
 const getProductAPI = id => {
-    return fetch(baseURL + `/products/${id}`)
+    return fetch(url + `/products/${id}`)
     .then(res => {
         let msg = null;
         if (res.status === 400) {
@@ -115,7 +116,7 @@ const getProductAPI = id => {
 }
 
 const getTrendingProductsAPI = () => {
-    return fetch(baseURL + `/product/trending`)
+    return fetch(url + `/product/trending`)
     .then(res => {
         let msg = null;
         if (res.status === 400) {
@@ -137,7 +138,7 @@ const getTrendingProductsAPI = () => {
 }
 
 const addProductAPI = product => {
-    return fetch(`${baseURL}/products`, {
+    return fetch(`${url}/products`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -165,7 +166,7 @@ const addProductAPI = product => {
 }
 
 const updateProductAPI = (id, product) => {
-    return fetch(`${baseURL}/products/${id}`, {
+    return fetch(`${url}/products/${id}`, {
         method: 'PATCH',
         headers: {
             'content-type': 'application/json'
@@ -201,7 +202,7 @@ const updateProductAPI = (id, product) => {
 }
 
 const updatePatternAPI = (id, pattern) => {
-    return fetch(`${baseURL}/product/patterns/${id}`, {
+    return fetch(`${url}/product/patterns/${id}`, {
         method: 'PATCH',
         headers: {
             'content-type': 'application/json'
@@ -237,7 +238,7 @@ const updatePatternAPI = (id, pattern) => {
 }
 
 const deleteProductAPI = id => {
-    return fetch(`${baseURL}/products/${id}`, {
+    return fetch(`${url}/products/${id}`, {
         method: 'DELETE',
         headers: {
             'content-type': 'application/json'
@@ -297,7 +298,7 @@ const searchProductAPI = arr => {
 
     const query = new URLSearchParams(arr);
 
-    return fetch(baseURL + `/product/search?${query}`)
+    return fetch(url + `/product/search?${query}`)
     .then(res => {
         let msg = null;
         if (res.status === 400) {
