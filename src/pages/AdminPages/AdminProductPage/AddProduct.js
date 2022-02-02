@@ -594,7 +594,7 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                 </FlowText>
             </FlowContent>
             {/* {productToAdd.group && ( */}
-                <form id="addSecond" onSubmit={handleFormSubmit}>
+                <form onSubmit={e => e.preventDefault()}>
                     <SecondStepInputs 
                         step={step}
                         group={productToAdd.group || null}
@@ -606,9 +606,33 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                         handleDeletePattern={handleDeletePattern}
                     />
                     <BtnContainer>
-                        <TextBtn type="button" name="back" onClick={handleSetStep} $active={step === 2} disabled={step !== 2}>上一步</TextBtn>
-                        <TextBtn type="button" name="next" onClick={handleSetStep} $active={step === 2} disabled={step !== 2}>下一步</TextBtn>
-                        <TextBtn type="submit" $active={step === 2} disabled={step !== 2}>略過並儲存</TextBtn>
+                        <TextBtn 
+                            type="button" 
+                            name="back" 
+                            onClick={handleSetStep} 
+                            $active={step === 2} 
+                            disabled={step !== 2}
+                        >
+                            上一步
+                        </TextBtn>
+                        <TextBtn 
+                            type="button" 
+                            name="next" 
+                            onClick={handleSetStep} 
+                            $active={step === 2} 
+                            disabled={step !== 2}
+                        >
+                            下一步
+                        </TextBtn>
+                        <TextBtn 
+                            type="submit" 
+                            name="add_first"
+                            onClick={handleFormSubmit} 
+                            $active={step === 2} 
+                            disabled={step !== 2}
+                        >
+                            略過並儲存
+                        </TextBtn>
                     </BtnContainer>
                 </form>
             {/* )} */}
@@ -702,7 +726,6 @@ const ThirdStep = ({step, setStep, productToAdd, setProductToAdd}) => {
         handleInputChange, 
         handleSetStep, 
         handleFormSubmit, 
-        saveProduct, 
     } = useAdminProduct({step, setStep, productToAdd, setProductToAdd})
 
 
@@ -733,12 +756,36 @@ const ThirdStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                 </FlowText>
             </FlowContent>
             {patterns.length > 0 && (
-                <form id="addThird" onSubmit={handleFormSubmit}>
+                <form onSubmit={e => e.preventDefault()}>
                     <ThirdStepInputs {...{step, patterns, isOn, isSale, priceStandard, priceSale, handleInputChange}} />
                     <BtnContainer>
-                        <TextBtn type="button" name="back" onClick={handleSetStep} $active={step === 3} disabled={step !== 3}>上一步</TextBtn>
-                        <TextBtn type="submit" $active={step === 3} disabled={step !== 3}>略過並儲存</TextBtn>
-                        <TextBtn onClick={saveProduct} type="submit" $active={step === 3} disabled={step !== 3}>送出</TextBtn>
+                        <TextBtn 
+                            type="button" 
+                            name="back" 
+                            onClick={handleSetStep} 
+                            $active={step === 3} 
+                            disabled={step !== 3}
+                        >
+                            上一步
+                        </TextBtn>
+                        <TextBtn 
+                            type="submit" 
+                            name="add_second"
+                            onClick={handleFormSubmit} 
+                            $active={step === 3} 
+                            disabled={step !== 3}
+                        >
+                            略過並儲存
+                        </TextBtn>
+                        <TextBtn 
+                            type="submit" 
+                            name="add_third"
+                            onClick={handleFormSubmit} 
+                            $active={step === 3} 
+                            disabled={step !== 3}
+                        >
+                            送出
+                        </TextBtn>
                     </BtnContainer>
                 </form>
             )}

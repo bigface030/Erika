@@ -164,7 +164,7 @@ export const EditPopup = () => {
     return (
         <TableContainer ref={top}>
             {product && product.product.Category.name === category && (
-                <form id="edit" onSubmit={handleFormSubmit}>
+                <form onSubmit={e => e.preventDefault()}>
                     <FirstStepInputs 
                         step={0} 
                         name={name}
@@ -188,7 +188,14 @@ export const EditPopup = () => {
                         colorsLength={product.product.Colors.length}
                     />
                     <BtnContainer>
-                        <TextBtn type="submit" $active>送出</TextBtn>
+                        <TextBtn 
+                            type="submit" 
+                            name="edit"
+                            onClick={handleFormSubmit} 
+                            $active
+                        >
+                            送出
+                        </TextBtn>
                     </BtnContainer>
                 </form>
             )}

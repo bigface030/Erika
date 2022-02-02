@@ -147,7 +147,6 @@ export default function CartPage () {
 
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.cart)
-    const error = useSelector(state => state.product.error)
     const errorMessage = useSelector(state => state.cart.errorMessage)
 
     useEffect(() => {
@@ -194,7 +193,7 @@ export default function CartPage () {
                                 <th></th>
                             </tr>
                         </thead>
-                        {cart && cart.every(item => item.name) && !error && cart.length > 0 && (
+                        {cart && cart.length > 0 && (
                             <tbody>
                                 {cart.map((item, index) => (
                                     <CartItem 
@@ -206,26 +205,16 @@ export default function CartPage () {
                             </tbody>
                         )}
                     </table>
-                    {cart && cart.every(item => item.name) && !error && !cart.length > 0 && (<H4>購物車內暫無商品</H4>)}
-                    {(!cart || !cart.every(item => item.name)) && (
-                        error ? (
-                            <H4>{error}</H4>
-                        ) : (
-                            <H4>商品載入中...</H4>
-                        )
+                    {cart ? (
+                        cart.length === 0 && (<H4>購物車內暫無商品</H4>)
+                    ) : (
+                        <H4>商品載入中...</H4>
                     )}
                 </CartContainer>
                 <MobileCartContainer>
                     <P>全部商品 ({cart ? cart.length : '-'})</P>
                     <ul>
-                        {(!cart || !cart.every(item => item.name)) && (
-                            error ? (
-                                <H4>{error}</H4>
-                            ) : (
-                                <H4>商品載入中...</H4>
-                            )
-                        )}
-                        {cart && cart.every(item => item.name) && !error && (
+                        {cart ? (
                             cart.length > 0 ? (
                                 cart.map((item, index) => (
                                     <MobileCartItem 
@@ -237,11 +226,13 @@ export default function CartPage () {
                             ) : (
                                 <H4>購物車內暫無商品</H4>
                             )
+                        ) : (
+                            <H4>商品載入中...</H4>
                         )}
                     </ul>
                 </MobileCartContainer>
                 <TotalContainer>
-                    {cart && !error && (
+                    {cart && cart.length > 0 && (
                         <div>
                             總金額 (不含運費) : 
                             <span>

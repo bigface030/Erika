@@ -127,9 +127,9 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
 
     const handleFormSubmit = e => {
         e.preventDefault()
-        switch (e.target.id) {
+        const [type, stepName] = e.target.name.split('_')
+        switch (type) {
             case 'edit': {
-                const group = product.product.Category.group.slice(0, -1)
                 return checkForm() ? (
                     updateProductAPI(product.product.id, {
                         name, 
@@ -141,7 +141,6 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
                         images, 
                         sizes, 
                         colors, 
-                        group
                     }).then(result => {
                         if (!result.ok) {
                             dispatch(setErrorMessage(result.message))
@@ -155,18 +154,31 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
                     top.current.scrollIntoView()
                 )
             }
-            case 'addThird': {
-                console.log(productToAdd)
-                return saveProduct() && addProductAPI(productToAdd)
+            case 'add': {
+                if (stepName === 'first') saveProduct()
+                return addProductAPI(productToAdd)
                 .then(result => {
                     if (!result.ok) {
-                        const lastProduct = {...productToAdd}
-                        if(step === 3){
-                            delete lastProduct.patterns
-                            delete lastProduct.is_on
-                            delete lastProduct.is_sale
-                            delete lastProduct.price_standard
-                            delete lastProduct.price_sale
+                        let lastProduct = {...productToAdd}
+                        switch (stepName) {
+                            case 'first': {
+                                lastProduct = ''
+                                break
+                            }
+                            case 'second': {
+                                delete lastProduct.sizes
+                                delete lastProduct.colors
+                                break
+                            }
+                            case 'third': {
+                                delete lastProduct.patterns
+                                delete lastProduct.is_on
+                                delete lastProduct.is_sale
+                                delete lastProduct.price_standard
+                                delete lastProduct.price_sale
+                                break
+                            }
+                            default: break
                         }
                         setProductToAdd(lastProduct)
                         alert(result.message)
@@ -206,18 +218,17 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
                         .map((image, index) => image.src && ({
                             src: image.src,
                             alt: `${name}_0${index+1}`
-                        })),
-                    group: ['tops', 'shirts', 'knit', 'one_piece', 'outer'].includes(category) ? 'Size_top' : category === 'bottoms' ? 'Size_bottom' : category === 'skirts' ? 'Size_skirt' : 'Size_general'
+                        }))
                 })
             }
             case 2: {
-                if(checkForm()){
+                if (checkForm()) {
                     setProductToAdd({
                         ...productToAdd,
                         sizes, colors
                     })
                     return true
-                }else{
+                } else {
                     return false
                 }
             }

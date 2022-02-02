@@ -83,7 +83,7 @@ export const ProductList = () => {
             <H4>商品載入中...</H4>
           )
         )}
-        {products && !error && ( 
+        {products?.rows && !error && (
           products.rows.length > 0 ? (
             products.rows.map(product => (
               <ProductItem key={product.id} product={product} />

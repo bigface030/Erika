@@ -6,7 +6,7 @@ import { H4, P, Span } from "../constants/style"
 import { MEDIA_QUERY } from "../constants/style"
 
 import useProduct from "../hooks/useProduct";
-import { getTrendingProductsAPI } from "../webAPI/productAPI";
+import { getProductsAPI } from "../webAPI/productAPI";
 import { Img } from "./Img";
 
 
@@ -111,13 +111,11 @@ export const Trend = () => {
   const [error, setError] = useState()
 
   useEffect(() => {
-    getTrendingProductsAPI().then(data => {
-      if(!data.ok) {
-        setTrends()
-        return setError(data.message)
-      }
-      setTrends(data.data.slice(0, 4))
-      setError()
+    const search = '?is_on=1&order=sold_desc'
+    getProductsAPI('', search)
+    .then(result => {
+      if(!result.ok) return setError(result.message)
+      setTrends(result.data.slice(0, 4))
     })
   }, [])
 

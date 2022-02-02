@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 
 import { H2, H3, P } from "../../constants/style"
-import { getTrendingProductsAPI } from "../../webAPI/productAPI";
+import { getProductsAPI } from "../../webAPI/productAPI";
 import { MEDIA_QUERY } from "../../constants/style"
 import { TestProductCards } from "../../components/TestProductCards";
 import { ProductItem } from "../../components/ProductItem";
@@ -83,18 +83,17 @@ const ProductContainer = styled.div`
 
 export const Trend = () => {
 
-  const [trends, setTrends] = useState(() => (
-    {male: '', female: ''}
-  ))
+  const [trends, setTrends] = useState({male: '', female: ''})
   const [error, setError] = useState()
 
   useEffect(() => {
-    getTrendingProductsAPI()
-    .then(data => {
-      if(!data.ok) return setError(data.message)
+    const search = '?is_on=1&order=sold_desc'
+    getProductsAPI('', search)
+    .then(result => {
+      if(!result.ok) return setError(result.message)
       setTrends({
-        male: data.data.filter(trend => trend.gender === 'M'), 
-        female: data.data.filter(trend => trend.gender === 'F')
+        male: result.data.filter(trend => trend.gender === 'M'), 
+        female: result.data.filter(trend => trend.gender === 'F')
       })
     })
   }, [])

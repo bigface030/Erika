@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getProductAPI } from '../../webAPI/productAPI';
-import { setError } from '../product/productSlice';
 
 const initialState = {
   cart: null, 
@@ -45,12 +44,13 @@ export const getCartStorage = () => dispatch => {
   dispatch(setCartStorage(cartItem))
 }
 
-const getProductInfo = item => dispatch => {
+const getProductInfo = item => {
   return getProductAPI(item.id)
     .then(result => {
       if(!result.ok) {
-        dispatch(setError(result.message))
-        throw new Error(result.message)
+        item.error = true;
+        const msg = result.message === '無此id對應的商品' ? 'localStorage 的 cart 裡面包含已被管理者刪除的商品' : result.message
+        throw new Error(msg)
       }
       return result.data
     })
@@ -75,17 +75,16 @@ const getProductInfo = item => dispatch => {
 export const setCartStorage = items => dispatch => {
   Promise.all(
     items.map(async item => {
-        await dispatch(getProductInfo(item))
+        await getProductInfo(item)
         return item
     })
   ).then(items => {
-    console.log(items)
-    dispatch(setCart(items))
+    dispatch(setCart(items.filter(item => !item.error)))
   })
 }
 
 export const addCartStorage = item => dispatch => {
-  dispatch(getProductInfo(item))
+  getProductInfo(item)
     .then(() => dispatch(addCart(item)))
 }
 

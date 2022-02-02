@@ -65,9 +65,6 @@ const CartContainer = styled.div`
   & > h4 {
     padding: 20px;
   }
-  & > a {
-    margin: 10px;
-  }
 `
 
 const CartCard = styled.li`
@@ -112,6 +109,7 @@ const CartInfo = styled.div`
 `
 
 const ToCartBtn = styled(TextBtn)`
+  margin: 10px;
 `
 
 const Cover = styled.label`
@@ -130,7 +128,6 @@ export const Cart = () => {
 
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.cart)
-    const error = useSelector(state => state.product.error)
 
     const cartDOM = useRef()
     const { pathname, search } = useLocation()
@@ -165,14 +162,7 @@ export const Cart = () => {
         <input type="checkbox" id="cart" ref={cartDOM} />
         <Cover htmlFor="cart" />
         <CartContainer>
-          {(!cart || !cart.every(item => item.name)) && (
-            error ? (
-              <H4>{error}</H4>
-            ) : (
-              <H4>商品載入中...</H4>
-            )
-          )}
-          {cart && cart.every(item => item.name) && !error && (
+          {cart ? (
             <>
               {cart.length > 0 ? (
                 <ul>
@@ -207,12 +197,20 @@ export const Cart = () => {
               ) : (
                 <H4>購物車內目前沒有商品</H4>
               )}
-              <Link to="/cart" onClick={handleCloseHeaderCart}>
-                  <ToCartBtn $active={cart.length > 0}>
-                      前往結帳
-                  </ToCartBtn>
-              </Link>
+              {cart.length > 0 ? (
+                <Link to="/cart" onClick={handleCloseHeaderCart}>
+                    <ToCartBtn $active={true}>
+                        前往結帳
+                    </ToCartBtn>
+                </Link>
+              ) : (
+                <ToCartBtn $active={false}>
+                    前往結帳
+                </ToCartBtn>
+              )}
             </>
+          ) : (
+            <H4>商品載入中...</H4>
           )}
         </CartContainer>
       </MenuBtn>

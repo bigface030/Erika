@@ -11,23 +11,12 @@ const getProductsAPI = (pathname, search) => {
         men: 'M',
         women: 'F',
     }
-    const categoryObj = {
-        tops: 101,
-        shirts: 102,
-        knit: 104,
-        one_piece: 105,
-        outer: 106,
-        bottoms: 201,
-        skirts: 301,
-        general: 401
-    }
-    const orderArr = ['price_desc', 'price_asc', 'sold_desc', 'sold_asc']
 
     if(gender){
-        Arr.push(['gender', genderObj[gender]])
+        Arr.push(['_gender', genderObj[gender]])
     }
     if(category){
-        Arr.push(['category', categoryObj[category]])
+        Arr.push(['_category', category])
     }
 
     if(search.has('size')){
@@ -51,7 +40,7 @@ const getProductsAPI = (pathname, search) => {
 
     if(search.has('order')){
         const order = search.get('order')
-        Arr.push(['_order', orderArr.indexOf(order)+1])
+        Arr.push(['_order', order])
     }
 
     if(search.has('page')){
@@ -73,11 +62,8 @@ const getProductsAPI = (pathname, search) => {
 
     return fetch(`${url}/products?${query}`)
     .then(res => {
-        console.log(`${query}`)
         let msg = null;
-        if (res.status === 400) {
-            msg = "目前暫無商品";
-        } else if (res.status === 200){
+        if (res.status === 200){
             msg = "取得商品成功";
         } else {
             throw new Error(`${res.status} (${res.statusText})`)
@@ -97,30 +83,8 @@ const getProductAPI = id => {
     return fetch(url + `/products/${id}`)
     .then(res => {
         let msg = null;
-        if (res.status === 400) {
-            msg = "目前暫無商品";
-        } else if (res.status === 200){
-            msg = "取得商品成功";
-        } else {
-            throw new Error(`${res.status} (${res.statusText})`)
-        }
-        console.log(`${res.status} (${msg})`)
-        return res.json().then(data => (
-            {ok: res.ok, message: msg, data: data}
-        ))
-    })
-    .catch(e => {
-        console.log(e.message)
-        return {ok: 0, message: e.message}
-    })
-}
-
-const getTrendingProductsAPI = () => {
-    return fetch(url + `/product/trending`)
-    .then(res => {
-        let msg = null;
-        if (res.status === 400) {
-            msg = "目前暫無商品";
+        if (res.status === 404) {
+            msg = "無此id對應的商品";
         } else if (res.status === 200){
             msg = "取得商品成功";
         } else {
@@ -147,9 +111,11 @@ const addProductAPI = product => {
     })
     .then(res => {
         let msg = null;
-        if (res.status === 400) {
+        if (res.status === 403) {
+            msg = '缺少必要欄位'
+        } else if (res.status === 409) {
             msg = "商品名稱重複";
-        } else if (res.status === 200){
+        } else if (res.status === 201){
             msg = "新增商品成功";
         } else {
             throw new Error(`${res.status} (${res.statusText})`)
@@ -180,15 +146,71 @@ const updateProductAPI = (id, product) => {
                 msg = "更新商品成功";
                 break
             }
-            case 403: {
+            case 404: {
+                msg = "無此id對應的商品";
+                break
+            }
+            case 409: {
                 msg = "商品名稱重複";
                 break
+            }
+            default: throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })
+}
+
+const deleteProductAPI = id => {
+    return fetch(`${url}/products/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    .then(res => {
+        let msg = null;
+        switch (res.status) {
+            case 204: {
+                msg = "刪除商品成功";
+                return {ok: res.ok, message: msg}
             }
             case 404: {
                 msg = "無此id對應的商品";
                 break
             }
             default: throw new Error(`${res.status} (${res.statusText})`)
+        }
+        console.log(`${res.status} (${msg})`)
+        return res.json().then(data => (
+            {ok: res.ok, message: msg, data: data}
+        ))
+    })
+    .catch(e => {
+        console.log(e.message)
+        return {ok: 0, message: e.message}
+    })    
+}
+
+const searchProductAPI = arr => {
+
+    const query = new URLSearchParams(arr);
+
+    return fetch(url + `/product/search?${query}`)
+    .then(res => {
+        let msg = null;
+        if (res.status === 404) {
+            msg = "目前暫無商品";
+        } else if (res.status === 200){
+            msg = "搜尋商品成功";
+        } else {
+            throw new Error(`${res.status} (${res.statusText})`)
         }
         console.log(`${res.status} (${msg})`)
         return res.json().then(data => (
@@ -214,7 +236,7 @@ const updatePatternAPI = (id, pattern) => {
         switch (res.status) {
             case 200: {
                 msg = "更新存貨數量成功";
-                break
+                return {ok: res.ok, message: msg}
             }
             case 403: {
                 msg = "存貨數量不可為負";
@@ -222,37 +244,6 @@ const updatePatternAPI = (id, pattern) => {
             }
             case 404: {
                 msg = "無此id對應的存貨";
-                break
-            }
-            default: throw new Error(`${res.status} (${res.statusText})`)
-        }
-        console.log(`${res.status} (${msg})`)
-        return res.json().then(data => (
-            {ok: res.ok, message: msg, data: data}
-        ))
-    })
-    .catch(e => {
-        console.log(e.message)
-        return {ok: 0, message: e.message}
-    })    
-}
-
-const deleteProductAPI = id => {
-    return fetch(`${url}/products/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json'
-        }
-    })
-    .then(res => {
-        let msg = null;
-        switch (res.status) {
-            case 200: {
-                msg = "刪除商品成功";
-                break
-            }
-            case 404: {
-                msg = "無此id對應的商品";
                 break
             }
             default: throw new Error(`${res.status} (${res.statusText})`)
@@ -294,29 +285,4 @@ const getFeedImages = () => {
     })
 }
 
-const searchProductAPI = arr => {
-
-    const query = new URLSearchParams(arr);
-
-    return fetch(url + `/product/search?${query}`)
-    .then(res => {
-        let msg = null;
-        if (res.status === 400) {
-            msg = "目前暫無商品";
-        } else if (res.status === 200){
-            msg = "搜尋商品成功";
-        } else {
-            throw new Error(`${res.status} (${res.statusText})`)
-        }
-        console.log(`${res.status} (${msg})`)
-        return res.json().then(data => (
-            {ok: res.ok, message: msg, data: data}
-        ))
-    })
-    .catch(e => {
-        console.log(e.message)
-        return {ok: 0, message: e.message}
-    })
-}
-
-export { getFeedImages, getProductsAPI, getProductAPI, addProductAPI, updateProductAPI, updatePatternAPI, deleteProductAPI, getTrendingProductsAPI, searchProductAPI };
+export { getFeedImages, getProductsAPI, getProductAPI, addProductAPI, updateProductAPI, updatePatternAPI, deleteProductAPI, searchProductAPI };
