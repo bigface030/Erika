@@ -11,8 +11,6 @@ export const MEDIA_QUERY = {
 
 export const LinkedTag = css`
     & a {
-        display: inline-block;
-        color: ${theme.color.black};
         &::after {
             content: '';
             display: block;
@@ -33,21 +31,17 @@ export const LinkedUL = styled.ul`
     & a {
         display: block;
         color: ${theme.color.black};
-        & h4, p {
-            &::after {
-                content: '';
-                display: block;
-                width: 0%;
-                height: 2px;
-                background-color: ${theme.color.black};
-                transition: width .4s;
-            }
+        &::after {
+            content: '';
+            display: block;
+            width: 0%;
+            height: 2px;
+            background-color: ${theme.color.black};
+            transition: width .4s;
         }
         &:hover {
-            & h4, p {
-                &::after {
-                    width: 100%
-                }
+            &::after {
+                width: 100%
             }
         }
     }

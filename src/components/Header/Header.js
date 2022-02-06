@@ -4,11 +4,10 @@ import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser, faHeart } from '@fortawesome/free-solid-svg-icons';
 
-import { Btn, fontTheme, TextBtn } from "../../constants/style";
+import { Btn, TextBtn } from "../../constants/style";
 import { MEDIA_QUERY } from "../../constants/style";
 
-import MobileNav from './MobileNav';
-import Nav from './Nav';
+import { Nav, MobileNav } from './Nav';
 import { Cart } from "./Cart";
 import { Logo } from '../Logo';
 import { useRef } from "react";

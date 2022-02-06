@@ -3,11 +3,9 @@ import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { MEDIA_QUERY, Btn, LinkedUL, H5 } from "../../constants/style"
+import { MEDIA_QUERY, Btn, H5, fontTheme, LinkedTag } from "../../constants/style"
 
 import { Logo } from '../Logo'
-import { LinkItem } from '../LinkItem'
-
 
 
 const FooterWrapper = styled.div`
@@ -40,7 +38,7 @@ const BottomContainer = styled.div`
   }
 `
 
-const FooterLeft = styled(LinkedUL)`
+const FooterLeft = styled.ul`
   display: flex;
   justify-content: center;
   ${MEDIA_QUERY.xs} {
@@ -71,28 +69,35 @@ const LinkedList = styled.li`
     }
   }
 
-  & > a {
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    & > h4 {
-      font-weight: ${props => props.theme.fontWeight.xl};
-      padding: 5px 5px;
-    }
-  }
   & > ul {
     padding: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     flex-wrap: wrap;
-    & > li {
-      & p {
-        padding: 5px 5px;
-      }
-    }
   }
+
+  & a {
+    color: ${props => props.theme.color.black};
+  }
+
+  ${LinkedTag}
 `
+
+const ListTitle = styled(Link)`
+  ${fontTheme.h4}
+  font-weight: ${props => props.theme.fontWeight.xl};
+  display: inline-block;
+  padding: 15px 5px;
+  border-bottom: 1px solid #ddd;
+`
+
+const ListItem = styled(Link)`
+  ${fontTheme.p}
+  display: inline-block;
+  padding: 5px 5px;
+`
+
 
 export default function Footer() {
 
@@ -104,32 +109,52 @@ export default function Footer() {
             <Logo/>
             <LinkBtnGroup>
               <LinkBtn>
-                <Link to="#"><FontAwesomeIcon icon={['fab', 'facebook']}/></Link>
+                <Link to="#">
+                  <FontAwesomeIcon icon={['fab', 'facebook']}/>
+                </Link>
               </LinkBtn>
               <LinkBtn>
-                <Link to="#"><FontAwesomeIcon icon={['fab', 'instagram']}/></Link>
+                <Link to="#">
+                  <FontAwesomeIcon icon={['fab', 'instagram']}/>
+                </Link>
               </LinkBtn>
               <LinkBtn>
-                <Link to="#"><FontAwesomeIcon icon={['fab', 'twitter']}/></Link>
+                <Link to="#">
+                  <FontAwesomeIcon icon={['fab', 'twitter']}/>
+                </Link>
               </LinkBtn>
             </LinkBtnGroup>
           </FooterRight>
           <FooterLeft>
             <LinkedList>
-              <LinkItem to="#" name="會員中心" size="H4" />
+              <ListTitle to="#">會員中心</ListTitle>
               <ul>
-                <li><LinkItem to="#" name="會員資料管理" size="P" /></li>
-                <li><LinkItem to="#" name="歷史訂單" size="P" /></li>
-                <li><LinkItem to="#" name="願望清單" size="P" /></li>
+                <li>
+                  <ListItem to="#">會員資料管理</ListItem>
+                </li>
+                <li>
+                  <ListItem to="#">歷史訂單</ListItem>
+                </li>
+                <li>
+                  <ListItem to="#">願望清單</ListItem>
+                </li>
               </ul>
             </LinkedList>
             <LinkedList>
-              <LinkItem to="#" name="關於我們" size="H4" />
+              <ListTitle to="#">關於我們</ListTitle>
               <ul>
-                <li><LinkItem to="#" name="隱私權條款" size="P" /></li>
-                <li><LinkItem to="#" name="免責聲明" size="P" /></li>
-                <li><LinkItem to="#" name="退貨政策" size="P" /></li>
-                <li><LinkItem to="#" name="FAQ" size="P" /></li>
+                <li>
+                  <ListItem to="#">隱私權條款</ListItem>
+                </li>
+                <li>
+                  <ListItem to="#">免責聲明</ListItem>
+                </li>
+                <li>
+                  <ListItem to="#">退貨政策</ListItem>
+                </li>
+                <li>
+                  <ListItem to="#">FAQ</ListItem>
+                </li>
               </ul>
             </LinkedList>
           </FooterLeft>

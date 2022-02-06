@@ -43,7 +43,11 @@ const AsideContent = styled(P)`
     ${LinkedTag}
     line-height: 2em;
     padding: ${props => props.$active ? '5px 0 7px' : '5px 0'};
-    font-weight: ${props => props.$active && props.theme.fontWeight.xl}
+    font-weight: ${props => props.$active && props.theme.fontWeight.xl};
+    display: inline-block;
+    & > a {
+        color: ${props => props.theme.color.black};
+    }
 `
 
 

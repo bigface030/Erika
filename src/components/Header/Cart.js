@@ -145,9 +145,6 @@ export const Cart = () => {
       handleDeleteCart
     } = useCart()
 
-    const handleCloseHeaderCart = () => {
-      cartDOM.current.checked = false
-    }
   
     return (
       <MenuBtn>
@@ -198,7 +195,7 @@ export const Cart = () => {
                 <H4>購物車內目前沒有商品</H4>
               )}
               {cart.length > 0 ? (
-                <Link to="/cart" onClick={handleCloseHeaderCart}>
+                <Link to="/cart">
                     <ToCartBtn $active={true}>
                         前往結帳
                     </ToCartBtn>
