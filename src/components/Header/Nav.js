@@ -14,7 +14,6 @@ const MenuNav = styled.nav`
 const Menu = styled.ul`
   margin: 0 20px;
   display: flex;
-  ${LinkedTag}
 
   & > li {
     & > a {
@@ -67,7 +66,7 @@ const SubMenuListBlock = styled.div`
   }
 `
 
-const MenuLink = styled(Link)`
+const MenuLink = styled(LinkedTag)`
   ${fontTheme.h4};
   ${props => props.$small && fontTheme.p};
   padding: 0 20px;
@@ -83,7 +82,7 @@ const MenuLink = styled(Link)`
   }
 `
 
-const SubMenuLink = styled(Link)`
+const SubMenuLink = styled(LinkedTag)`
   ${fontTheme.p}
   color: ${props => props.theme.color.black};
   padding: 5px 5px;
@@ -125,11 +124,7 @@ const MobileMenu = styled.ul`
   justify-content: space-between;
 
   & li {
-    & > a {
-      display: block;
-      color: ${props => props.theme.color.black};
-      ${LinkedTag}
-    }
+    position: relative;
   }
 
   & > div {
@@ -148,7 +143,13 @@ const MobileMenu = styled.ul`
       }
     }
   }
+`
 
+const MobileLink = styled(Link)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
 `
 
 const ToggleBtn = styled(Btn)`
@@ -206,94 +207,77 @@ export const MobileNav = () => {
       <MobileMenu>
         <div>
           <li>
-            <Link to="#">
-              <MenuLink to="#" $large>新品上市</MenuLink>
-            </Link>
+            <MenuLink to="#" $large>新品上市</MenuLink>
+            <MobileLink to="#" />
           </li>
           <li>
             <CheckBox id="collection" $size='large' />
-            <Link to="/collection">
-              <MenuLink to="/collection" $large>商品一覽</MenuLink>
-            </Link>
+            <MenuLink to="/collection" $large>商品一覽</MenuLink>
+            <MobileLink to="/collection" />
             <ul>
               <li>
                 <CheckBox id="collection-men" />
-                <Link to="/collection/men">
-                  <MenuLink to="/collection/men" $medium>男裝</MenuLink>
-                </Link>
+                <MenuLink to="/collection/men" $medium>男裝</MenuLink>
+                <MobileLink to="/collection/men" />
                 <ul>
                   <li>
-                    <Link to="/collection/men/tops">
-                      <MenuLink to="/collection/men/tops" $small>上衣類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/men/tops" $small>上衣類</MenuLink>
+                    <MobileLink to="/collection/men/tops" />
                   </li>
                   <li>
-                    <Link to="/collection/men/shirts">
-                      <MenuLink to="/collection/men/shirts" $small>襯衫類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/men/shirts" $small>襯衫類</MenuLink>
+                    <MobileLink to="/collection/men/shirts" />
                   </li>
                   <li>
-                    <Link to="/collection/men/knit">
-                      <MenuLink to="/collection/men/knit" $small>針織衫 / 毛衣</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/men/knit" $small>針織衫 / 毛衣</MenuLink>
+                    <MobileLink to="/collection/men/knit" />
                   </li>
                   <li>
-                    <Link to="/collection/men/bottoms">
-                      <MenuLink to="/collection/men/bottoms" $small>褲裝類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/men/bottoms" $small>褲裝類</MenuLink>
+                    <MobileLink to="/collection/men/bottoms" />
                   </li>
                   <li>
-                    <Link to="/collection/men/outer">
-                      <MenuLink to="/collection/men/outer" $small>外套類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/men/outer" $small>外套類</MenuLink>
+                    <MobileLink to="/collection/men/outer" />
                   </li>
                   <li>
-                    <Link to="/collection/men/general">
-                      <MenuLink to="/collection/men/general" $small>配件類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/men/general" $small>配件類</MenuLink>
+                    <MobileLink to="/collection/men/general" />
                   </li>
                 </ul>
               </li>
               <li>
                 <CheckBox id="collection-women" />
-                <Link to="/collection/women">
-                  <MenuLink to="/collection/women" $medium>女裝</MenuLink>
-                </Link>
+                <MenuLink to="/collection/women" $medium>女裝</MenuLink>
+                <MobileLink to="/collection/women" />
                 <ul>
                   <li>
-                    <Link to="/collection/women/tops">
-                      <MenuLink to="/collection/women/tops" $small>上衣 / 襯衫</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/women/tops" $small>上衣 / 襯衫</MenuLink>
+                    <MobileLink to="/collection/women/tops" />
                   </li>
                   <li>
-                    <Link to="/collection/women/knit">
-                      <MenuLink to="/collection/women/knit" $small>針織衫 / 毛衣</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/women/knit" $small>針織衫 / 毛衣</MenuLink>
+                    <MobileLink to="/collection/women/knit" />
                   </li>
                   <li>
-                    <Link to="/collection/women/bottoms">
-                      <MenuLink to="/collection/women/bottoms" $small>褲裝類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/women/bottoms" $small>褲裝類</MenuLink>
+                    <MobileLink to="/collection/women/bottoms" />
                   </li>
                   <li>
-                    <Link to="/collection/women/skirts">
-                      <MenuLink to="/collection/women/skirts" $small>裙子類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/women/skirts" $small>裙子類</MenuLink>
+                    <MobileLink to="/collection/women/skirts" />
                   </li>
                   <li>
-                    <Link to="/collection/women/one_piece">
-                      <MenuLink to="/collection/women/one_piece" $small>洋裝類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/women/one_piece" $small>洋裝類</MenuLink>
+                    <MobileLink to="/collection/women/one_piece" />
                   </li>
                   <li>
-                    <Link to="/collection/women/outer">
-                      <MenuLink to="/collection/women/outer" $small>外套類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/women/outer" $small>外套類</MenuLink>
+                    <MobileLink to="/collection/women/outer" />
                   </li>
                   <li>
-                    <Link to="/collection/women/general">
-                      <MenuLink to="/collection/women/general" $small>配件類</MenuLink>
-                    </Link>
+                    <MenuLink to="/collection/women/general" $small>配件類</MenuLink>
+                    <MobileLink to="/collection/women/general" />
                   </li>
                 </ul>
               </li>
@@ -301,43 +285,36 @@ export const MobileNav = () => {
           </li>
           <li>
             <CheckBox id="on-sale" $size='large' />
-            <Link to="#">
-              <MenuLink to="#" $large>特價專區</MenuLink>
-            </Link>
+            <MenuLink to="#" $large>特價專區</MenuLink>
+            <MobileLink to="#" />
             <ul>
               <li>
-                <Link to="#">
-                  <MenuLink to="#" $medium>秋冬女裝新品_7折起</MenuLink>
-                </Link>
+                <MenuLink to="#" $medium>秋冬女裝新品_7折起</MenuLink>
+                <MobileLink to="#" />
               </li>
               <li>
-                <Link to="#">
-                  <MenuLink to="#" $medium>秋冬男裝新品_7折起</MenuLink>
-                </Link>
+                <MenuLink to="#" $medium>秋冬男裝新品_7折起</MenuLink>
+                <MobileLink to="#" />
               </li>
               <li>
-                <Link to="#">
-                  <MenuLink to="#" $medium>春夏商品出清_3折起</MenuLink>
-                </Link>
+                <MenuLink to="#" $medium>春夏商品出清_3折起</MenuLink>
+                <MobileLink to="#" />
               </li>
             </ul>
           </li>
           <li>
-            <Link to="#">
-              <MenuLink to="#" $large>關於我們</MenuLink>
-            </Link>
+            <MenuLink to="#" $large>關於我們</MenuLink>
+            <MobileLink to="#" />
           </li>
         </div>
         <div>
           <li>
-            <Link to="#">
-              <MenuLink to="#" $large>登入</MenuLink>
-            </Link>
+            <MenuLink to="#" $large>登入</MenuLink>
+            <MobileLink to="#" />
           </li>
           <li>
-            <Link to="#">
-              <MenuLink to="#" $large>願望清單</MenuLink>
-            </Link>
+            <MenuLink to="#" $large>願望清單</MenuLink>
+            <MobileLink to="#" />
           </li>
         </div>
       </MobileMenu>

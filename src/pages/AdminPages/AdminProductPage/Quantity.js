@@ -197,6 +197,9 @@ const Item = ({product}) => {
             .then(result => {
                 setItem({group: result.data.product.Category.group.slice(0, -1), patterns: result.data.patterns})
             })
+        return () => {
+            setItem()
+        }
     }, [product.id])
 
     return (
@@ -235,7 +238,7 @@ export const Quantity = () => {
     useEffect(() => {
         dispatch(getProducts('', ''))
         return () => {
-            dispatch(setProducts(''))
+            dispatch(setProducts(null))
         }
     }, [dispatch])
 
@@ -259,17 +262,16 @@ export const Quantity = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {products && !error && (
-                                products.length > 0 ? (
-                                    products.map(product => (
-                                        <Item key={product.id} product={product} />
-                                    ))
-                                ) : (
-                                    <H4>查無商品</H4>
-                                )
+                            {products && !error && products.length > 0 && (
+                                products.map(product => (
+                                    <Item key={product.id} product={product} />
+                                ))
                             )}
                         </tbody>
                     </table>
+                    {products && !error && products.length === 0 && (
+                        <H4>查無商品</H4>
+                    )}
                     {!products && (
                         error ? (
                             <P>{error}</P>

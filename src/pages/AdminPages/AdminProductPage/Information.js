@@ -90,9 +90,12 @@ const Item = ({product}) => {
     
     useEffect(() => {
         getProductAPI(product.id)
-        .then(result => {
-            setInfo(result.data)
-        })
+            .then(result => {
+                setInfo(result.data)
+            })
+        return () => {
+            setInfo()
+        }
     }, [product.id])
 
     const handleIsOpened = e => {
@@ -148,7 +151,7 @@ export const Information = () => {
     useEffect(() => {
         dispatch(getProducts([gender, category], ''))
         return () => {
-            dispatch(setProducts(''))
+            dispatch(setProducts(null))
         }
     }, [dispatch, gender, category])
 
@@ -218,17 +221,16 @@ export const Information = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {products && !error && (
-                                products.length > 0 ? (
-                                    products.map(product => (
-                                        <Item key={product.id} product={product} />
-                                    ))
-                                ) : (
-                                    <H4>查無商品</H4>
-                                )
+                            {products && !error && products.length > 0 && (
+                                products.map(product => (
+                                    <Item key={product.id} product={product} />
+                                ))
                             )}
                         </tbody>
                     </table>
+                    {products && !error && products.length === 0 && (
+                        <H4>查無商品</H4>
+                    )}
                     {!products && (
                         error ? (
                             <P>{error}</P>

@@ -285,4 +285,17 @@ const getFeedImages = () => {
     })
 }
 
-export { getFeedImages, getProductsAPI, getProductAPI, addProductAPI, updateProductAPI, updatePatternAPI, deleteProductAPI, searchProductAPI };
+const uploadImageAPI = file => {
+    console.log(file)
+    const data = new FormData()
+    data.append('image', file)
+    return fetch('https://api.imgur.com/3/upload', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Client-ID 2def62c83bd73f2'
+        },
+        body: data
+    }).then(res => res.json())
+}
+
+export { getFeedImages, getProductsAPI, getProductAPI, addProductAPI, updateProductAPI, updatePatternAPI, deleteProductAPI, searchProductAPI, uploadImageAPI };

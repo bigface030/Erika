@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import { theme } from "./theme"
 
@@ -9,40 +10,18 @@ export const MEDIA_QUERY = {
     xs: "@media (max-width: 256px)",
 }
 
-export const LinkedTag = css`
-    & a {
-        &::after {
-            content: '';
-            display: block;
-            width: 0%;
-            height: 2px;
-            background-color: ${theme.color.black};
-            transition: width .4s;
-        }
-        &:hover {
-            &::after {
-                width: 100%
-            }
-        }
-    }
-`
-
-export const LinkedUL = styled.ul`
-    & a {
+export const LinkedTag = styled(Link)`
+    &::after {
+        content: '';
         display: block;
-        color: ${theme.color.black};
+        width: 0%;
+        height: 2px;
+        background-color: ${theme.color.black};
+        transition: width .4s;
+    }
+    &:hover {
         &::after {
-            content: '';
-            display: block;
-            width: 0%;
-            height: 2px;
-            background-color: ${theme.color.black};
-            transition: width .4s;
-        }
-        &:hover {
-            &::after {
-                width: 100%
-            }
+            width: 100%
         }
     }
 `

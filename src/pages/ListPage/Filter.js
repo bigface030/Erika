@@ -309,12 +309,11 @@ const PriceSelect = () => {
 }
 
 export const Filter = () => {
+  
   const sizes = ['S', 'M', 'L']
   const colors = ['brown', 'yellow', 'white', 'grey', 'black']
 
   const { pathname, search } = useContext(LocationContext);
-
-  console.log(search)
   
   return (
     <>

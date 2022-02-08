@@ -80,11 +80,9 @@ const LinkedList = styled.li`
   & a {
     color: ${props => props.theme.color.black};
   }
-
-  ${LinkedTag}
 `
 
-const ListTitle = styled(Link)`
+const ListTitle = styled(LinkedTag)`
   ${fontTheme.h4}
   font-weight: ${props => props.theme.fontWeight.xl};
   display: inline-block;
@@ -92,7 +90,7 @@ const ListTitle = styled(Link)`
   border-bottom: 1px solid #ddd;
 `
 
-const ListItem = styled(Link)`
+const ListItem = styled(LinkedTag)`
   ${fontTheme.p}
   display: inline-block;
   padding: 5px 5px;

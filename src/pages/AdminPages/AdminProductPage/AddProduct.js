@@ -10,6 +10,8 @@ import { sizeMap } from "../../../constants/mapping"
 import { P, fontTheme, TextBtn, Btn } from "../../../constants/style";
 
 import useAdminProduct from "../../../hooks/useAdminProduct";
+import { useCallback } from "react";
+import { uploadImage } from "../../../webAPI/productAPI";
 
 
 const StepContainer = styled.div`
@@ -140,7 +142,14 @@ const BtnContainer = styled.div`
 const UploadBtn = styled(TextBtn)`
     ${fontTheme.h5}
     font-weight: ${props => props.theme.fontWeight.m};
-    padding: 3px 8px;
+    padding: 0px;
+    & label {
+        padding: 5px 8px;
+        cursor: pointer;
+    }
+    & + input {
+        display: none;
+    }
 `
 
 const ImgInput = styled.div`
@@ -243,9 +252,24 @@ const PriceInput = styled.div`
     }
 `
 
-export const FirstStepInputs = ({step, name, gender, category, desc, material, washing, images, error, handleInputChange}) => {
+export const FirstStepInputs = ({step, name, gender, category, desc, material, washing, images, error, handleInputChange, handleUploadImage}) => {
 
     const errorMessage = useSelector(state => state.general.errorMessage)
+
+    // const [uploadedImage, setUploadedImage] = useState('')
+
+    // useEffect(() => {
+    //     if(!uploadedImage) return
+    //     uploadImage(uploadedImage)
+    //     .then(result => {
+    //         console.log(result.data.link)
+    //     })
+    //     // .catch(err => console.log(err))
+    // }, [uploadedImage])
+
+    useEffect(() => {
+        console.log(images)
+    }, [images])
 
     return (
         <>
@@ -357,7 +381,16 @@ export const FirstStepInputs = ({step, name, gender, category, desc, material, w
                             disabled={step > 1}
                             required={i === 0}
                         />
-                        <UploadBtn $white $active={step === 1 || step === 0}>上傳照片</UploadBtn>
+                        <UploadBtn $white $active={step === 1 || step === 0}>
+                            <label htmlFor={`upload_${i}`}>上傳照片</label>
+                        </UploadBtn>
+                        <input 
+                            type="file" 
+                            id={`upload_${i}`}
+                            name="upload"
+                            accept="image/*"
+                            onChange={handleUploadImage}
+                        />
                         <span></span>
                     </ImgInput>
                 ))}
@@ -392,12 +425,12 @@ const FirstStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                     產品基本資料
                 </FlowText>
             </FlowContent>
-            <form>
+            {/* <form onSubmit={e => e.preventDefault()}> */}
                 <FirstStepInputs {...{step, name, gender, category, desc, material, washing, images, handleInputChange}} />
                 <BtnContainer>
                     <TextBtn type="button" name="next" onClick={handleSetStep} $active={step === 1} disabled={step !== 1}>下一步</TextBtn>
                 </BtnContainer>
-            </form>
+            {/* </form> */}
         </FirstStepContainer>        
     )
 }
@@ -487,11 +520,12 @@ export const SecondStepInputs = ({step, group, sizes, colors, handleInputChange,
                         )
                     ) : (
                         <>
-                            {Array(2).fill('').map(() => (
-                                <SizeInput>
+                            {Array(2).fill('').map((a, i) => (
+                                <SizeInput key={i}>
                                     <div>
                                         <label>尺碼:</label>
                                         <input
+                                            value=""
                                             type="text"
                                             name="size"
                                             size="2"
@@ -566,20 +600,42 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
         handleDeletePattern, 
     } = useAdminProduct({step, setStep, productToAdd, setProductToAdd})
 
+    const getGroup = useCallback(() => {
+        switch (productToAdd.category) {
+            case 'tops': 
+            case 'shirts':
+            case 'knit':
+            case 'one_piece':
+            case 'outer': {
+                return 'Size_top'
+            }
+            case 'bottoms': {
+                return 'Size_bottom'
+            }
+            case 'skirts': {
+                return 'Size_skirt'
+            }
+            case 'general': {
+                return 'Size_general'
+            }
+            default: break
+        }
+    }, [productToAdd])
 
     useEffect(() => {
         if(step !== 2) return;
-        if(productToAdd.group === 'Size_general'){
+        if(!productToAdd) return;
+        if(getGroup() === 'Size_general'){
             setSizes([{size: 'one'}])
         } else {
             let arr = Array(2).fill({size: ''})
-            Object.keys(sizeMap[productToAdd.group]).map(ele => (
+            Object.keys(sizeMap[getGroup()]).map(ele => (
                 arr.map(a => a[ele] = (ele === 'waist' ? [0, 0] : 0))
             ))
             setSizes(arr)
         }
         setColors(Array(2).fill({name: '', code: '#000000'}))
-    }, [productToAdd.group, step, setSizes, setColors])
+    }, [productToAdd, step, setSizes, setColors, getGroup])
 
 
     return (
@@ -597,7 +653,7 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                 <form onSubmit={e => e.preventDefault()}>
                     <SecondStepInputs 
                         step={step}
-                        group={productToAdd.group || null}
+                        group={getGroup() || null}
                         sizes={sizes}
                         colors={colors}
                         error={error}
@@ -801,14 +857,16 @@ export default function AddProduct () {
     const [productToAdd, setProductToAdd] = useState('')
 
     useEffect(() => {
+        if(!productToAdd) return
+
         const unblock = history.block(() => {
             return window.confirm("目前的資料尚未被儲存, 是否要離開?");
         });
     
         return () => {
-            unblock();
+            return unblock();
         };
-    })
+    }, [history, productToAdd])
 
     return (
         <MainContainer>

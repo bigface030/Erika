@@ -122,6 +122,12 @@ const Item = ({product}) => {
         setIsSale(product.is_sale)
         setPriceStandard(product.price_standard || '')
         setPriceSale(product.price_sale || '')
+        return () => {
+            setIsOn(null)
+            setIsSale(null)
+            setPriceStandard(NaN)
+            setPriceSale(NaN)
+        }
     }, [product])
 
     const handleInputChange = e => {
@@ -251,7 +257,7 @@ export const Price = () => {
         if(order !== '') search.set('order', order)
         dispatch(getProducts('', `?${search}`))
         return () => {
-            dispatch(setProducts(''))
+            dispatch(setProducts(null))
         }
     }, [dispatch, isOn, isSale, order])
 
@@ -319,17 +325,16 @@ export const Price = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products && !error && (
-                            products.length > 0 ? (
-                                products.map(product => (
-                                    <Item key={product.id} product={product} />
-                                ))
-                            ) : (
-                                <H4>查無商品</H4>
-                            )
+                        {products && !error && products.length > 0 && (
+                            products.map(product => (
+                                <Item key={product.id} product={product} />
+                            ))
                         )}
                     </tbody>
                 </table>
+                {products && !error && products.length === 0 && (
+                    <H4>查無商品</H4>
+                )}
                 {!products && (
                     error ? (
                         <P>{error}</P>

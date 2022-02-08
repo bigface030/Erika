@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { sizeMap } from "../constants/mapping";
 import { setErrorMessage } from "../features/general/generalSlice";
-import { addProductAPI, searchProductAPI, updateProductAPI } from "../webAPI/productAPI"
+import { addProductAPI, searchProductAPI, updateProductAPI, uploadImageAPI } from "../webAPI/productAPI"
 
 
 export default function useAdminProduct ({step, setStep, productToAdd, setProductToAdd, top}) {
@@ -39,10 +39,54 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
         setDesc(product.product.desc)
         setMaterial(product.product.material)
         setWashing(product.product.washing)
-        setImages(Array(4).fill({src: ''}).map((image, i) => product.product.Images[i] ? {...image, id: product.product.Images[i].id, src: product.product.Images[i].src} : image))
+        setImages(Array(4).fill({src: ''}).map((image, i) => product.product.Images[i] ? {...image, id: product.product.Images[i].id, src: product.product.Images[i].src, alt: `${product.product.name}_0${i+1}`} : {...image, alt: `${product.product.name}_0${i+1}`}))
         setSizes(product.product[product.product.Category.group].map(size => size.waist ? {...size, waist: size.waist.split('~')} : size))
         setColors(product.product.Colors)
     }, [product])
+
+    const [isSubmitted, setIsSubmitted] = useState(false)
+
+    useEffect(() => {
+        if(!isSubmitted) return
+        addProductAPI(productToAdd)
+        .then(result => {
+            setIsSubmitted(false)
+            if (!result.ok) {
+                let lastProduct = {...productToAdd}
+                switch (isSubmitted) {
+                    case 'first': {
+                        lastProduct = ''
+                        break
+                    }
+                    case 'second': {
+                        delete lastProduct.sizes
+                        delete lastProduct.colors
+                        break
+                    }
+                    case 'third': {
+                        delete lastProduct.patterns
+                        delete lastProduct.is_on
+                        delete lastProduct.is_sale
+                        delete lastProduct.price_standard
+                        delete lastProduct.price_sale
+                        break
+                    }
+                    default: break
+                }
+                setProductToAdd(lastProduct)
+                alert(result.message)
+                return window.scrollTo(0, 0)
+            }
+            dispatch(setErrorMessage(''))
+            setProductToAdd('')
+        })
+        .then(() => {
+            setTimeout(() => {
+                alert('新增成功!')
+                history.push('/admin/product/information')
+            });
+        })
+    }, [isSubmitted, dispatch, history, productToAdd, setProductToAdd])
 
 
     const handleInputChange = e => {
@@ -134,7 +178,6 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
                     updateProductAPI(product.product.id, {
                         name, 
                         gender, 
-                        category, 
                         desc, 
                         material, 
                         washing, 
@@ -155,40 +198,8 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
                 )
             }
             case 'add': {
-                if (stepName === 'first') saveProduct()
-                return addProductAPI(productToAdd)
-                .then(result => {
-                    if (!result.ok) {
-                        let lastProduct = {...productToAdd}
-                        switch (stepName) {
-                            case 'first': {
-                                lastProduct = ''
-                                break
-                            }
-                            case 'second': {
-                                delete lastProduct.sizes
-                                delete lastProduct.colors
-                                break
-                            }
-                            case 'third': {
-                                delete lastProduct.patterns
-                                delete lastProduct.is_on
-                                delete lastProduct.is_sale
-                                delete lastProduct.price_standard
-                                delete lastProduct.price_sale
-                                break
-                            }
-                            default: break
-                        }
-                        setProductToAdd(lastProduct)
-                        alert(result.message)
-                        return window.scrollTo(0, 0)
-                    }
-                    setProductToAdd('')
-                    dispatch(setErrorMessage(''))
-                    alert('新增成功!')
-                    history.push('/admin/product/information')
-                })
+                if (stepName === 'third') saveProduct()
+                return setIsSubmitted(stepName)
             }
             default: break
         }
@@ -281,6 +292,15 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
         }
     }
 
+    const handleUploadImage = e => {
+        const index = parseInt(e.target.id.slice(-1))
+        uploadImageAPI(e.target.files[0])
+            .then(result => {
+                console.log(result.data.link)
+                setImages(images.map((image, i) => i === index ? {...image, src: result.data.link} : image))
+            })
+    }
+
     return {
         name, 
         gender, 
@@ -314,5 +334,8 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
         saveProduct, 
         handleAddPattern, 
         handleDeletePattern, 
+        handleUploadImage,
+
+        isSubmitted
     }
 }

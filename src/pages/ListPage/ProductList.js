@@ -69,7 +69,7 @@ export const ProductList = () => {
     const pathArr = pathname.split('/').slice(2, 4)
     dispatch(getProducts(pathArr, `?${newSearch}`))
     return () => {
-      dispatch(setProducts(''))
+      dispatch(setProducts(null))
     }
   }, [pathname, search, dispatch])
   
