@@ -11,7 +11,8 @@ import { P, fontTheme, TextBtn, Btn } from "../../../constants/style";
 
 import useAdminProduct from "../../../hooks/useAdminProduct";
 import { useCallback } from "react";
-import { uploadImage } from "../../../webAPI/productAPI";
+import { uploadImageAPI } from "../../../webAPI/productAPI";
+import { Loader } from "../../../components/Loader";
 
 
 const StepContainer = styled.div`
@@ -252,24 +253,22 @@ const PriceInput = styled.div`
     }
 `
 
-export const FirstStepInputs = ({step, name, gender, category, desc, material, washing, images, error, handleInputChange, handleUploadImage}) => {
+export const FirstStepInputs = ({step, name, gender, category, desc, material, washing, images, handleInputChange, setImages}) => {
 
     const errorMessage = useSelector(state => state.general.errorMessage)
 
-    // const [uploadedImage, setUploadedImage] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
-    // useEffect(() => {
-    //     if(!uploadedImage) return
-    //     uploadImage(uploadedImage)
-    //     .then(result => {
-    //         console.log(result.data.link)
-    //     })
-    //     // .catch(err => console.log(err))
-    // }, [uploadedImage])
-
-    useEffect(() => {
-        console.log(images)
-    }, [images])
+    const handleUploadImage = e => {
+        if(!e.target.files[0]) return
+        setIsLoading(true)
+        const index = parseInt(e.target.id.slice(-1))
+        uploadImageAPI(e.target.files[0])
+            .then(result => {
+                setImages(images.map((image, i) => i === index ? {...image, src: result.data.link} : image))
+                setIsLoading(false)
+            })
+    }
 
     return (
         <>
@@ -395,6 +394,9 @@ export const FirstStepInputs = ({step, name, gender, category, desc, material, w
                     </ImgInput>
                 ))}
             </InputBlock>
+            {isLoading && (
+                <Loader />
+            )}
         </>
     )
 }
@@ -409,6 +411,7 @@ const FirstStep = ({step, setStep, productToAdd, setProductToAdd}) => {
         material, 
         washing, 
         images, 
+        setImages, 
         handleInputChange, 
         handleSetStep, 
     } = useAdminProduct({step, setStep, productToAdd, setProductToAdd})
@@ -426,7 +429,7 @@ const FirstStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                 </FlowText>
             </FlowContent>
             {/* <form onSubmit={e => e.preventDefault()}> */}
-                <FirstStepInputs {...{step, name, gender, category, desc, material, washing, images, handleInputChange}} />
+                <FirstStepInputs {...{step, name, gender, category, desc, material, washing, images, handleInputChange, setImages}} />
                 <BtnContainer>
                     <TextBtn type="button" name="next" onClick={handleSetStep} $active={step === 1} disabled={step !== 1}>下一步</TextBtn>
                 </BtnContainer>

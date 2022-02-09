@@ -293,12 +293,13 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
     }
 
     const handleUploadImage = e => {
-        const index = parseInt(e.target.id.slice(-1))
-        uploadImageAPI(e.target.files[0])
-            .then(result => {
-                console.log(result.data.link)
-                setImages(images.map((image, i) => i === index ? {...image, src: result.data.link} : image))
-            })
+        console.log('test')
+        // const index = parseInt(e.target.id.slice(-1))
+        // uploadImageAPI(e.target.files[0])
+        //     .then(result => {
+        //         console.log(result.data.link)
+        //         setImages(images.map((image, i) => i === index ? {...image, src: result.data.link} : image))
+        //     })
     }
 
     return {
@@ -309,6 +310,7 @@ export default function useAdminProduct ({step, setStep, productToAdd, setProduc
         material, 
         washing, 
         images, 
+        setImages,
 
         sizes, 
         setSizes, 

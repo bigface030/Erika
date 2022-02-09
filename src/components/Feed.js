@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { getFeedImages } from "../webAPI/productAPI";
+import { getFeedImagesAPI } from "../webAPI/productAPI";
 import { MEDIA_QUERY } from "../constants/style"
 
 const FeedWrapper = styled.div`
@@ -32,13 +32,14 @@ export const Feed = () => {
 
   const [feeds, setFeeds] = useState()
   useEffect(() => {
-    getFeedImages().then(data => {
-      setFeeds(
-        data.map(img => (
-          {id: img.id, desc: img.description, url: img.urls.small}
-        ))
-      )
-    })
+    getFeedImagesAPI()
+      .then(data => {
+        setFeeds(
+          data.map(img => (
+            {id: img.id, desc: img.description, url: img.urls.small}
+          ))
+        )
+      })
   }, [])
 
   return (

@@ -134,8 +134,6 @@ const ProductReminderNew = styled.span`
 
 export const ProductItem = ({product}) => {
 
-  const dispatch = useDispatch()
-
   const { 
     addCommaToPrice, 
     handleAddToWishList

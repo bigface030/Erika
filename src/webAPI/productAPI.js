@@ -259,7 +259,7 @@ const updatePatternAPI = (id, pattern) => {
     })    
 }
 
-const getFeedImages = () => {
+const getFeedImagesAPI = () => {
     return fetch('https://api.unsplash.com/topics/fashion', {
         method: 'GET',
         headers: {
@@ -286,16 +286,15 @@ const getFeedImages = () => {
 }
 
 const uploadImageAPI = file => {
-    console.log(file)
     const data = new FormData()
     data.append('image', file)
-    return fetch('https://api.imgur.com/3/upload', {
+    return fetch('https://api.imgur.com/3/image', {
         method: 'POST',
         headers: {
-            'Authorization': 'Client-ID 2def62c83bd73f2'
+            'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_KEY}`
         },
         body: data
     }).then(res => res.json())
 }
 
-export { getFeedImages, getProductsAPI, getProductAPI, addProductAPI, updateProductAPI, updatePatternAPI, deleteProductAPI, searchProductAPI, uploadImageAPI };
+export { getProductsAPI, getProductAPI, addProductAPI, updateProductAPI, deleteProductAPI, searchProductAPI, updatePatternAPI, getFeedImagesAPI, uploadImageAPI };
