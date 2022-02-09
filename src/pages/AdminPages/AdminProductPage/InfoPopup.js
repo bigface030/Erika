@@ -152,6 +152,7 @@ export const EditPopup = () => {
         material, 
         washing, 
         images, 
+        setImages, 
         sizes, 
         colors, 
         handleInputChange, 
@@ -167,22 +168,11 @@ export const EditPopup = () => {
                 <form onSubmit={e => e.preventDefault()}>
                     <FirstStepInputs 
                         step={0} 
-                        name={name}
-                        gender={gender}
-                        category={category}
-                        desc={desc}
-                        material={material}
-                        washing={washing}
-                        images={images}
-                        handleInputChange={handleInputChange}
+                        {... {name, gender, category, desc, material, washing, images, setImages, handleInputChange}}
                     />
                     <SecondStepInputs 
                         step={0}
-                        sizes={sizes}
-                        colors={colors}
-                        handleInputChange={handleInputChange}
-                        handleAddPattern={handleAddPattern}
-                        handleDeletePattern={handleDeletePattern}
+                        {...{sizes, colors, handleInputChange, handleAddPattern, handleDeletePattern}}
                         group={product?.product.Category.group.slice(0, -1)}
                         sizesLength={product.product[product.product.Category.group].length}
                         colorsLength={product.product.Colors.length}

@@ -1,10 +1,8 @@
 import styled from "styled-components"
-import { useDispatch, useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import useProduct from "../hooks/useProduct";
-import { setCartQty } from "../features/product/productSlice";
+
 
 const Qty = styled.div`
     width: 60px;
@@ -46,6 +44,7 @@ const Qty = styled.div`
         }
     }
 `
+
 
 export const QtySelector = ({qty, handleQtyChange, handleBtnClick}) => {
 

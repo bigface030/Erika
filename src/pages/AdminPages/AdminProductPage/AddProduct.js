@@ -153,6 +153,12 @@ const UploadBtn = styled(TextBtn)`
     }
 `
 
+const AddBtn = styled(TextBtn)`
+    ${fontTheme.h5}
+    font-weight: ${props => props.theme.fontWeight.m};
+    padding: 3px 8px;
+`
+
 const ImgInput = styled.div`
     display: flex;
     align-items: center;
@@ -448,7 +454,7 @@ export const SecondStepInputs = ({step, group, sizes, colors, handleInputChange,
                 <InputTitle>
                     <label>尺寸</label>
                     {group !== 'Size_general' && (
-                        <UploadBtn type="button" onClick={handleAddPattern(group)} name="size" $white $active={step === 2 || step === 0}>新增尺寸</UploadBtn>
+                        <AddBtn type="button" onClick={handleAddPattern(group)} name="size" $white $active={step === 2 || step === 0}>新增尺寸</AddBtn>
                     )}
                 </InputTitle>
                     {sizes.length > 0 ? (
@@ -544,7 +550,7 @@ export const SecondStepInputs = ({step, group, sizes, colors, handleInputChange,
             <InputBlock>
                 <InputTitle>
                     <label>顏色</label>
-                    <UploadBtn type="button" onClick={handleAddPattern()} name="color" $white $active={step === 2 || step === 0}>新增顏色</UploadBtn>
+                    <AddBtn type="button" onClick={handleAddPattern()} name="color" $white $active={step === 2 || step === 0}>新增顏色</AddBtn>
                 </InputTitle>
                 {colors && colors.map((color, i) => (
                     <ColorInput key={i}>
@@ -652,49 +658,45 @@ const SecondStep = ({step, setStep, productToAdd, setProductToAdd}) => {
                     設定尺寸及顏色
                 </FlowText>
             </FlowContent>
-            {/* {productToAdd.group && ( */}
-                <form onSubmit={e => e.preventDefault()}>
-                    <SecondStepInputs 
-                        step={step}
-                        group={getGroup() || null}
-                        sizes={sizes}
-                        colors={colors}
-                        error={error}
-                        handleInputChange={handleInputChange}
-                        handleAddPattern={handleAddPattern}
-                        handleDeletePattern={handleDeletePattern}
-                    />
-                    <BtnContainer>
-                        <TextBtn 
-                            type="button" 
-                            name="back" 
-                            onClick={handleSetStep} 
-                            $active={step === 2} 
-                            disabled={step !== 2}
-                        >
-                            上一步
-                        </TextBtn>
-                        <TextBtn 
-                            type="button" 
-                            name="next" 
-                            onClick={handleSetStep} 
-                            $active={step === 2} 
-                            disabled={step !== 2}
-                        >
-                            下一步
-                        </TextBtn>
-                        <TextBtn 
-                            type="submit" 
-                            name="add_first"
-                            onClick={handleFormSubmit} 
-                            $active={step === 2} 
-                            disabled={step !== 2}
-                        >
-                            略過並儲存
-                        </TextBtn>
-                    </BtnContainer>
-                </form>
-            {/* )} */}
+            {getGroup() && (
+                // <form onSubmit={e => e.preventDefault()}>
+                    <>
+                        <SecondStepInputs
+                            {...{step, sizes, colors, error, handleInputChange, handleAddPattern, handleDeletePattern}}
+                            group={getGroup() || null}
+                        />
+                        <BtnContainer>
+                            <TextBtn
+                                type="button"
+                                name="back"
+                                onClick={handleSetStep}
+                                $active={step === 2}
+                                disabled={step !== 2}
+                            >
+                                上一步
+                            </TextBtn>
+                            <TextBtn
+                                type="button"
+                                name="next"
+                                onClick={handleSetStep}
+                                $active={step === 2}
+                                disabled={step !== 2}
+                            >
+                                下一步
+                            </TextBtn>
+                            <TextBtn
+                                type="submit"
+                                name="add_first"
+                                onClick={handleFormSubmit}
+                                $active={step === 2}
+                                disabled={step !== 2}
+                            >
+                                略過並儲存
+                            </TextBtn>
+                        </BtnContainer>
+                    </>
+                // </form>
+            )}
         </SecondStepContainer>        
     )
 }

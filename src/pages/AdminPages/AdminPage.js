@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Switch, Route, useRouteMatch, useLocation } from "react-router-dom"
 
@@ -40,7 +39,6 @@ const AsideBlock = styled.div`
 `
 
 const AsideContent = styled(P)`
-    ${LinkedTag}
     line-height: 2em;
     padding: ${props => props.$active ? '5px 0 7px' : '5px 0'};
     font-weight: ${props => props.$active && props.theme.fontWeight.xl};
@@ -75,21 +73,21 @@ export default function AdminPage () {
                                     {subPath[1] === 'information' ? (
                                         <>新增及管理產品資訊</>
                                     ) : (
-                                        <Link to={`${url}/product/information`}>新增及管理產品資訊</Link>
+                                        <LinkedTag to={`${url}/product/information`}>新增及管理產品資訊</LinkedTag>
                                     )}
                                 </AsideContent>
                                 <AsideContent $active={subPath[1] === 'quantity'}>
                                     {subPath[1] === 'quantity' ? (
                                         <>管理存貨數量與紀錄</>
                                     ) : (
-                                        <Link to={`${url}/product/quantity`}>管理存貨數量與紀錄</Link>
+                                        <LinkedTag to={`${url}/product/quantity`}>管理存貨數量與紀錄</LinkedTag>
                                     )}
                                 </AsideContent>
                                 <AsideContent $active={subPath[1] === 'price'}>
                                     {subPath[1] === 'price' ? (
                                         <>管理商品價格與紀錄</>
                                     ) : (
-                                        <Link to={`${url}/product/price`}>管理商品價格與紀錄</Link>
+                                        <LinkedTag to={`${url}/product/price`}>管理商品價格與紀錄</LinkedTag>
                                     )}
                                 </AsideContent>
                             </div>
@@ -101,7 +99,7 @@ export default function AdminPage () {
                                     {subPath[0] === 'order' ? (
                                         <>管理所有訂單</>
                                     ) : (
-                                        <Link to={`${url}/order`}>管理所有訂單</Link>
+                                        <LinkedTag to={`${url}/order`}>管理所有訂單</LinkedTag>
                                     )}
                                 </AsideContent>
                             </div>
@@ -113,7 +111,7 @@ export default function AdminPage () {
                                     {subPath[0] === 'user' ? (
                                         <>管理所有用戶</>
                                     ) : (
-                                        <Link to={`${url}/user`}>管理所有用戶</Link>
+                                        <LinkedTag to={`${url}/user`}>管理所有用戶</LinkedTag>
                                     )}
                                 </AsideContent>
                             </div>
