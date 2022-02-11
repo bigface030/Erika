@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Erika/static/css/main.2be63f9e.chunk.css",
-    "main.js": "/Erika/static/js/main.fbfcfc1d.chunk.js",
-    "main.js.map": "/Erika/static/js/main.fbfcfc1d.chunk.js.map",
+    "main.css": "/Erika/static/css/main.6055aa4c.chunk.css",
+    "main.js": "/Erika/static/js/main.4081070f.chunk.js",
+    "main.js.map": "/Erika/static/js/main.4081070f.chunk.js.map",
     "runtime-main.js": "/Erika/static/js/runtime-main.488b83e8.js",
     "runtime-main.js.map": "/Erika/static/js/runtime-main.488b83e8.js.map",
     "static/js/2.4f7497f3.chunk.js": "/Erika/static/js/2.4f7497f3.chunk.js",
     "static/js/2.4f7497f3.chunk.js.map": "/Erika/static/js/2.4f7497f3.chunk.js.map",
     "index.html": "/Erika/index.html",
-    "static/css/main.2be63f9e.chunk.css.map": "/Erika/static/css/main.2be63f9e.chunk.css.map",
+    "static/css/main.6055aa4c.chunk.css.map": "/Erika/static/css/main.6055aa4c.chunk.css.map",
     "static/js/2.4f7497f3.chunk.js.LICENSE.txt": "/Erika/static/js/2.4f7497f3.chunk.js.LICENSE.txt",
     "static/media/arrival_female.82ff7752.jpeg": "/Erika/static/media/arrival_female.82ff7752.jpeg",
     "static/media/arrival_male.2de499ab.jpeg": "/Erika/static/media/arrival_male.2de499ab.jpeg",
@@ -17,7 +17,7 @@
   "entrypoints": [
     "static/js/runtime-main.488b83e8.js",
     "static/js/2.4f7497f3.chunk.js",
-    "static/css/main.2be63f9e.chunk.css",
-    "static/js/main.fbfcfc1d.chunk.js"
+    "static/css/main.6055aa4c.chunk.css",
+    "static/js/main.4081070f.chunk.js"
   ]
 }
