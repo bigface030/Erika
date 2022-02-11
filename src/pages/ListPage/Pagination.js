@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -93,11 +93,9 @@ const Page = ({page_count}) => {
 
     const url = `${pathname}?${newSearch}`
 
-    // const x = useRef(0)
     return (
         <PageContainer>
-            {/* {x.current++} */}
-            {(currentPage !== arr[0]) && (
+            {arr.length > 0 && (currentPage !== arr[0]) && (
                 <PageBtn>
                     <Link to={url}>
                         <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 90 }}/>
@@ -110,7 +108,7 @@ const Page = ({page_count}) => {
                     page={page} 
                 />
             ))}
-            {(currentPage !== arr[arr.length-1]) && (
+            {arr.length > 0 && (currentPage !== arr[arr.length-1]) && (
                 <PageBtn>
                     <Link to={url}>
                         <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: -90 }}/>
@@ -123,22 +121,17 @@ const Page = ({page_count}) => {
 
 export const Pagination = ({products}) => {
 
-    // console.log('Pagination render')
-
     const { count, per_page, page, page_count } = products;
 
-    const number_start = (page - 1) * per_page + 1
-    const number_end = (page === page_count) ? (
+    const number_start = page ? (page - 1) * per_page + 1 : 0
+    const number_end = !page ? 0 : (page === page_count) ? (
         number_start + count - (page - 1) * per_page - 1
     ) : (
         number_start + per_page - 1
     )
 
-    // const x = useRef(0)
-
     return (
         <>
-            {/* {x.current++} */}
             <Result>
                 <p>{number_start} ~ {number_end}，共 {count} 筆資料</p>
             </Result>

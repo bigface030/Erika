@@ -61,7 +61,6 @@ export const ProductList = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {    
-    window.scrollTo(0, 0);
     const newSearch = new URLSearchParams(search);
     if(!newSearch.has('page')){
       newSearch.set('page', 1)

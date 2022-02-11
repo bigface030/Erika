@@ -39,7 +39,7 @@ const AsideContainer = styled.aside`
   ${MEDIA_QUERY.main} {
     position: fixed;
     left: -240px;
-    z-index: 200;
+    z-index: 9;
     transition: .3s;
   }
 `

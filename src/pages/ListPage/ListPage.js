@@ -42,6 +42,7 @@ export default function ListPage() {
     }
   }, [history, pathArr, currentTitle])
 
+
   return (
     <LocationContext.Provider value={{pathname, search}} >
       <>

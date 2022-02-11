@@ -314,6 +314,11 @@ export const Filter = () => {
   const colors = ['brown', 'yellow', 'white', 'grey', 'black']
 
   const { pathname, search } = useContext(LocationContext);
+  const newSearch = new URLSearchParams(search)
+
+  const clearedSearch = newSearch.has('order') ? new URLSearchParams({order: newSearch.get('order')}) : null
+
+  const clearURL = clearedSearch ? `${pathname}?${clearedSearch}` : pathname
   
   return (
     <>
@@ -324,9 +329,9 @@ export const Filter = () => {
       </ControllerBtn>
       <FilterContainer>
         <H4>商品篩選</H4>
-        {search && !search.includes('page') && (
+        {(newSearch.has('size') || newSearch.has('color') || newSearch.has('price')) && (
           <ClearBtn>
-            <Link to={pathname}>
+            <Link to={clearURL}>
               <span>清除篩選</span>
             </Link>
           </ClearBtn>

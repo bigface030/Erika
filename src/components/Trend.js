@@ -81,13 +81,12 @@ const TrendItem = ({trend}) => {
   return (
     <TrendCard>
       <TrendImage>
-        <Link to="/products">
+        <Link to={`/product/${trend.id}`}>
           <Img image={trend.Images[0]} />
-          {/* <img src={trend.Images[0].src} alt={trend.Images[0].alt} /> */}
         </Link>
       </TrendImage>
       <TrendInfo>
-        <Link to="/products">
+        <Link to={`/product/${trend.id}`}>
           <P>{trend.name}</P>
         </Link>
         {

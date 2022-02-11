@@ -100,7 +100,7 @@ export const SizePopup = () => {
                                 <td>{i.size}</td>
                                 {Object.keys(sizeMap[group.slice(0, -1)]).map((j, index) => (
                                     <td key={index}>
-                                        {i[j] ? `${i[j]}cm` : '-'}
+                                        {(i[j] && i[j]!== '0~0') ? `${i[j]}cm` : '-'}
                                     </td>
                                 ))}
                             </tr>

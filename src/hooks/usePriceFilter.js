@@ -68,10 +68,6 @@ export default function usePriceFilter() {
   const history = useHistory()
 
   const handleMouseDown = e => {
-    console.log(WR)
-    console.log(WL)
-    console.log(perLeft)
-    console.log(perRight)
     if(isNaN(WR.current) || isNaN(WL.current) || isNaN(perLeft.current) || isNaN(perRight.current)){
       return setIsDragging(false)
     }
