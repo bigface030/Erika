@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+# ERiKA
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### ERiKA 電商服飾平台
 
-## Available Scripts
+> #### 網站連結：https://tpdidilong.github.io/Erika/
 
-In the project directory, you can run:
+## 專案簡介
+透過 [Create React App](https://create-react-app.dev/) 建立開發環境，使用 [React](https://zh-hant.reactjs.org/) 開發 SPA (Single Page Application)，完成後將專案部署至 [GitHub Pages](https://pages.github.com/)。
+#### 目前可使用功能：
+- 瀏覽商品
+- 加入購物車
+- 管理後台之管理商品部分
+#### 未來開放功能：
+> 請見 **專案展望**
 
-### `npm start`
+## 使用技術
+#### 前端框架：
+- [react (hooks)](https://zh-hant.reactjs.org/)
+- [react-dom](https://www.npmjs.com/package/react-dom)
+#### 第三方套件：
+- [styled-components](https://styled-components.com/)：使用 JSX 語法撰寫 css。可直接傳入變數做運算，不需透過 class 動態變更 style。
+- [react-router-dom](https://v5.reactrouter.com/)：使用 `<HashRouter>` 實現 SPA 路由。
+- [react-redux](https://react-redux.js.org/)：在 react 裡實現狀態管理。
+- [redux-toolkit](https://redux-toolkit.js.org/)：更簡單地撰寫 redux。將 states, actions, reducers 集中管理於 slices，用 mutable 的方式撰寫 actions，支援 redux-thunk middleware。
+- [font-awesome](https://fontawesome.com/)：透過套件提供的 `<FontAwesomeIcon>` 元件，快速套用圖庫裡的 icon class，作為專案內的 UI icons。
+- [react-scroll-restoration](https://www.npmjs.com/package/react-scroll-restoration)：實現前端換頁移至頁首的同時，當使用者透過瀏覽器操作上一頁或下一頁可恢復至原瀏覽位置。
+- [gh-pages](https://pages.github.com/)：方便且快速地部署 CRA 專案。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### 第三方API
+- [Unsplash API](https://unsplash.com/developers)：從 [Unsplash](https://unsplash.com/) 圖庫內取得隨機圖片。用於首頁、目錄頁及商品頁之底部推播。
+- [Imgur API](https://apidocs.imgur.com)：將本機圖片檔案上傳至 [Imgur](https://imgur.com/) 圖床，並取得圖片網址。用於商品後台，管理員上傳商品圖片。
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+## 專案執行
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. `npm install`：安裝專案所需套件
+2. `npm run start`：在 http://localhost:3000 啟動專案 development 版本
+3. `npm run build`：在 build 資料夾建立專案 production 版本 ( = `npm run predeploy`)
+4. `npm run deploy`：將網站部署至 [GitHub Pages](https://pages.github.com/)
 
-### `npm run build`
+## 頁面架構
+![](https://i.imgur.com/pmq5sQv.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 專案 DEMO
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 專案展望
+#### 新增會員系統
+- 實作登入及註冊功能，串連第三方登入
+- 會員功能：
+    - 加入商品至願望清單
+    - 查看以會員身份進行結帳之歷史訂單
+    - 更改會員資料
+    - 【管理員限定】進入管理後台之權限
+- 更新管理員功能：
+    - 商品管理：新增存貨進出紀錄和價格變動紀錄（搭配後端資料庫新增 database）
+- 新增管理員功能：
+    - 訂單管理：分為已成立、已付款、已完成、已取消四種狀態
+    - 會員管理：可將特定會員之權限由使用者調整為管理員
+#### 新增訂單系統
+- 實作購物車結帳功能
+    - 串接金流、超商門市選擇
+- 訂單管理
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 專案後端
+採用 [Node.js](https://nodejs.org/en/) 的 web 框架 [Express](https://expressjs.com/) 建置 server，搭配 ORM 框架 [Sequelize](https://sequelize.org/) 操作 [MySQL](https://www.mysql.com/) 資料庫以建立 controllers 及 models，同時生成 API 與前端串連。
+> #### 專案連結：https://github.com/TPdidilong/Erika-backend
 
-### `npm run eject`
+## 專案授權
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[MIT License](https://choosealicense.com/licenses/mit/)
