@@ -69,7 +69,7 @@ const SubMenuListBlock = styled.div`
 const MenuLink = styled(LinkedTag)`
   ${fontTheme.h4};
   ${props => props.$small && fontTheme.p};
-  padding: 0 20px;
+  padding: 0 10px;
   ${props => !props.$small && 'line-height: 2em'};
   color: ${props => props.theme.color.black};
 
@@ -188,13 +188,13 @@ const ToggleInput = styled.input`
   }
 `
 
-const CheckBox = ({id, $size}) => {
+const CheckBox = ({ id, $size }) => {
   return (
     <>
-      <ToggleInput id={id} type="checkbox"/>
-      <ToggleBtn {...{$size}}>
+      <ToggleInput id={id} type="checkbox" />
+      <ToggleBtn {...{ $size }}>
         <label htmlFor={id}>
-            <FontAwesomeIcon icon={faChevronDown}/>
+          <FontAwesomeIcon icon={faChevronDown} />
         </label>
       </ToggleBtn>
     </>
