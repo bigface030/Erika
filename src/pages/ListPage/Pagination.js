@@ -1,15 +1,13 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link } from "react-router-dom"
+import { useContext } from "react"
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
-import { LocationContext } from "./ListPage";
-
 import { MEDIA_QUERY } from "../../constants/style"
-import { Span } from "../../constants/style"
 
+import { LocationContext } from "./ListPage"
 
 
 const PageContainer = styled.div`
@@ -30,20 +28,24 @@ const PageBtn = styled.button`
   background-color: ${props => props.$selected ? props.theme.color.lightGrey : props.theme.color.white};
   &:hover {
     background-color: ${props => props.theme.color.black};
-    & span, svg {
-      color: ${props => props.theme.color.white};
+    & a, svg {
+        color: ${props => props.theme.color.white};
     }
   }
-  & svg {
-    margin: 0 auto;
-    font-size: ${props => props.theme.fontSize.body};
-    color: ${props => props.theme.color.black};
-    display: block;
-  }
-  & span {
+  position: relative;
+  & a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    line-height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     font-weight: ${props => props.theme.fontWeight.xl};
-    color: ${props => props.$selected && props.theme.color.white};
-    display: block;
+    color: ${props => props.$selected ? props.theme.color.white : props.theme.color.black};
   }
 `
 
@@ -53,7 +55,7 @@ const Result = styled.div`
     }
 `
 
-const PageSelect = ({page}) => {
+const PageSelect = ({ page }) => {
 
     const { pathname, search } = useContext(LocationContext);
     const newSearch = new URLSearchParams(search);
@@ -66,12 +68,12 @@ const PageSelect = ({page}) => {
 
     return (
         <PageBtn $selected={selected}>
-            <Link to={url}><Span>{page}</Span></Link>
+            <Link to={url}>{page}</Link>
         </PageBtn>
     )
 }
 
-const Page = ({page_count}) => {
+const Page = ({ page_count }) => {
 
     const { pathname, search } = useContext(LocationContext);
     const newSearch = new URLSearchParams(search);
@@ -79,16 +81,16 @@ const Page = ({page_count}) => {
 
     let n = 1
     const arr = []
-    while (n<=page_count){
+    while (n <= page_count) {
         arr.push(n)
         n++
     }
-  
-    if(currentPage !== arr[0]){
-        newSearch.set('page', currentPage-1)
+
+    if (currentPage !== arr[0]) {
+        newSearch.set('page', currentPage - 1)
     }
-    if(currentPage !== arr[arr.length-1]){
-        newSearch.set('page', currentPage+1)
+    if (currentPage !== arr[arr.length - 1]) {
+        newSearch.set('page', currentPage + 1)
     }
 
     const url = `${pathname}?${newSearch}`
@@ -98,20 +100,20 @@ const Page = ({page_count}) => {
             {arr.length > 0 && (currentPage !== arr[0]) && (
                 <PageBtn>
                     <Link to={url}>
-                        <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 90 }}/>
+                        <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: 90 }} />
                     </Link>
                 </PageBtn>
             )}
             {arr.map(page => (
-                <PageSelect 
+                <PageSelect
                     key={page}
-                    page={page} 
+                    page={page}
                 />
             ))}
-            {arr.length > 0 && (currentPage !== arr[arr.length-1]) && (
+            {arr.length > 0 && (currentPage !== arr[arr.length - 1]) && (
                 <PageBtn>
                     <Link to={url}>
-                        <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: -90 }}/>
+                        <FontAwesomeIcon icon={faChevronDown} transform={{ rotate: -90 }} />
                     </Link>
                 </PageBtn>
             )}
@@ -119,7 +121,7 @@ const Page = ({page_count}) => {
     )
 }
 
-export const Pagination = ({products}) => {
+export const Pagination = ({ products }) => {
 
     const { count, per_page, page, page_count } = products;
 
@@ -135,7 +137,7 @@ export const Pagination = ({products}) => {
             <Result>
                 <p>{number_start} ~ {number_end}，共 {count} 筆資料</p>
             </Result>
-            <Page {...{page_count}} />
+            <Page {...{ page_count }} />
         </>
     )
 }

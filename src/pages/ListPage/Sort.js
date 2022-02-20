@@ -28,8 +28,8 @@ const GalleryBtnGroup = styled.div`
 `
 
 const GalleryBtn = styled(Btn)`
-  padding: 5px;
   & svg {
+    padding: 5px;
     font-size: ${props => props.theme.fontSize.btn};
   }
   ${MEDIA_QUERY.m} {
@@ -127,7 +127,7 @@ const Cover = styled.label`
   // background-color: #aaaa;
 `
 
-const SortSelect = ({sortMap, order}) => {
+const SortSelect = ({ sortMap, order }) => {
 
   const { pathname, search } = useContext(LocationContext);
   const newSearch = new URLSearchParams(search);
@@ -136,7 +136,7 @@ const SortSelect = ({sortMap, order}) => {
   if (newSearch.has('page')) {
     newSearch.delete('page')
   }
-  
+
   const url = `${pathname}?${newSearch}`
 
   return (
@@ -148,70 +148,70 @@ const SortSelect = ({sortMap, order}) => {
 
 const SortMenu = () => {
 
-    let { search } = useContext(LocationContext);
-    search = new URLSearchParams(search);
-    const currentOrder = search.get('order');
+  let { search } = useContext(LocationContext);
+  search = new URLSearchParams(search);
+  const currentOrder = search.get('order');
 
-    const sortMenuDOM = useRef()
-  
-    const sortMap = {
-      sold_desc: '熱門度優先', 
-      price_desc: '價格 (高至低)', 
-      price_asc: '價格 (低至高)',
-    };
+  const sortMenuDOM = useRef()
 
-    const title = currentOrder ? sortMap[currentOrder] : sortMap.sold_desc
-  
-    useEffect(() => {
-      sortMenuDOM.current.checked = false
-    }, [search])
-  
-    return (
-      <MenuContainer>
-        <Menu>
-          <label htmlFor="sort-menu" />
-          <Span>{title}</Span>
-          <Btn><FontAwesomeIcon icon={faChevronDown}/></Btn>
-        </Menu>
-        <input id="sort-menu" type="checkbox" ref={sortMenuDOM} />
-        <Cover htmlFor="sort-menu"/>
-        <SubMenu>
-          {Object.keys(sortMap).map(order => (
-            <li key={order}>
-              <SortSelect {...{sortMap, order}}/>
-            </li>
-          ))}
-        </SubMenu>
-      </MenuContainer>
-    )
+  const sortMap = {
+    sold_desc: '熱門度優先',
+    price_desc: '價格 (高至低)',
+    price_asc: '價格 (低至高)',
+  };
+
+  const title = currentOrder ? sortMap[currentOrder] : '排序依'
+
+  useEffect(() => {
+    sortMenuDOM.current.checked = false
+  }, [search])
+
+  return (
+    <MenuContainer>
+      <Menu>
+        <label htmlFor="sort-menu" />
+        <Span>{title}</Span>
+        <Btn><FontAwesomeIcon icon={faChevronDown} /></Btn>
+      </Menu>
+      <input id="sort-menu" type="checkbox" ref={sortMenuDOM} />
+      <Cover htmlFor="sort-menu" />
+      <SubMenu>
+        {Object.keys(sortMap).map(order => (
+          <li key={order}>
+            <SortSelect {...{ sortMap, order }} />
+          </li>
+        ))}
+      </SubMenu>
+    </MenuContainer>
+  )
 }
 
 export const Sort = () => {
   return (
-      <>
-          <SortContainer>
-            <GalleryBtnGroup>
-              <GalleryBtn>
-                <label htmlFor="two-columns">
-                  <FontAwesomeIcon icon={faThLarge}/>
-                </label>
-              </GalleryBtn>
-              <GalleryBtn>
-                <label htmlFor="three-columns">
-                  <FontAwesomeIcon icon={faTh}/>
-                </label>
-              </GalleryBtn>
-              <GalleryBtn $four>
-                <label htmlFor="four-columns">
-                  <FontAwesomeIcon icon={faAlignJustify} transform={{ rotate: 90 }}/>
-                </label>
-              </GalleryBtn>
-            </GalleryBtnGroup>
-            <SortMenu />
-          </SortContainer>
-          <GalleryRadio $two id="two-columns" name="gallery" type="radio" />
-          <GalleryRadio $three id="three-columns" name="gallery" type="radio" />
-          <GalleryRadio $four id="four-columns" name="gallery" type="radio" />
-      </>
+    <>
+      <SortContainer>
+        <GalleryBtnGroup>
+          <GalleryBtn>
+            <label htmlFor="two-columns">
+              <FontAwesomeIcon icon={faThLarge} />
+            </label>
+          </GalleryBtn>
+          <GalleryBtn>
+            <label htmlFor="three-columns">
+              <FontAwesomeIcon icon={faTh} />
+            </label>
+          </GalleryBtn>
+          <GalleryBtn $four>
+            <label htmlFor="four-columns">
+              <FontAwesomeIcon icon={faAlignJustify} transform={{ rotate: 90 }} />
+            </label>
+          </GalleryBtn>
+        </GalleryBtnGroup>
+        <SortMenu />
+      </SortContainer>
+      <GalleryRadio $two id="two-columns" name="gallery" type="radio" />
+      <GalleryRadio $three id="three-columns" name="gallery" type="radio" />
+      <GalleryRadio $four id="four-columns" name="gallery" type="radio" />
+    </>
   )
 }
