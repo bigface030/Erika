@@ -3,13 +3,14 @@
 ### ERiKA 電商服飾平台
 
 > #### 網站連結：https://tpdidilong.github.io/Erika/
+> #### 影片 DEMO：https://youtu.be/yDq7_ZoLYwo
 
 ## 專案簡介
 透過 [Create React App](https://create-react-app.dev/) 建立開發環境，使用 [React](https://zh-hant.reactjs.org/) 開發 SPA (Single Page Application)，完成後將專案部署至 [GitHub Pages](https://pages.github.com/)。
 #### 目前可使用功能：
 - 瀏覽商品
 - 加入購物車
-- 管理後台之管理商品部分
+- 管理後台之商品 [CRUD](https://zh.wikipedia.org/zh-tw/%E5%A2%9E%E5%88%AA%E6%9F%A5%E6%94%B9)
 #### 未來開放功能：
 > 請見 **專案展望**
 
@@ -39,27 +40,33 @@
 4. `npm run deploy`：將網站部署至 [GitHub Pages](https://pages.github.com/)
 
 ## 頁面架構
-![](https://i.imgur.com/pmq5sQv.png)
+> 各頁面實際功能請參考 [影片 DEMO](https://youtu.be/yDq7_ZoLYwo)
 
-## 專案 DEMO
+![](https://i.imgur.com/pmq5sQv.png)
 
 ## 專案展望
 #### 新增會員系統
-- 實作登入及註冊功能，串連第三方登入
+- 利用 JWT 實作登入及註冊功能、OAuth 串連第三方登入
 - 會員功能：
     - 加入商品至願望清單
     - 查看以會員身份進行結帳之歷史訂單
     - 更改會員資料
     - 【管理員限定】進入管理後台之權限
-- 更新管理員功能：
-    - 商品管理：新增存貨進出紀錄和價格變動紀錄（搭配後端資料庫新增 database）
-- 新增管理員功能：
+- 管理員功能：
+    - 商品管理：新增存貨進出紀錄和價格變動紀錄（搭配新增後端 database）
     - 訂單管理：分為已成立、已付款、已完成、已取消四種狀態
     - 會員管理：可將特定會員之權限由使用者調整為管理員
 #### 新增訂單系統
 - 實作購物車結帳功能
-    - 串接金流、超商門市選擇
+    - 串接金流
+    - 超商門市選擇
 - 訂單管理
+    - 已成立
+    - 已付款
+    - 已完成
+    - 已取消
+#### 其他
+- 利用 cookie 實作「看過的商品」
 
 ## 專案後端
 採用 [Node.js](https://nodejs.org/en/) 的 web 框架 [Express](https://expressjs.com/) 建置 server，搭配 ORM 框架 [Sequelize](https://sequelize.org/) 操作 [MySQL](https://www.mysql.com/) 資料庫以建立 controllers 及 models，同時生成 API 與前端串連。
