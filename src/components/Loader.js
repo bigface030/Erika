@@ -27,6 +27,8 @@ const LoaderBase = styled.div`
 export const FullPageLoader = styled(LoaderBase)`
 	position: fixed;
 	border-width: 8px;
+	width: 60px;
+	height: 60px;
 `;
 
 export const ImgLoader = styled(LoaderBase)`
