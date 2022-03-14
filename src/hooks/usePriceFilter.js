@@ -84,15 +84,10 @@ export default function usePriceFilter() {
             return setIsDragging(false);
         }
         X.current = e.pageX;
-        switch (e.target) {
-            case knobRight.current: {
-                return (direction.current = 'R');
-            }
-            case knobLeft.current: {
-                return (direction.current = 'L');
-            }
-            default:
-                break;
+        if (e.target === knobRight.current) {
+            direction.current = 'R';
+        } else if (e.target === knobLeft.current) {
+            direction.current = 'L';
         }
         if (WR.current === null) {
             WR.current = bar.current.offsetWidth;
