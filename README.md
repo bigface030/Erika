@@ -2,7 +2,7 @@
 
 ### ERiKA 電商服飾平台
 
-> #### 網站連結：https://tpdidilong.github.io/Erika/
+> #### 網站連結：https://bigface030.github.io/Erika/
 > #### 影片 DEMO：https://youtu.be/yDq7_ZoLYwo
 
 ## 專案簡介
@@ -70,7 +70,7 @@
 
 ## 專案後端
 採用 [Node.js](https://nodejs.org/en/) 的 web 框架 [Express](https://expressjs.com/) 建置 server，搭配 ORM 框架 [Sequelize](https://sequelize.org/) 操作 [MySQL](https://www.mysql.com/) 資料庫以建立 controllers 及 models，同時生成 API 與前端串連。
-> #### 專案連結：https://github.com/TPdidilong/Erika-backend
+> #### 專案連結：https://github.com/bigface030/Erika-backend
 
 ## 專案授權
 
