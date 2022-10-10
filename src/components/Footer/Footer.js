@@ -169,7 +169,7 @@ export default function Footer() {
             </FooterWrapper>
             <BottomWrapper>
                 <BottomContainer>
-                    <H5>Copyright © 2021 TPdidilong All Rights Reserved</H5>
+                    <H5>Copyright © 2021 bigface030 All Rights Reserved</H5>
                 </BottomContainer>
             </BottomWrapper>
         </footer>
